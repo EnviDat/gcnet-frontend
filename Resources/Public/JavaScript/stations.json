@@ -1,0 +1,182 @@
+[
+	{
+		"id" : 1,
+		"name" : "Swiss Camp",
+		"latitude" : "69.56833",
+		"longitude" : "49.31582",
+		"elevation" : 1149,
+		"startdate" : "1990.30  ",
+		"active" : 1
+	},
+	{
+		"id" : 2,
+		"name" : "Crawford Point",
+		"latitude" : "69.87975",
+		"longitude" : "46.98667",
+		"elevation" : 2022,
+		"startdate" : "1995.39    ",
+		"active" : 1
+	},
+	{
+		"id" : 3,
+		"name" : "NASA-U",
+		"latitude" : "73.84189",
+		"longitude" : "49.49831",
+		"elevation" : 2369,
+		"startdate" : "1995.41    ",
+		"active" : 1
+	},
+	{
+		"id" : 4,
+		"name" : "GITS",
+		"latitude" : "77.13781",
+		"longitude" : "61.04113",
+		"elevation" : 1887,
+		"startdate" : "1995.43 ",
+		"active" : 1
+	},
+	{
+		"id" : 5,
+		"name" : "Humboldt",
+		"latitude" : "78.5266",
+		"longitude" : "56.8305",
+		"elevation" : 1995,
+		"startdate" : "1995.47  ",
+		"active" : 1
+	},
+	{
+		"id" : 6,
+		"name" : "Summit",
+		"latitude" : "72.57972",
+		"longitude" : "38.50454",
+		"elevation" : 3254,
+		"startdate" : "1996.37 ",
+		"active" : 1
+	},
+	{
+		"id" : 7,
+		"name" : "TUNU-N",
+		"latitude" : "78.01677",
+		"longitude" : "33.99387",
+		"elevation" : 2113,
+		"startdate" : "1996.38   ",
+		"active" : 1
+	},
+	{
+		"id" : 8,
+		"name" : "DYE-2",
+		"latitude" : "66.48001",
+		"longitude" : "46.27889",
+		"elevation" : 2165,
+		"startdate" : "1996.40   ",
+		"active" : 1
+	},
+	{
+		"id" : 9,
+		"name" : "JAR 1",
+		"latitude" : "69.498358",
+		"longitude" : "49.68156",
+		"elevation" : 932,
+		"startdate" : "1996.47",
+		"active" : 1
+	},
+	{
+		"id" : 10,
+		"name" : "Saddle",
+		"latitude" : "65.99947",
+		"longitude" : "44.50016",
+		"elevation" : 2559,
+		"startdate" : "1997.30 ",
+		"active" : 1
+	},
+	{
+		"id" : 11,
+		"name" : "South Dome",
+		"latitude" : "63.1488",
+		"longitude" : "44.81717",
+		"elevation" : 2922,
+		"startdate" : "1997.31   ",
+		"active" : 1
+	},
+	{
+		"id" : 12,
+		"name" : "NASA-E",
+		"latitude" : "75.00000",
+		"longitude" : "29.99972",
+		"elevation" : 2631,
+		"startdate" : "1997.34    ",
+		"active" : 1
+	},
+	{
+		"id" : 13,
+		"name" : "CP2",
+		"latitude" : "69.87968",
+		"longitude" : "46.98692",
+		"elevation" : 1990,
+		"startdate" : null,
+		"active" : null
+	},
+	{
+		"id" : 14,
+		"name" : "NGRIP",
+		"latitude" : "75.09975",
+		"longitude" : "42.33256",
+		"elevation" : 2950,
+		"startdate" : null,
+		"active" : null
+	},
+	{
+		"id" : 15,
+		"name" : "NASA-SE",
+		"latitude" : "66.4797",
+		"longitude" : "42.5002",
+		"elevation" : 2425,
+		"startdate" : "1998.30  ",
+		"active" : 1
+	},
+	{
+		"id" : 16,
+		"name" : "KAR",
+		"latitude" : "69.69942",
+		"longitude" : "33.00058",
+		"elevation" : 2579,
+		"startdate" : null,
+		"active" : null
+	},
+	{
+		"id" : 17,
+		"name" : "JAR 2",
+		"latitude" : "69.42000",
+		"longitude" : "50.05750",
+		"elevation" : 568,
+		"startdate" : null,
+		"active" : null
+	},
+	{
+		"id" : 18,
+		"name" : "KULU",
+		"latitude" : "65.75845",
+		"longitude" : "39.60177",
+		"elevation" : 878,
+		"startdate" : null,
+		"active" : null
+	},
+	{
+		"id" : 22,
+		"name" : "Petermann GI",
+		"latitude" : "80.68361",
+		"longitude" : "60.29305",
+		"elevation" : 37,
+		"startdate" : "2002.40  ",
+		"active" : 1
+	},
+	{
+		"id" : 24,
+		"name" : "NEEM",
+		"latitude" : "77.50222",
+		"longitude" : "58.07277",
+		"elevation" : 2454,
+		"startdate" : "2006.00",
+		"active" : 1
+	}
+]
