@@ -1,9 +1,14 @@
 # TODOs
-- GIT repository erstellen auf http://gitlab.wsl.ch/
-- Add elevation information on hover
-- Refactor PHP -> Javascript
-- Drop-down with list of stations
-- Add all stations in JSON file -> see data from Ionut below and data from Dominik Haas 
+OK GIT repository erstellen auf http://gitlab.wsl.ch/
+OK Add elevation information on hover
+Not necessary Refactor PHP -> Javascript
+OK Update all data according this list: https://www.wsl.ch/gcnet/stations 
+OK Drop-down with list of stations
+OK Add all stations in JSON file -> see data from Ionut below and data from Dominik Haas 
+OK Dark theme
+OK A link to all stations: https://www.envidat.ch/gui/gcnet/index_all_stations.html
+OK onlick link to station from map
+- branding / licencing am charts
 - Test everything on IE
 
 
@@ -31,9 +36,9 @@ Number Station Name    Station nickname
 23     NEEM         
 24     East GRIP         egrip
 30     LAR1
-31     PE Gun
-32     PE Blu
-33     PE Air
+41     PE Gun
+42     PE Blu
+43     PE Air
 
 
 Hier das erwähnte JSON
