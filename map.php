@@ -5,7 +5,10 @@
 $stationFile = file_get_contents('Resources/Public/JavaScript/stations.json');
 $stations    = json_decode($stationFile);
 $stationsJs  = '';
-$selectOptions = '<option value="https://www.wsl.ch/gcnet/overview_all_stations.html">All weather stations</option>';
+$selectOptions = '
+<option value="https://www.wsl.ch/gcnet/">Go Back to main GC-Net Data Portal</option>
+<option value="https://www.wsl.ch/gcnet/overview_all_stations.html">All weather stations</option>
+';
 $stationsBaseUrl = 'https://www.wsl.ch/gcnet/stations/';
 foreach ($stations as $station){
     $balloonText = '';
@@ -41,20 +44,22 @@ foreach ($stations as $station){
     }
 
 
-    $stationsJs .= '
-        {
-            "type": "circle",
-            "selectable": true,
-            "balloonText": "<b>'.$station->name.'</b>'.$balloonText.'",
-            "longitude": -'.$station->longitude.',
-            "latitude": '.$station->latitude.',
-            "color": "'.$iconColor.'",
-            "rollOverColor": "rgba(0,0,0,0.8)",
-            "scale": 1.3, 
-            "urlTarget": "_blank",
-            '.$urlJson.'
-        },
-    ';
+    if($station->greenland != NULL){
+        $stationsJs .= '
+            {
+                "type": "circle",
+                "selectable": true,
+                "balloonText": "<b>'.$station->name.'</b>'.$balloonText.'",
+                "longitude": -'.$station->longitude.',
+                "latitude": '.$station->latitude.',
+                "color": "'.$iconColor.'",
+                "rollOverColor": "rgba(0,0,0,0.8)",
+                "scale": 1.3, 
+                "urlTarget": "_blank",
+                '.$urlJson.'
+            },
+        ';
+    }
 
 
 
@@ -75,8 +80,10 @@ foreach ($stations as $station){
         jQuery(document).ready(function() {
             jQuery('#stationsform').on('change', function() {
                 var optVal= jQuery("#stationname option:selected").val();
-                jQuery('#stationsform').attr('action', optVal);
-                this.submit();
+                if(optVal.length > 0){
+                    jQuery('#stationsform').attr('action', optVal);
+                    // this.submit();
+                }
             });
         });
     </script>
@@ -163,6 +170,7 @@ foreach ($stations as $station){
             <option>Select an automated weather station</option>
             <?php echo $selectOptions; ?>
         </select>
+        <button name="submit" type="submit" class="submit-button">go</button>
     </form>
 </div>
 <div style="width: 100%; height: 100%; position: relative;">

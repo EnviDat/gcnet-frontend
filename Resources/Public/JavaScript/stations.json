@@ -8,7 +8,8 @@
 		"startdate" : "1990.4",
 		"active" : 1,
 		"alias" : "swisscamp10m",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 1,
@@ -19,7 +20,8 @@
 		"startdate" : "1990.30  ",
 		"active" : 1,
 		"alias" : "swisscamp",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 2,
@@ -30,7 +32,8 @@
 		"startdate" : "1995.39    ",
 		"active" : 1,
 		"alias" : "crawfordpoint",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 3,
@@ -41,7 +44,8 @@
 		"startdate" : "1995.41    ",
 		"active" : 1,
 		"alias" : "nasau",
-		"data" : 0
+		"data" : 0,
+		"greenland" : 1
 	},
 	{
 		"id" : 4,
@@ -52,7 +56,8 @@
 		"startdate" : "1995.43 ",
 		"active" : 1,
 		"alias" : "",
-		"data" : 0
+		"data" : 0,
+		"greenland" : 1
 	},
 	{
 		"id" : 5,
@@ -63,7 +68,8 @@
 		"startdate" : "1995.47  ",
 		"active" : 1,
 		"alias" : "humboldt",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 6,
@@ -74,7 +80,8 @@
 		"startdate" : "1996.37 ",
 		"active" : 1,
 		"alias" : "summitstation",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 7,
@@ -85,7 +92,8 @@
 		"startdate" : "1996.38   ",
 		"active" : 1,
 		"alias" : "tununorth",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 8,
@@ -96,7 +104,8 @@
 		"startdate" : "1996.40   ",
 		"active" : 1,
 		"alias" : "dyeii",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 9,
@@ -107,7 +116,8 @@
 		"startdate" : "1996.47",
 		"active" : 1,
 		"alias" : "jar1",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 10,
@@ -118,7 +128,8 @@
 		"startdate" : "1997.30 ",
 		"active" : 1,
 		"alias" : "saddle",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 11,
@@ -129,7 +140,8 @@
 		"startdate" : "1997.31   ",
 		"active" : 1,
 		"alias" : " ",
-		"data" : 0
+		"data" : 0,
+		"greenland" : 1
 	},
 	{
 		"id" : 12,
@@ -140,7 +152,8 @@
 		"startdate" : "1997.34    ",
 		"active" : 1,
 		"alias" : "nasaeast",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 13,
@@ -151,7 +164,8 @@
 		"startdate" : null,
 		"active" : 0,
 		"alias" : " ",
-		"data" : 0
+		"data" : 0,
+		"greenland" : 1
 	},
 	{
 		"id" : 14,
@@ -162,7 +176,8 @@
 		"startdate" : null,
 		"active" : 0,
 		"alias" : " ",
-		"data" : 0
+		"data" : 0,
+		"greenland" : 1
 	},
 	{
 		"id" : 15,
@@ -171,9 +186,10 @@
 		"longitude" : "42.5002",
 		"elevation" : 2425,
 		"startdate" : "1998.30  ",
-		"active" : 0,
-		"alias" : "",
-		"data" : 0
+		"active" : 1,
+		"alias" : "nasasoutheast",
+		"data" : 0,
+		"greenland" : 1
 	},
 	{
 		"id" : 16,
@@ -184,7 +200,8 @@
 		"startdate" : null,
 		"active" : 0,
 		"alias" : " ",
-		"data" : 0
+		"data" : 0,
+		"greenland" : 1
 	},
 	{
 		"id" : 17,
@@ -195,7 +212,8 @@
 		"startdate" : null,
 		"active" : 0,
 		"alias" : " ",
-		"data" : 0
+		"data" : 0,
+		"greenland" : 1
 	},
 	{
 		"id" : 18,
@@ -206,7 +224,8 @@
 		"startdate" : null,
 		"active" : 0,
 		"alias" : " ",
-		"data" : 0
+		"data" : 0,
+		"greenland" : 1
 	},
 	{
 		"id" : 22,
@@ -217,7 +236,8 @@
 		"startdate" : "2003.40",
 		"active" : 1,
 		"alias" : "petermann",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 23,
@@ -228,7 +248,8 @@
 		"startdate" : "2006",
 		"active" : 1,
 		"alias" : "neem",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 24,
@@ -239,7 +260,8 @@
 		"startdate" : "2014",
 		"active" : 1,
 		"alias" : "eastgrip",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 1
 	},
 	{
 		"id" : 30,
@@ -250,7 +272,8 @@
 		"startdate" : "2008",
 		"active" : 1,
 		"alias" : "lar1",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 0
 	},
 	{
 		"id" : 42,
@@ -261,7 +284,8 @@
 		"startdate" : "2013",
 		"active" : 1,
 		"alias" : "pegun",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 0
 	},
 	{
 		"id" : 43,
@@ -272,6 +296,7 @@
 		"startdate" : "2014",
 		"active" : 1,
 		"alias" : "peblu",
-		"data" : 1
+		"data" : 1,
+		"greenland" : 0
 	}
 ]
