@@ -1,17 +1,22 @@
 body{
     margin:0;
     padding:0;
-    background-color: #252f38;
+    background-color: #FFF;
     font-family: Arial, Geneva;
 }
 
-#chartdiv{
-    background-color: #FFFFFF;
-    display:none;
+
+#map{
+    height: 100%;
+    width: auto;
 }
-.close_button{
-    float: right;
-    width: 30px;
+
+g.stations a path{
+  cursor: pointer;
+  fill: #1DB409 !important;
+}
+g.stations a:hover path{
+    fill:#FFFFFF !important;
 }
 
 
