@@ -7,14 +7,7 @@ As of the 1999 field season, 18 automatic weather stations (AWS) are collecting 
 - sensible and latent heat flux fluxes
 - snowpack conductive heat fluxes
 
-# Implementation
-The file map.php reads data from the JSON File Resources/Public/JavaScript/stations.json and displays the automated weather stations AWS in greenland. 
-Visualization is donw with AM Charts and a proper licence.
 
-Overview of stations can only be found here: https://www.wsl.ch/gcnet/stations
-
-No localization implemented
-
-
-
+## Scaling SVGs
+see https://css-tricks.com/scale-svg/
 
