@@ -12,13 +12,13 @@
               <control-panel-view v-on:homeClick="catchHomeClicked"/>
             </v-flex>
 
-            <iframe v-if="isActiveControl($store.getters.mapViewPos)"
+            <v-flex mt-2 px-0 xs6 
+                    v-if="isActiveControl($store.getters.mapViewPos)"
                     :style="`height: ${iframeScreenHeight()}px`"
                     ref="map_iframe"
-                    class="flex mt-2 px-3 xs6"
-                    src="https://www.wsl.ch/gcnet/map.php"
-                    frameborder="0" >
-            </iframe>
+                    v-html="mapHTML"
+                                    >
+            </v-flex>
 
             <v-flex v-if="isActiveControl($store.getters.listViewPos)" >
               <v-container fluid grid-list-md px-1 py-2>
@@ -79,6 +79,7 @@ import { mapGetters } from 'vuex';
 import BaseClickCard from '@/components/BaseElements/BaseClickCard.vue';
 import ControlPanelView from '@/components/ControlPanelView.vue';
 import TitleView from '@/components/TitleView.vue';
+import mapHTML from '@/map_html.html';
 
 export default {
   components: {
@@ -98,6 +99,7 @@ export default {
       loadingStation: false,
       currentStationName: '',
       cardImgs: {},
+      mapHTML,
     }
   },
   beforeMount() {
