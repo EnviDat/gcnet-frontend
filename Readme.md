@@ -11,3 +11,23 @@ As of the 1999 field season, 18 automatic weather stations (AWS) are collecting 
 ## Scaling SVGs
 see https://css-tricks.com/scale-svg/
 
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
+
