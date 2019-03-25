@@ -5,10 +5,13 @@ body{
     font-family: Arial, Geneva;
 }
 
-
-#map{
+.map-wrapper{
+    width: 100%;
     height: 100%;
-    width: auto;
+    border: 5px red solid;
+}
+
+.svg {
 }
 
 g.stations a path{
