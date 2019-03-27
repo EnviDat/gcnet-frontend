@@ -8,23 +8,18 @@
     <v-container grid-list-md pa-0>
       <v-layout row align-center>
 
-        <v-flex xs5 py-0
+        <v-flex xs3 md5 py-0
                 ref="card_image_parent"
                 style="overflow: hidden;"
-                :style="`height: ${$vuetify.breakpoint.smAndDown ? '35px' : '60px'}`"
+                :style="`height: ${$vuetify.breakpoint.smAndDown ? '45px' : '60px'}`"
                 >
-          <!-- <v-card-media ref="card_image_parent"
-                        class="imagezoom"
-                        :height=" $vuetify.breakpoint.smAndDown ? '65px' : '75px' "> -->
-            <img
-            v-if="img"
-            ref="card_image"
-            v-on:load="setRandomPosition()"
-            :src="img" />                        
-          <!-- </v-card-media> -->
+          <img v-if="img"
+                ref="card_image"
+                v-on:load="setRandomPosition()"
+                :src="img" />                        
         </v-flex>
 
-        <v-flex xs7 mx-1 mt-1>
+        <v-flex xs9 md7 mx-1 mt-1>
             <div class="title"
                 :class="{ 'compactTitle' : this.$vuetify.breakpoint.smAndDown }"
             >

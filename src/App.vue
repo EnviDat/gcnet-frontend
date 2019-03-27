@@ -1,46 +1,105 @@
 <template>
   <v-app class="application" :style="dynamicBackground()">
 
-    <v-content>
-      <landing-page />
+    <v-content app >
+      <landing-page :currentStation="currentStation" 
+                    :showHomeScreen="showHomeScreen"
+                    v-on:anyClick="catchAnyClick()" />
     </v-content>
+
+      <the-navigation :mini="drawerIsMini"
+                      v-on:drawerClick="catchDrawerClick">
+        <template v-slot:map>        
+          <stations-map v-on:mapClick="mapStationClick" />          
+        </template>
+
+        <template v-slot:list>        
+          <stations-list v-on:listClick="listStationClick" />
+        </template>
+
+      </the-navigation >
+
   </v-app>
 </template>
 
 <script>
-import LandingPage from './components/Pages/LandingPage';
+import TheNavigation from '@/components/TheNavigation';
+import StationsMap from '@/components/StationsMap';
+import StationsList from '@/components/StationsList';
+import LandingPage from '@/components/Pages/LandingPage';
 
 export default {
   name: 'App',
   components: {
-    LandingPage
+    TheNavigation,
+    StationsMap,
+    StationsList,
+    LandingPage,
+  },
+  beforeMount() {
+      const imgs = require.context('./assets/', false, /\.jpg$/);
+      // const imgs = require.context('./assets/', false, /\.png$/);
+      const imgCache = {};
+
+      imgs.keys().forEach((key) => {
+        imgCache[key] = imgs(key);
+      });
+
+      this.appBGImages = imgCache;
   },
   methods: {
+    catchAnyClick(){
+      if (!this.drawerIsMini){
+        this.drawerIsMini = true;
+      }
+        // this.drawerIsMini = !this.drawerIsMini;
+    },
+    catchDrawerClick(currentMini){
+      this.drawerIsMini = currentMini;
+    },
+    mapStationClick(stationUrl){
+      this.showHomeScreen = false;
+      // console.log('clicked on ' + stationUrl);
+
+      const splits = stationUrl.split('/');
+      if (splits.length > 0) {
+        const stationName = splits[splits.length - 1];
+
+        this.currentStation = this.getStation(stationName);
+      }
+
+    },
+    listStationClick(stationName) {
+      this.showHomeScreen = false;
+      this.currentStation = this.getStation(stationName);
+    },
+    getStation(stationName) {
+      const stations = this.$store.getters.stations;
+      let station = null;
+      const keys = Object.keys(stations);
+
+      for(let key of keys) {
+        let val = stations[key];
+
+        if (val.name === stationName || val.alias === stationName){
+          station = val;
+          break;
+        }
+      };
+
+      return station;
+    },
     dynamicBackground() {
       const imageKey = this.$store.getters.appBGImage;
-      
       const bgImg = this.randomImg(this.appBGImages);
-      // const bgImg = this.appBGImages[imageKey];
-
-      // const bgImg = this.$store.getters.appBGImage;
-      // console.log(imageKey + " bgImg " + bgImg);
       let bgStyle = '';
 
       if (bgImg) {
-        // bgStyle = `background-image: url(${bgImg}) !important;`;
         bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%), url(${bgImg}) !important;`;
 
         bgStyle += `background-position: center top !important;
                     background-repeat: no-repeat !important;
                     background-size: cover !important; `;
-
-        // if (bgImg.includes('browsepage')) {
-        //   // bgStyle = `background-image: url(${bgImg}) !important;`;
-        //   bgStyle = `background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.7) 100%), url(${bgImg}) !important;`;
-
-        //   bgStyle += `background-position: center top !important;
-        //               background-repeat: repeat !important; `;
-        // }
       }
 
       return bgStyle;
@@ -50,7 +109,7 @@ export default {
       let rnd = 0;
 
       if (keys.length > 0) {
-        rnd = this.randomIntFromInterval(0, keys.length - 1);
+        rnd = this.randomIntFromSeed(0, keys.length - 1, '27.03.19');
       }
 
       return imgs[keys[rnd]];
@@ -60,6 +119,9 @@ export default {
     return {
       name: 'App',
       appBGImages: {},
+      currentStation: null,
+      showHomeScreen: true,
+      drawerIsMini: false,
     }
   },
 }

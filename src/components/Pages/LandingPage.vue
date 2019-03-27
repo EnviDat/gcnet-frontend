@@ -1,76 +1,48 @@
 <template>
   <v-container fluid
-                :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'pa-2'">  
+                fill-height
+                :class="$vuetify.breakpoint.smAndDown ? 'pa-1' : 'pa-2'"
+                @click="anyClick">  
 
     <v-layout row wrap >
   
-      <v-flex mt-2 xs12 md3>
-    
-          <v-layout column >
-            <v-flex>
-              <title-view />
-              <control-panel-view :label="controlsLabel"
-                                  v-on:homeClick="catchHomeClicked"/>
-            </v-flex>
-
-            <v-flex mt-2 px-0 xs6 
-                    v-if="isActiveControl($store.getters.mapViewPos)"
-                    :style="`overflow: hidden;`"
-                    id="map_svg"
-                    ref="map_svg"
-                    v-html="mapHTML"
-                                    >
-            </v-flex>
-
-            <v-flex v-if="isActiveControl($store.getters.listViewPos)" >
-              <v-container fluid grid-list-md px-1 py-2>
-
-                <v-layout row wrap>
+      <v-flex xs12 offset-xs6
+          v-if="loadingStation"
+      >
+        <v-progress-circular
+          indeterminate
+          color="primary"
           
-                  <v-flex my-1 xs6
-                    v-for="station in $store.getters.stations"
-                    :key="station.name">
-          
-                    <base-click-card :title="station.name"
-                                  v-on:clicked="catchCategoryClicked(station.name)"
-                                  :style="currentStationName === station.name ? `background-color: ${$vuetify.theme.primary}` : ''"
-                                  :img="randomImg(station.name)"
-                                  :randomImgPosition="true"
-                                  />
-          
-                  </v-flex>
-
-                </v-layout>
-              </v-container>
-            </v-flex>
-
-          </v-layout>
-    
+          />
       </v-flex>
 
-      <v-progress-circular
-        v-if="loadingStation"
-        indeterminate
-        color="primary"
-        style="margin: auto;"
-        />
+      <v-flex xs12
+              v-show="!loadingStation && !showHomeScreen"
+                >
 
-      <!-- <iframe v-if="isActiveControl(1)"
-              :style="`height: ${iframeScreenHeight()}px`"
-              ref="map_svg"
-              class="flex mt-2 px-3 xs12 md9"
-              src="https://www.wsl.ch/gcnet/map.php"
-              frameborder="0" >
-      </iframe> -->
+        <iframe :style="`height: 100%; width: 100%;`"
+                ref="station_iframe"
+                src=""
+                frameborder="0" >
+        </iframe>
+      </v-flex>
 
-      <iframe v-show="!loadingStation"
-              :style="`height: ${iframeScreenHeight()}px`"
-              ref="station_iframe"
-              class="flex mt-2 px-3 xs12 md9"
-              src=""
-              frameborder="0" >
-      </iframe>
+      <v-flex xs12 md9 offset-md3 px-5 
+              v-show="showHomeScreen" >
 
+        <v-layout column>
+          <v-flex>
+            <title-view :title="homeInfos.title"
+                        :slogan="homeInfos.startText"
+                        />
+          </v-flex>
+          <v-flex pt-5>
+            <p v-html="homeInfos.homeText"></p>
+          </v-flex>
+        </v-layout>
+
+
+      </v-flex>
 
     </v-layout>
   </v-container>
@@ -78,77 +50,40 @@
 
 <script>
 import vuex from 'vuex';
-import { mapGetters } from 'vuex';
+// import { mapGetters } from 'vuex';
 import BaseClickCard from '@/components/BaseElements/BaseClickCard.vue';
 import ControlPanelView from '@/components/ControlPanelView.vue';
 import TitleView from '@/components/TitleView.vue';
-import mapHTML from '@/map_html.html';
+import homeInfos from '@/homeInfos';
+// import mapHTML from '@/map_html.html';
+// import StationsMap from '@/components/StationsMap';
 
 export default {
+  props: {
+    currentStation: Object,
+    showHomeScreen: Boolean,
+  },
   components: {
     BaseClickCard,
     ControlPanelView,
     TitleView,
+    // StationsMap,
   },
-  data () {
-    return {
-      buttonlText: 'SEARCH DATA',
-      envidatTitle: 'EnviDat',
-      envidatSlogan: 'Environmental Research Data<br/>at your Fingertips',
-      envidatSubSlogan: 'The data is being provided by the many research units of the Swiss Federal Institute for Forest, Snow and Landscape WSL.',
-      sloganButtonText: 'BROWSE DATA',
-      baseStationURL: 'https://www.wsl.ch/gcnet/stations/',
-      mapURL: 'https://www.wsl.ch/gcnet/map.php',
-      loadingStation: false,
-      currentStationName: '',
-      controlsLabel: 'Select stations on Greenland via Map or List:',
-      cardImgs: {},
-      mapHTML,
-    }
-  },
-  beforeMount() {
-    const imgs = require.context('@/assets/cards', false, /\.jpg$/);
-    const imgCache = {};
-
-    imgs.keys().forEach((key) => {
-      imgCache[key] = imgs(key);
-    });
-
-    this.cardImgs = imgCache;
-  },
-  mounted() {
-
-    const that = this;
-    const links = this.$el.querySelectorAll('#map_svg svg > g > g > a');
-    
-    links.forEach(el => {
-      const url = el.getAttribute('xlink:href');
-      if (url) {
-        // el.addEventListener('click', that.stationClick(url));
-        el.onclick = function (){
-          that.stationClick(url);
-        }
-        el.removeAttribute('xlink:href');
+  data: () => ({
+    baseStationURL: 'https://www.wsl.ch/gcnet/stations/',
+    loadingStation: false,
+    currentStationName: '',
+    homeInfos,
+    // mapHTML,
+  }),
+  watch: {
+    currentStation: function updateStation() {
+      if (this.currentStation) {
+        this.loadStation(this.currentStation);
       }
-      el.removeAttribute('target');
-    });
+    },
   },
   methods: {
-    stationClick(stationUrl){
-      // console.log('clicked on ' + stationUrl);
-
-      const splits = stationUrl.split('/');
-      if (splits.length > 0) {
-        const stationName = splits[splits.length - 1];
-
-        const station = this.getStation(stationName);
-
-        if (station){
-          this.loadStation(station);
-        }
-      }
-
-    },
     isActiveControl(number) {
       return this.$store.getters.controls.includes(number);
     },
@@ -161,40 +96,34 @@ export default {
         station.urlValid = this.UrlExists(this.baseStationURL + station.alias);
       }
     },
-    UrlExists(url) {
-        var http = new XMLHttpRequest();
-        http.open('HEAD', url, false);
-        http.send();
-        // if (http.status != 404)
-            return http.status != 404
-        // else
-            // window.location.reload();
-    },
-    catchHomeClicked() {
-      // show title view
-    },
-    catchCategoryClicked(cardTitle) {
-      const station = this.getStation(cardTitle);
+    // UrlExists(url) {
+    //     var http = new XMLHttpRequest();
+    //     http.open('HEAD', url, false);
+    //     http.send();
+    //     // if (http.status != 404)
+    //         return http.status != 404
+    //     // else
+    //         // window.location.reload();
+    // },
+    // catchHomeClick() {
+    //   this.showHomeScreen = true;
+    // },
+    // catchListClick: function catchListClick() {
+    //   this.$store.state.controls = [this.$store.getters.listViewPos];
+    // },
+    // catchMapClick: function catchMapClick() {
+    //   this.$store.state.controls = [this.$store.getters.mapViewPos];
+    // },
+    // catchCategoryClicked(cardTitle) {
+    //   const station = this.getStation(cardTitle);
 
-      if (station){
-        this.loadStation(station);
-      }
-    },
-    getStation(stationName) {
-      const stations = this.$store.getters.stations;
-      let station = null;
-      const keys = Object.keys(stations);
-
-      for(let key of keys) {
-        let val = stations[key];
-
-        if (val.name === stationName || val.alias === stationName){
-          station = val;
-          break;
-        }
-      };
-
-      return station;
+    //   if (station){
+    //     this.showHomeScreen = false;
+    //     this.loadStation(station);
+    //   }
+    // },
+    anyClick(){
+      this.$emit('anyClick');
     },
     loadStation(station) {
       this.loadingStation = true;
@@ -217,19 +146,19 @@ export default {
       this.$refs.station_iframe.src = this.baseStationURL + station.alias;
     },
     iframeScreenHeight() {
-      return window.innerHeight - 50;
+      return window.innerHeight - 150;
     },
-    randomImg(name) {
-      const keys = Object.keys(this.cardImgs);
-      let rnd = 0;
+    // randomImg(name) {
+    //   const keys = Object.keys(this.cardImgs);
+    //   let rnd = 0;
 
-      if (keys.length > 0) {
-        // rnd = this.randomIntFromInterval(0, keys.length - 1);
-        rnd = this.randomIntFromSeed(0, keys.length - 1)
-      }
+    //   if (keys.length > 0) {
+    //     // rnd = this.randomIntFromInterval(0, keys.length - 1);
+    //     rnd = this.randomIntFromSeed(0, keys.length - 1)
+    //   }
 
-      return this.cardImgs[keys[rnd]];
-    },
+    //   return this.cardImgs[keys[rnd]];
+    // },
   },
 
 };

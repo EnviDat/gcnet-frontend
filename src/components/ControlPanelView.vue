@@ -82,13 +82,13 @@ export default {
       return this.$store.getters.controls.includes(number);
     },
     catchListClick: function catchListClick() {
-      this.$store.state.controls = [this.$store.getters.listViewPos];
+      this.$emit('lsitClick');
     },
     catchHomeClick() {
-      this.$emit('clickHome');
+      this.$emit('homeClick');
     },
     catchMapClick: function catchMapClick() {
-      this.$store.state.controls = [this.$store.getters.mapViewPos];
+      this.$emit('mapClick');
     },
   },
   components: {

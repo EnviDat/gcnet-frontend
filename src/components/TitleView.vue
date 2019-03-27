@@ -2,12 +2,19 @@
   
     <v-layout>
 
-      <v-flex xs12 md6 offset-md6>
+      <v-flex xs12 md9 offset-md3>
 
         <v-layout column>
           <v-flex xs12 >
 
             <v-layout row align-center>
+
+              <v-flex xs4 lg3
+                      hidden-md-and-down >
+                <img style="width: 200px;"
+                      :src="gcNetlogo"
+                      :alt="alternativeText" >
+              </v-flex>
 
               <!-- <v-flex xs4 lg3
                       hidden-md-and-down >
@@ -65,7 +72,7 @@
             </v-layout>
           </v-flex>
 
-          <!-- <v-flex pt-5 >
+          <!-- <v-flex xs6 pt-5 >
             <slogan-card :slogan="slogan"
                         :subSlogan="subSlogan"
                         :buttonText="buttonText"
@@ -95,8 +102,8 @@
 </template>
 
 <script>
-// import SloganCard from '@/components/Cards/SloganCard';
-// import xsLogo from '@/assets/logo/EnviDat_logo_32.png';
+import SloganCard from '@/components/SloganCard';
+import gcNetlogo from '@/assets/gc_net_logo.png';
 // import smLogo from '@/assets/logo/EnviDat_logo_64.png';
 // import mdLogo from '@/assets/logo/EnviDat_logo_128.png';
 // import lgLogo from '@/assets/logo/EnviDat_logo_256.png';
@@ -110,16 +117,13 @@ export default {
     buttonCallback: Function,
   },
   data: () => ({
-    // xsLogo,
-    // smLogo,
-    // mdLogo,
-    // lgLogo,
-    alternativeText: 'EnviDat logo',
+    gcNetlogo,
+    alternativeText: 'GC-Net Logo',
   }),
   computed: {
   },
   components: {
-    // SloganCard,
+    SloganCard,
   },
 };
 </script>
