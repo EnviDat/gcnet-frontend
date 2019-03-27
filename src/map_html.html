@@ -10,33 +10,55 @@
             font-family: Arial, Geneva;
         }
 
-        .scaling-svg-container{
+        /* .scaling-svg-container{
             position: relative;
-            /* top: 20px; */
-            /* left: 20px; */
+            top: 20px;
+            left: 20px;
             border: 2px green solid;
             height: 100%;
             width: 100%;
-        }
+        } */
+
         .scaling-svg{
-            height:100%;
+            height:135%;
             width: 100%;
         }
 
 
-        g.stations a path{
+        g.stations a {
             cursor: pointer;
+            /* fill: #1DB409 !important; */
+        }
+        g.stations a circle {
+            cursor: pointer;
+            /* fill: #1DB409 !important; */
+        }
+        g.stations > a > circle:first-child {
             fill: #1DB409 !important;
         }
+
         g.stations a:hover path{
             fill:#FFFFFF !important;
         }
 
-    </style>
+        g > circle {
+            fill:#d7601b !important;
+        }
 
+        
+        g.stations > a:hover circle:first-child{
+            fill:#FFFFFF !important;
+        }
+
+        g.stations > a circle:nth-child(2){
+            opacity: 0.45;
+        }
+
+    </style>
 <!-- <body> -->
 <!-- <div class="scaling-svg-container"> -->
-    <svg version="1.2" xmlns="http://www.w3.org/2000/svg" class="scaling-svg" viewBox="0 0 4400 9015" xmlns:xlink="http://www.w3.org/1999/xlink" baseProfile="tiny" xmlns:gcnet="https://www.wsl.ch/namespaces/gcnet">
+    <svg version="1.2" xmlns="http://www.w3.org/2000/svg" class="scaling-svg" viewBox="-5 200 4400 9015" preserveAspectRatio="xMidYMin meet"
+    xmlns:xlink="http://www.w3.org/1999/xlink" baseProfile="tiny" xmlns:gcnet="https://www.wsl.ch/namespaces/gcnet">
         <g fill-rule="evenodd" gcnet:label="Greenland generalized" gcnet:groupmode="layer" font-family=".SF NS Text" font-size="54.167" font-weight="400" stroke-linecap="square" stroke-linejoin="bevel">
             <g transform="scale(.99987)" fill-opacity="0">
                 <path d="m0 0h4937v6697h-4937v-6697" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
@@ -284,68 +306,142 @@
             </g>
             <g class="stations" transform="scale(.99987)" fill-rule="evenodd" font-size="54.167" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
 
-                <a target="_blank" xlink:href="" xlink:title="TODO swisscamp 2">
-                    <path d="m1813.4 3924.8c0 19.57-15.87 35.44-35.43 35.44-19.57 0-35.44-15.87-35.44-35.44s15.87-35.43 35.44-35.43c19.56 0 35.43 15.86 35.43 35.43" vector-effect="non-scaling-stroke"/>
+                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/swisscamp10m" xlink:title="swisscamp">
+                    <circle cx="1786.4" cy="3874" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="1786.4" cy="3874" r="125" fill="white" />
+                    <!-- <path d="m1813.4 3924.8c0 19.57-15.87 35.44-35.43 35.44-19.57 0-35.44-15.87-35.44-35.44s15.87-35.43 35.44-35.43c19.56 0 35.43 15.86 35.43 35.43" vector-effect="non-scaling-stroke"/> -->
                 </a>
 
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/swisscamp10m" xlink:title="Elevation 1176m">
-                    <path d="m1813.4 3924.8c0 19.57-15.87 35.44-35.43 35.44-19.57 0-35.44-15.87-35.44-35.44s15.87-35.43 35.44-35.43c19.56 0 35.43 15.86 35.43 35.43" vector-effect="non-scaling-stroke"/>
+                    <circle cx="1786.4" cy="3924.8" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="1786.4" cy="3924.8" r="125" fill="white" />
+
+                    <!-- <path d="m1813.4 3924.8c0 19.57-15.87 35.44-35.43 35.44-19.57 0-35.44-15.87-35.44-35.44s15.87-35.43 35.44-35.43c19.56 0 35.43 15.86 35.43 35.43" vector-effect="non-scaling-stroke"/> -->
                 </a>
 
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/crawfordpoint" xlink:title="Elevation 2022m">
-                    <path d="m2037.2 3852.4c0 19.57-15.86 35.43-35.43 35.43s-35.43-15.86-35.43-35.43 15.86-35.44 35.43-35.44 35.43 15.87 35.43 35.44" vector-effect="non-scaling-stroke"/>
+
+                    <circle cx="2000" cy="3852.4" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="2000" cy="3852.4" r="125" fill="white" />
+
+                    <!-- <path d="m2037.2 3852.4c0 19.57-15.86 35.43-35.43 35.43s-35.43-15.86-35.43-35.43 15.86-35.44 35.43-35.44 35.43 15.87 35.43 35.44" vector-effect="non-scaling-stroke"/> -->
                 </a>
 
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/nasau" xlink:title="Elevation 2369m">
-                    <path d="m1886.6 2772.1c0 19.57-15.87 35.43-35.44 35.43s-35.43-15.86-35.43-35.43 15.86-35.43 35.43-35.43 35.44 15.86 35.44 35.43" vector-effect="non-scaling-stroke"/>
+                    <circle cx="1851.6" cy="2772.1" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="1851.6" cy="2772.1" r="125" fill="white" />
+
+                    <!-- <path d="m1886.6 2772.1c0 19.57-15.87 35.43-35.44 35.43s-35.43-15.86-35.43-35.43 15.86-35.43 35.43-35.43 35.44 15.86 35.44 35.43" vector-effect="non-scaling-stroke"/> -->
                 </a>
             </g>
 
-            <g transform="scale(.99987)" fill="#d7601b" font-size="54.167" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-                <path d="m1282 1770.2c0 19.57-15.87 35.44-35.44 35.44s-35.43-15.87-35.43-35.44 15.86-35.43 35.43-35.43 35.44 15.86 35.44 35.43" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
+            <!-- <g class="stations" transform="scale(.99987)" fill-rule="evenodd" font-size="54.167" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel"> -->
+
+            <g transform="scale(.99987)" font-size="54.167" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+                <circle cx="1247" cy="1770.2" r="40" 
+                stroke-width="10" stroke="black"  />
+
+                <!-- <circle cx="1247" cy="1770.2" r="125" fill="white" /> -->
+
+                <!-- <path d="m1282 1770.2c0 19.57-15.87 35.44-35.44 35.44s-35.43-15.87-35.43-35.44 15.86-35.43 35.43-35.43 35.44 15.86 35.44 35.43" fill-rule="evenodd" vector-effect="non-scaling-stroke"/> -->
             </g>
             <g transform="scale(.99987)" class="stations" fill-rule="evenodd" font-size="54.167" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/humboldt" xlink:title="Elevation 1995m">
-                    <path d="m1600.7 1468.1c0 19.57-15.87 35.43-35.44 35.43-19.56 0-35.43-15.86-35.43-35.43s15.87-35.43 35.43-35.43c19.57 0 35.44 15.86 35.44 35.43" vector-effect="non-scaling-stroke"/>
+                    <circle cx="1575" cy="1468.1" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="1575" cy="1468.1" r="125" fill="white" />
+
+                    <!-- <path d="m1600.7 1468.1c0 19.57-15.87 35.43-35.44 35.43-19.56 0-35.43-15.86-35.43-35.43s15.87-35.43 35.43-35.43c19.57 0 35.44 15.86 35.44 35.43" vector-effect="non-scaling-stroke"/> -->
                 </a>
 
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/summitstation" xlink:title="Elevation 3199m">
-                    <path d="m2746.4 3095.3c0 19.57-15.87 35.43-35.44 35.43-19.56 0-35.43-15.86-35.43-35.43s15.87-35.43 35.43-35.43c19.57 0 35.44 15.86 35.44 35.43" vector-effect="non-scaling-stroke"/>
+                    <circle cx="2711" cy="3095.3" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="2711" cy="3095.3" r="125" fill="white" />
+
+                    <!-- <path d="m2746.4 3095.3c0 19.57-15.87 35.43-35.44 35.43-19.56 0-35.43-15.86-35.43-35.43s15.87-35.43 35.43-35.43c19.57 0 35.44 15.86 35.44 35.43" vector-effect="non-scaling-stroke"/> -->
                 </a>
 
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/tununorth" xlink:title="Elevation 2113m">
-                    <path d="m2828.2 1610c0 19.57-15.86 35.44-35.43 35.44s-35.43-15.87-35.43-35.44c0-19.56 15.86-35.43 35.43-35.43s35.43 15.87 35.43 35.43" vector-effect="non-scaling-stroke"/>
+                    <circle cx="2793" cy="1610" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="2793" cy="1610" r="125" fill="white" />
+                    <!-- <path d="m2828.2 1610c0 19.57-15.86 35.44-35.43 35.44s-35.43-15.87-35.43-35.44c0-19.56 15.86-35.43 35.43-35.43s35.43 15.87 35.43 35.43" vector-effect="non-scaling-stroke"/> -->
                 </a>
 
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/dyeii" xlink:title="Elevation 2165m">
-                    <path d="m2082.6 4782.4c0 19.57-15.86 35.44-35.43 35.44s-35.44-15.87-35.44-35.44 15.87-35.43 35.44-35.43 35.43 15.86 35.43 35.43" vector-effect="non-scaling-stroke"/>
+                    <circle cx="2047" cy="4782.4" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="2047" cy="4782.4" r="125" fill="white" />
+
+                    <!-- <path d="m2082.6 4782.4c0 19.57-15.86 35.44-35.43 35.44s-35.44-15.87-35.44-35.44 15.87-35.43 35.44-35.43 35.43 15.86 35.43 35.43" vector-effect="non-scaling-stroke"/> -->
                 </a>
 
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/saddle" xlink:title="Elevation 2467m">
-                    <path d="m2278.9 4915.8c0 19.57-15.86 35.43-35.43 35.43s-35.44-15.86-35.44-35.43 15.87-35.43 35.44-35.43 35.43 15.86 35.43 35.43" vector-effect="non-scaling-stroke"/>
+                    <circle cx="2243.4" cy="4915.8" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="2243.4" cy="4915.8" r="125" fill="white" />
+                    <!-- <path d="m2278.9 4915.8c0 19.57-15.86 35.43-35.43 35.43s-35.44-15.86-35.44-35.43 15.87-35.43 35.44-35.43 35.43 15.86 35.43 35.43" vector-effect="non-scaling-stroke"/> -->
                 </a>
 
             </g>
-            <g transform="scale(.99987)" fill="#d7601b" font-size="54.167" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-                <path d="m2245.9 5704.4c0 19.57-15.87 35.44-35.44 35.44s-35.43-15.87-35.43-35.44c0-19.56 15.86-35.43 35.43-35.43s35.44 15.87 35.44 35.43" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
+            <g transform="scale(.99987)" font-size="54.167" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+                <circle cx="2210.4" cy="5704.4" r="40" stroke-width="10" stroke="black"  />
+
+                <!-- <path d="m2245.9 5704.4c0 19.57-15.87 35.44-35.44 35.44s-35.43-15.87-35.43-35.44c0-19.56 15.86-35.43 35.43-35.43s35.44 15.87 35.44 35.43" fill-rule="evenodd" vector-effect="non-scaling-stroke"/> -->
             </g>
             <g transform="scale(.99987)" class="stations" font-size="54.167" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/nasaeast" xlink:title="Elevation 2631m">
-                    <path d="m3252.2 2339c0 19.57-15.86 35.44-35.43 35.44s-35.43-15.87-35.43-35.44 15.86-35.43 35.43-35.43 35.43 15.86 35.43 35.43" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
+                    <circle cx="3216.7" cy="2339" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="3216.7" cy="2339" r="125" fill="white" />
+
+                    <!-- <path d="m3252.2 2339c0 19.57-15.86 35.44-35.43 35.44s-35.43-15.87-35.43-35.44 15.86-35.43 35.43-35.43 35.43 15.86 35.43 35.43" fill-rule="evenodd" vector-effect="non-scaling-stroke"/> -->
                 </a>
             </g>
-            <g transform="scale(.99987)" fill="#d7601b" font-size="54.167" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-                <path d="m2497.1 4778.1c0 19.57-15.86 35.44-35.43 35.44s-35.44-15.87-35.44-35.44 15.87-35.43 35.44-35.43 35.43 15.86 35.43 35.43" fill-rule="evenodd" vector-effect="non-scaling-stroke"/>
+            <g transform="scale(.99987)" font-size="54.167" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+                <circle cx="2463.6" cy="4778.1" r="40" stroke-width="10" stroke="black"  />
+
+                <!-- <path d="m2497.1 4778.1c0 19.57-15.86 35.44-35.43 35.44s-35.44-15.87-35.44-35.44 15.87-35.43 35.44-35.43 35.43 15.86 35.43 35.43" fill-rule="evenodd" vector-effect="non-scaling-stroke"/> -->
             </g>
             <g transform="scale(.99987)" class="stations" fill-rule="evenodd" font-size="54.167" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/petermann" xlink:title="Elevation 924m">
-                    <path d="m1628.3 1046.6c0 19.57-15.86 35.44-35.43 35.44s-35.43-15.87-35.43-35.44 15.86-35.43 35.43-35.43 35.43 15.86 35.43 35.43" vector-effect="non-scaling-stroke"/>
+                    <circle cx="1592.8" cy="1046.6" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="1592.8" cy="1046.6" r="125" fill="white" />
+
+                    <!-- <path d="m1628.3 1046.6c0 19.57-15.86 35.44-35.43 35.44s-35.43-15.87-35.43-35.44 15.86-35.43 35.43-35.43 35.43 15.86 35.43 35.43" vector-effect="non-scaling-stroke"/> -->
                 </a>
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/neem" xlink:title="Elevation 2454m">
-                    <path d="m1884.4 1788.1c0 19.57-15.86 35.43-35.43 35.43s-35.43-15.86-35.43-35.43 15.86-35.43 35.43-35.43 35.43 15.86 35.43 35.43" vector-effect="non-scaling-stroke"/>
+                    <circle cx="1848.9" cy="1788.1" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="1848.9" cy="1788.1" r="125" fill="white" />
+
+                    <!-- <path d="m1884.4 1788.1c0 19.57-15.86 35.43-35.43 35.43s-35.43-15.86-35.43-35.43 15.86-35.43 35.43-35.43 35.43 15.86 35.43 35.43" vector-effect="non-scaling-stroke"/> -->
                 </a>
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/eastgrip" xlink:title="Elevation 2600m">
-                    <path d="m2820.9 2268.4c0 19.57-15.87 35.44-35.44 35.44s-35.43-15.87-35.43-35.44 15.86-35.43 35.43-35.43 35.44 15.86 35.44 35.43" vector-effect="non-scaling-stroke"/>
+                    <circle cx="2785.4" cy="2268.4" r="40" fill="green"
+                    stroke-width="10" stroke="black"  />
+
+                    <circle cx="2785.4" cy="2268.4" r="125" fill="white" />
+
+                    <!-- <path d="m2820.9 2268.4c0 19.57-15.87 35.44-35.44 35.44s-35.43-15.87-35.43-35.44 15.86-35.43 35.43-35.43 35.44 15.86 35.44 35.43" vector-effect="non-scaling-stroke"/> -->
                 </a>
             </g>
 

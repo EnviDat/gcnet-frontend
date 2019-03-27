@@ -11,23 +11,18 @@
         <v-icon>home</v-icon>
       </v-btn>
 
-      <v-spacer></v-spacer>
-
       <v-text-field class="fill-height envidatControlInfos"
                     style="align-items: center;" 
                     :class="{'small' : compactLayout }"
-                    label="Select Map or List View:"
+                    :label="label"
                     flat
                     single-line
                     readonly
                     solo
                     disabled
                     hide-details
+                    small
       />
-
-      <!-- <div class="pl-2">Controls</div> -->
-      
-      <!-- <v-spacer></v-spacer> -->
 
         <v-btn-toggle mandatory
                       >
@@ -61,6 +56,7 @@
 export default {
   props: {
     compactLayout: Boolean,
+    label: String,
   },
   beforeMount: function beforeMount() {
     // this.listViewIcon = this.mixinMethods_getIcon('listView');
@@ -104,6 +100,10 @@ export default {
 
 .envidatControlInfos.small > .v-input__control > .v-input__slot > .v-text-field__slot > .v-label {
   font-size: 12px !important;
+}
+
+.v-input > .v-input__control > .v-input__slot > .v-text-field__slot > .v-label {
+  font-size: 14px !important;
 }
 
 .envidatControlInfos.small > .v-input__control {
