@@ -2,7 +2,7 @@
   
     <v-layout>
 
-      <v-flex xs12 md9 offset-md3>
+      <v-flex xs12 >
 
         <v-layout column>
           <v-flex xs12 >

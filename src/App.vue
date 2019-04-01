@@ -4,10 +4,16 @@
     <v-content app >
       <landing-page :currentStation="currentStation" 
                     :showHomeScreen="showHomeScreen"
-                    v-on:anyClick="catchAnyClick()" />
+                    v-on:anyClick="catchAnyClick"
+                    v-on:mapViewClick="catchMapViewClick"
+                    v-on:listViewClick="catchListViewClick"
+                    v-on:updateDrawer="catchUpdateDrawer"
+                    />
     </v-content>
 
       <the-navigation :mini="drawerIsMini"
+                      :navItems="navItems"
+                      v-on:homeClick="catchHomeClick"
                       v-on:drawerClick="catchDrawerClick">
         <template v-slot:map>        
           <stations-map v-on:mapClick="mapStationClick" />          
@@ -48,14 +54,45 @@ export default {
       this.appBGImages = imgCache;
   },
   methods: {
+    catchHomeClick() {
+      this.showHomeScreen = true;
+    },
     catchAnyClick(){
-      if (!this.drawerIsMini){
-        this.drawerIsMini = true;
-      }
+
+      // this.$nextTick(() => {
+      //   if (!this.drawerIsMini){
+      //     this.drawerIsMini = true;
+      //   }
+      // });
         // this.drawerIsMini = !this.drawerIsMini;
     },
     catchDrawerClick(currentMini){
+      this.$nextTick(() => {
+        this.drawerIsMini = !currentMini;
+        if (this.drawerIsMini) {
+          this.resetNavigationChoice();
+        }
+      });
+
+    },
+    resetNavigationChoice(){
+      this.navItems[0].active = false;
+      this.navItems[1].active = false;
+    },
+    catchUpdateDrawer(currentMini) {
       this.drawerIsMini = currentMini;
+    },
+    catchMapViewClick() {
+      if (this.drawerIsMini){
+        this.drawerIsMini = false;
+      }
+      this.navItems[0].active = true;
+    },
+    catchListViewClick() {
+      if (this.drawerIsMini){
+        this.drawerIsMini = false;
+      }
+      this.navItems[1].active = true;
     },
     mapStationClick(stationUrl){
       this.showHomeScreen = false;
@@ -121,7 +158,11 @@ export default {
       appBGImages: {},
       currentStation: null,
       showHomeScreen: true,
-      drawerIsMini: false,
+      drawerIsMini: true, // this.$vuetify.breakpoint.smAndDown ? true : false,
+      navItems: [
+        { title: 'Greenland Map', icon: 'map', active: false },
+        { title: 'Station List', icon: 'list', active: false },
+      ],
     }
   },
 }

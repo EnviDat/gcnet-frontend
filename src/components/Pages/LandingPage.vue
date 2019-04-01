@@ -17,31 +17,81 @@
       </v-flex>
 
       <v-flex xs12
+              ref="iframe_parent"
               v-show="!loadingStation && !showHomeScreen"
                 >
 
-        <iframe :style="`height: 100%; width: 100%;`"
+        <!-- <iframe :style="`height: 100%; width: 100%;`"
+                id="station_iframe"
                 ref="station_iframe"
                 src=""
                 frameborder="0" >
-        </iframe>
+        </iframe> -->
       </v-flex>
 
-      <v-flex xs12 md9 offset-md3 px-5 
+      <v-flex xs12 md8 offset-md2
               v-show="showHomeScreen" >
 
-        <v-layout column>
-          <v-flex>
-            <title-view :title="homeInfos.title"
-                        :slogan="homeInfos.startText"
-                        />
-          </v-flex>
-          <v-flex pt-5>
-            <p v-html="homeInfos.homeText"></p>
-          </v-flex>
-        </v-layout>
+              <!-- :class="{ 'px-5': $vuetify.breakpoint.mdAndUp,
+                        'px-1': $vuetify.breakpoint.smAndDown,
+                      }" -->
 
+        <v-flex>
+          <title-view :title="homeInfos.title"
+                      :slogan="homeInfos.startText"
+                      />
+        </v-flex>
 
+        <v-flex xs12
+                pt-5>
+          <p v-html="homeInfos.homeText"></p>
+        </v-flex>
+
+        <v-flex xs12
+                pt-3
+                v-if="showMoreInfos">
+          <p v-html="homeInfos.awsInfo"></p>
+        </v-flex>
+
+        <v-flex xs12
+                v-if="showMoreInfos">
+          <p v-html="homeInfos.gcnetTransmissionsInfo"></p>
+        </v-flex>
+
+        <v-flex xs12
+                v-if="showMoreInfos">
+          <p v-html="homeInfos.additionalInfo"></p>
+        </v-flex>
+
+        <v-flex xs12
+                pt-3>
+          <v-layout row wrap>
+            <v-flex>
+              <base-rectangle-button :buttonText="MapSelectionText"
+                                      materialIconName="map"
+                                      iconColor="white"
+                                      v-on:clicked="catchMapViewClick()"
+                                      />
+            </v-flex>
+
+            <v-flex>
+              <base-rectangle-button :buttonText="ListSelectionText"
+                                      materialIconName="list"
+                                      iconColor="white"
+                                      v-on:clicked="catchListViewClick()"
+                                    />
+            </v-flex>
+
+            <v-flex>
+              <base-rectangle-button :buttonText="showMoreInfosText"
+                                      materialIconName="info"
+                                      iconColor="white"
+                                      v-on:clicked="showMoreInfos = !showMoreInfos"
+                                    />
+            </v-flex>
+
+          </v-layout>
+        </v-flex>
       </v-flex>
 
     </v-layout>
@@ -51,7 +101,7 @@
 <script>
 import vuex from 'vuex';
 // import { mapGetters } from 'vuex';
-import BaseClickCard from '@/components/BaseElements/BaseClickCard.vue';
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton.vue';
 import ControlPanelView from '@/components/ControlPanelView.vue';
 import TitleView from '@/components/TitleView.vue';
 import homeInfos from '@/homeInfos';
@@ -64,7 +114,7 @@ export default {
     showHomeScreen: Boolean,
   },
   components: {
-    BaseClickCard,
+    BaseRectangleButton,
     ControlPanelView,
     TitleView,
     // StationsMap,
@@ -72,8 +122,11 @@ export default {
   data: () => ({
     baseStationURL: 'https://www.wsl.ch/gcnet/stations/',
     loadingStation: false,
-    currentStationName: '',
     homeInfos,
+    MapSelectionText: 'Select Stations via map',
+    ListSelectionText: 'Choose Station from list',
+    showMoreInfos: false,
+    showMoreInfosText: 'More Information',
     // mapHTML,
   }),
   watch: {
@@ -96,6 +149,21 @@ export default {
         station.urlValid = this.UrlExists(this.baseStationURL + station.alias);
       }
     },
+    catchMapViewClick() {
+      this.$emit('mapViewClick');
+    },
+    catchListViewClick() {
+      this.$emit('listViewClick');
+    },
+    iframeWithSource(src){
+        return `<iframe style="height: 100%; width: 100%;"
+                id="station_iframe"
+                ref="station_iframe"
+                src="${src}"
+                onload="${ this.loadingStation = false }"
+                frameborder="0" >
+              </iframe>`;
+    },
     // UrlExists(url) {
     //     var http = new XMLHttpRequest();
     //     http.open('HEAD', url, false);
@@ -105,45 +173,41 @@ export default {
     //     // else
     //         // window.location.reload();
     // },
-    // catchHomeClick() {
-    //   this.showHomeScreen = true;
-    // },
-    // catchListClick: function catchListClick() {
-    //   this.$store.state.controls = [this.$store.getters.listViewPos];
-    // },
-    // catchMapClick: function catchMapClick() {
-    //   this.$store.state.controls = [this.$store.getters.mapViewPos];
-    // },
-    // catchCategoryClicked(cardTitle) {
-    //   const station = this.getStation(cardTitle);
-
-    //   if (station){
-    //     this.showHomeScreen = false;
-    //     this.loadStation(station);
-    //   }
-    // },
     anyClick(){
       this.$emit('anyClick');
     },
     loadStation(station) {
       this.loadingStation = true;
 
-      this.currentStationName = station.name;
+      this.$refs.iframe_parent.innerHTML = null;
+      this.$refs.iframe_parent.innerHTML = this.iframeWithSource(this.baseStationURL + station.alias);
+/*
+      // this.$refs.station_iframe.src = null;
+      // this.$refs.station_iframe.innerHTML = '';
+      // this.$refs.station_iframe.contentDocument.innerHTML = null;
 
+				// iframe = null
       const that = this;
       this.$refs.station_iframe.onload = function(event){
         that.loadingStation = false;
         // console.log('loaded iframe ' + this + " content : " + this.contentDocument + " window : " + this.contentWindow);
+        // const header = that.$refs.station_iframe.contentWindow.onload = function (e){
+        //   const header = that.$el.querySelector('#station_iframe > html > body > header');
+        //   header.setAttribute('display', 'none');
+        // }
+
+        // const header = that.$el.querySelector('#station_iframe > html > body > header');
+        // header.setAttribute('display', 'none');
       };
 
       this.$refs.station_iframe.onerror = function(err){
         // this.loadingStation = false;
         // console.log('error the iframe ' + err);
         that.$refs.station_iframe.src = null;
-        this.currentStationName = '';
       };
 
       this.$refs.station_iframe.src = this.baseStationURL + station.alias;
+      */
     },
     iframeScreenHeight() {
       return window.innerHeight - 150;

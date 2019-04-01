@@ -59,6 +59,10 @@ export default {
       }
     },
     setRandomPosition() {
+      if (!this.randomImgPosition){
+        return;
+      }
+
       if (!this.$refs.card_image_parent){
         return;
       }

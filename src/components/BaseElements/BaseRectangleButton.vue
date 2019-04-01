@@ -17,7 +17,7 @@
           <img class="envidatIcon" :src="customIcon" />
         </div>
 
-        <v-icon v-if="materialIconName"
+        <v-icon v-if="materialIconName" class="pr-2"
                 :color="iconColor ? iconColor : 'primary'"
         >
           {{ materialIconName }}

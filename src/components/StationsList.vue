@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid grid-list-md px-1 py-2>
+  <v-container fluid grid-list-md pa-1>
 
     <v-layout row wrap>
 
@@ -47,6 +47,7 @@ export default {
       return window.innerHeight - 100;
     },
     listClick(cardTitle) {
+      this.currentStationName = cardTitle;
       this.$emit('listClick', cardTitle);
     },
     randomImg(name) {
@@ -55,7 +56,7 @@ export default {
 
       if (keys.length > 0) {
         // rnd = this.randomIntFromInterval(0, keys.length - 1);
-        rnd = this.randomIntFromSeed(0, keys.length - 1, name)
+        rnd = this.randomIntFromSeed(0, keys.length - 1)
       }
 
       return this.cardImgs[keys[rnd]];
