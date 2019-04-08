@@ -13,6 +13,9 @@
 import mapHTML from '@/map_html.html';
 
 export default {
+  props: {
+    currentStation: Object,
+  },
   data: () => ({
     mapHTML,
   }),

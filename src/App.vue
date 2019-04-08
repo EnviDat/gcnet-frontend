@@ -15,12 +15,15 @@
                       :navItems="navItems"
                       v-on:homeClick="catchHomeClick"
                       v-on:drawerClick="catchDrawerClick">
+
         <template v-slot:map>        
-          <stations-map v-on:mapClick="mapStationClick" />          
+          <stations-map :currentStation="currentStation"
+                        v-on:mapClick="mapStationClick" />          
         </template>
 
         <template v-slot:list>        
-          <stations-list v-on:listClick="listStationClick" />
+          <stations-list :currentStation="currentStation"
+                          v-on:listClick="listStationClick" />
         </template>
 
       </the-navigation >
@@ -122,12 +125,12 @@ export default {
           station = val;
           break;
         }
-      };
+      }
 
       return station;
     },
     dynamicBackground() {
-      const imageKey = this.$store.getters.appBGImage;
+      // const imageKey = this.$store.getters.appBGImage;
       const bgImg = this.randomImg(this.appBGImages);
       let bgStyle = '';
 

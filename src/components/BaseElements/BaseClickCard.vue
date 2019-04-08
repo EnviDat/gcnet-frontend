@@ -1,9 +1,10 @@
 <template>
-  <v-card ripple
-          hover
+  <v-card :ripple="!disabled"
+          :hover="!disabled"
           :href="href"
           target="_blank"
-          v-on:click.native="clicked">  
+          v-on:click.native="clicked"
+          :disabled="disabled">
           
     <v-container grid-list-md pa-0>
       <v-layout row align-center>
@@ -39,6 +40,7 @@ export default {
 
   props: {
     title: String,
+    disabled: Boolean,
     img: String,
     href: String,
     randomImgPosition: Boolean,

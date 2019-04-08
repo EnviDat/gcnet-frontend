@@ -42,14 +42,13 @@
                       />
         </v-flex>
 
-        <v-flex xs12
+        <!-- <v-flex xs12
                 pt-5>
           <p v-html="homeInfos.homeText"></p>
-        </v-flex>
+        </v-flex> -->
 
         <v-flex xs12
-                pt-3
-                v-if="showMoreInfos">
+                pt-3>
           <p v-html="homeInfos.awsInfo"></p>
         </v-flex>
 
@@ -127,6 +126,7 @@ export default {
     ListSelectionText: 'Choose Station from list',
     showMoreInfos: false,
     showMoreInfosText: 'More Information',
+    currentStationName: '',
     // mapHTML,
   }),
   watch: {
@@ -164,15 +164,6 @@ export default {
                 frameborder="0" >
               </iframe>`;
     },
-    // UrlExists(url) {
-    //     var http = new XMLHttpRequest();
-    //     http.open('HEAD', url, false);
-    //     http.send();
-    //     // if (http.status != 404)
-    //         return http.status != 404
-    //     // else
-    //         // window.location.reload();
-    // },
     anyClick(){
       this.$emit('anyClick');
     },
