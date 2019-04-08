@@ -6,7 +6,7 @@
 		"longitude" : "49.31582",
 		"elevation" : 1176,
 		"startdate" : "1990.4",
-		"active" : 1,
+		"active" : true,
 		"alias" : "swisscamp10m",
 		"data" : 1
 	},
@@ -17,7 +17,7 @@
 		"longitude" : "49.31582",
 		"elevation" : 1176,
 		"startdate" : "1990.30  ",
-		"active" : 1,
+		"active" : true,
 		"alias" : "swisscamp",
 		"data" : 1
 	},
@@ -28,7 +28,7 @@
 		"longitude" : "46.98667",
 		"elevation" : 2022,
 		"startdate" : "1995.39    ",
-		"active" : 1,
+		"active" : true,
 		"alias" : "crawfordpoint",
 		"data" : 1
 	},
@@ -39,7 +39,7 @@
 		"longitude" : "49.49831",
 		"elevation" : 2369,
 		"startdate" : "1995.41    ",
-		"active" : 1,
+		"active" : true,
 		"alias" : "nasau",
 		"data" : 0
 	},
@@ -50,7 +50,7 @@
 		"longitude" : "61.04113",
 		"elevation" : 1887,
 		"startdate" : "1995.43 ",
-		"active" : 1,
+		"active" : true,
 		"alias" : "gits",
 		"data" : 0
 	},
@@ -61,7 +61,7 @@
 		"longitude" : "56.8305",
 		"elevation" : 1995,
 		"startdate" : "1995.47  ",
-		"active" : 1,
+		"active" : true,
 		"alias" : "humboldt",
 		"data" : 1
 	},
@@ -72,7 +72,7 @@
 		"longitude" : "38.50454",
 		"elevation" : 3199,
 		"startdate" : "1996.37 ",
-		"active" : 1,
+		"active" : true,
 		"alias" : "summitstation",
 		"data" : 1
 	},
@@ -83,7 +83,7 @@
 		"longitude" : "33.99387",
 		"elevation" : 2113,
 		"startdate" : "1996.38   ",
-		"active" : 1,
+		"active" : true,
 		"alias" : "tununorth",
 		"data" : 1
 	},
@@ -94,7 +94,7 @@
 		"longitude" : "46.27889",
 		"elevation" : 2165,
 		"startdate" : "1996.40   ",
-		"active" : 1,
+		"active" : true,
 		"alias" : "dyeii",
 		"data" : 1
 	},
@@ -105,7 +105,7 @@
 		"longitude" : "49.68156",
 		"elevation" : 932,
 		"startdate" : "1996.47",
-		"active" : 1,
+		"active" : true,
 		"alias" : "jar1",
 		"data" : 1
 	},
@@ -116,7 +116,7 @@
 		"longitude" : "44.50016",
 		"elevation" : 2467,
 		"startdate" : "1997.30 ",
-		"active" : 1,
+		"active" : true,
 		"alias" : "saddle",
 		"data" : 1
 	},
@@ -127,7 +127,7 @@
 		"longitude" : "44.81717",
 		"elevation" : 2922,
 		"startdate" : "1997.31   ",
-		"active" : 1,
+		"active" : true,
 		"alias" : "southdome",
 		"data" : 0
 	},
@@ -138,7 +138,7 @@
 		"longitude" : "29.99972",
 		"elevation" : 2631,
 		"startdate" : "1997.34    ",
-		"active" : 1,
+		"active" : true,
 		"alias" : "nasaeast",
 		"data" : 1
 	},
@@ -149,8 +149,8 @@
 		"longitude" : "46.98692",
 		"elevation" : 1990,
 		"startdate" : null,
-		"active" : 0,
-		"alias" : "cp2",
+		"active" : false,
+		"alias" : "",
 		"data" : 0
 	},
 	{
@@ -160,8 +160,8 @@
 		"longitude" : "42.33256",
 		"elevation" : 2950,
 		"startdate" : null,
-		"active" : 0,
-		"alias" : "ngrip",
+		"active" : false,
+		"alias" : "",
 		"data" : 0
 	},
 	{
@@ -171,8 +171,8 @@
 		"longitude" : "42.5002",
 		"elevation" : 2425,
 		"startdate" : "1998.30  ",
-		"active" : 0,
-		"alias" : "nasase",
+		"active" : false,
+		"alias" : "nasasoutheast",
 		"data" : 0
 	},
 	{
@@ -182,8 +182,8 @@
 		"longitude" : "33.00058",
 		"elevation" : 2579,
 		"startdate" : null,
-		"active" : 0,
-		"alias" : "kar",
+		"active" : false,
+		"alias" : "",
 		"data" : 0
 	},
 	{
@@ -193,8 +193,8 @@
 		"longitude" : "50.05750",
 		"elevation" : 568,
 		"startdate" : null,
-		"active" : 0,
-		"alias" : "jar2",
+		"active" : false,
+		"alias" : "",
 		"data" : 0
 	},
 	{
@@ -204,8 +204,8 @@
 		"longitude" : "39.60177",
 		"elevation" : 878,
 		"startdate" : null,
-		"active" : 0,
-		"alias" : "kulu",
+		"active" : false,
+		"alias" : "",
 		"data" : 0
 	},
 	{
@@ -215,7 +215,7 @@
 		"longitude" : "58.13166667",
 		"elevation" : 924,
 		"startdate" : "2003.40",
-		"active" : 1,
+		"active" : true,
 		"alias" : "petermann",
 		"data" : 1
 	},
@@ -226,7 +226,7 @@
 		"longitude" : "50.87444444",
 		"elevation" : 2454,
 		"startdate" : "2006",
-		"active" : 1,
+		"active" : true,
 		"alias" : "neem",
 		"data" : 1
 	},
@@ -237,7 +237,7 @@
 		"longitude" : "35.98861111",
 		"elevation" : 2600,
 		"startdate" : "2014",
-		"active" : 1,
+		"active" : true,
 		"alias" : "eastgrip",
 		"data" : 1
 	},
@@ -248,7 +248,7 @@
 		"longitude" : "63.95194444",
 		"elevation" : 0,
 		"startdate" : "2008",
-		"active" : 1,
+		"active" : true,
 		"alias" : "lar1",
 		"data" : 1
 	},
@@ -259,7 +259,7 @@
 		"longitude" : "0",
 		"elevation" : 2346,
 		"startdate" : "2013",
-		"active" : 1,
+		"active" : true,
 		"alias" : "pegun",
 		"data" : 1
 	},
@@ -270,7 +270,7 @@
 		"longitude" : "0",
 		"elevation" : null,
 		"startdate" : "2014",
-		"active" : 1,
+		"active" : true,
 		"alias" : "peblu",
 		"data" : 1
 	}
