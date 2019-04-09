@@ -82,6 +82,14 @@
             </v-flex>
 
             <v-flex>
+              <base-rectangle-button :buttonText="dataRequestText"
+                                      materialIconName="save_alt"
+                                      iconColor="white"
+                                      url="http://cires1.colorado.edu/steffen/gcnet/order/admin/station.php"
+                                    />
+            </v-flex>
+
+            <v-flex>
               <base-rectangle-button :buttonText="showMoreInfosText"
                                       materialIconName="info"
                                       iconColor="white"
