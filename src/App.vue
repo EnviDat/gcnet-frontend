@@ -4,8 +4,10 @@
     <v-content app >
       <landing-page :currentStation="currentStation" 
                     :showHomeScreen="showHomeScreen"
+                    :showOverview="showOverview"
                     v-on:anyClick="catchAnyClick"
                     v-on:mapViewClick="catchMapViewClick"
+                    v-on:overviewClick="catchOverviewClick"
                     v-on:listViewClick="catchListViewClick"
                     v-on:updateDrawer="catchUpdateDrawer"
                     />
@@ -59,6 +61,7 @@ export default {
   methods: {
     catchHomeClick() {
       this.showHomeScreen = true;
+      this.showOverview = false;
     },
     catchAnyClick(){
 
@@ -97,6 +100,10 @@ export default {
       }
       this.navItems[1].active = true;
     },
+    catchOverviewClick() {
+      this.showHomeScreen = false;
+      this.showOverview = true;
+    },    
     mapStationClick(stationUrl){
       this.showHomeScreen = false;
       // console.log('clicked on ' + stationUrl);
@@ -161,6 +168,7 @@ export default {
       appBGImages: {},
       currentStation: null,
       showHomeScreen: true,
+      showOverview: false,
       drawerIsMini: true, // this.$vuetify.breakpoint.smAndDown ? true : false,
       navItems: [
         { title: 'Greenland Map', icon: 'map', active: false },
