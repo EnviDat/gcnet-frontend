@@ -6,7 +6,10 @@
       Loading {{ currentFileLoading }}
     </div>
 
-    <div v-if="!currentFileLoading" ref="chartdiv">
+    <h2>{{ station.name }}</h2>
+
+    <div v-show="!currentFileLoading" ref="chartdiv" id="chartdiv"
+          style="height: 600px;" >
     </div>    
       <!-- <v-container grid-list-md pa-0>
         <v-layout column >
@@ -36,10 +39,19 @@
 
 <script>
 import axios from 'axios';
+import dateFns from 'date-fns';
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import { createSerialAMChartWeather } from "@/chartData/charts";
+import {
+  createSerialAMChartWeather,
+  createSerialAMChartWind,
+} from "@/chartData/charts";
+import {
+    createJSONDataset,
+} from "@/chartData/data_conversion";
+
 
 am4core.useTheme(am4themes_animated);
 
@@ -48,9 +60,10 @@ export default {
     station: Object,
   },
   components: {
-    // BaseRectangleButton,
+    BaseRectangleButton,
   },
   mounted() {
+    this.createJSONDataset = createJSONDataset;
 
     // if (!station){
     //   return;
@@ -60,39 +73,6 @@ export default {
 
     this.loadFileFromBackend(this.station, this.$refs.chartdiv, true);
 
-    // let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
-    let chart = createSerialAMChartWeather(this.$refs.chartdiv);
-
-    chart.paddingRight = 20;
-
-    let data = [];
-    let visits = 10;
-    for (let i = 1; i < 366; i++) {
-      visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
-      data.push({ date: new Date(2018, 0, i), name: "name" + i, value: visits });
-    }
-
-    chart.data = data;
-
-    let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    dateAxis.renderer.grid.template.location = 0;
-
-    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.tooltip.disabled = true;
-    valueAxis.renderer.minWidth = 35;
-
-    let series = chart.series.push(new am4charts.LineSeries());
-    series.dataFields.dateX = "date";
-    series.dataFields.valueY = "value";
-
-    series.tooltipText = "{valueY.value}";
-    chart.cursor = new am4charts.XYCursor();
-
-    let scrollbarX = new am4charts.XYChartScrollbar();
-    scrollbarX.series.push(series);
-    chart.scrollbarX = scrollbarX;
-
-    this.chart = chart;
   },
   beforeDestroy() {
     if (this.chart) {
@@ -139,13 +119,6 @@ export default {
       // add the timestamp to prevent server side caching
       const url = this.baseurl + fileName + '?t=' + Date.now();
 
-      // var dSet = GetDataSet(fileName);
-      // var stationId = '#station_' + StationId(dSet);
-
-      // if(selector){
-      //     $(stationId + ' > div > ' + selector + ' > i').show();
-      // }
-
       // let token = 'your auth token'
       let headers = {
         // 'Authorization': `Bearer ${token}`,
@@ -157,71 +130,27 @@ export default {
         headers: headers
       })
 
+      const that = this;
+
       dataCall.get(url)
       .then(function (response) {
+        if (that.currentFileLoading === station.fileName) {
+            that.fullData = response.data;
 
-        // var theFileName = this.getFileNameFromURL(response.request.responseURL);
+            that.loadChart(that, that.fullData, false);
+        } else if (that.currentFileLoading === station.shortFileName) {
+            that.recentData = response.data;
 
-        // dSet = GetDataSet(fileName)
+            that.loadChart(that, that.recentData, true);
+        } else {
+            // ShowError("Dataset for " + this.currentFileLoading + " is empty ");
+            console.log("Dataset for " + that.currentFileLoading + " is empty ");
+        }
 
-        // if (dSet !== undefined){
-            
-            if (this.currentFileLoading === station.fileName) {
-                this.fullData = response.data;
-            } else if (this.currentFileLoading === station.shortFileName) {
-                this.recentData = response.data;
-            } else {
-                // ShowError("Dataset for " + this.currentFileLoading + " is empty ");
-                console.log("Dataset for " + this.currentFileLoading + " is empty ");
-            }
-
-            this.currentFileLoading = ''
-        // } else {
-        //     ShowError("Couldn't load Dataset definition for " + theFileName + " response " + response);
-        // }
-
-        // var rawFileUrl = baseurl + dSet.fileName + '?t=' + Date.now();
-        // $(stationId + ' > div').find('#station_raw_link').attr('href', rawFileUrl);
-        // var rawFileUrl14 = baseurl + dSet.shortFileName + '?t=' + Date.now();
-        // $(stationId + ' > div').find('#station_raw_link_14').attr('href', rawFileUrl14);
-
-        // if(selector){
-        //     $(stationId + ' > div > ' + selector + ' > i').hide();
-        // }
-
-        // filesLoaded++;
-        // progress.animate(filesLoaded / filesToLoad);
+        that.currentFileLoading = ''
       })
       .catch(function (error) {
-
-        // console.log("got error " + JSON.stringify(error) + " error: " + error.message + ' ' + error.response);
         console.log("got error: " + error.message + ' ' + error.status);
-
-        // var status = "unknown";
-        // var fileName = "";
-        // var station = "";
-
-        // if (error.request){
-
-        //     status = error.request.status;
-        //     fileName = this.getFileNameFromURL(error.request.responseURL);
-
-        //     if (fileName){                
-        //         var dSet = GetDataSet(fileName);
-        //         if (dSet){
-        //             station = dSet.fileName;
-        //         }
-        //     }
-        // }
-
-        // ShowError('Error while loading station ' + station + ' file ' + fileName + '</h3><div>Error: ' + error.message + ' status: ' + status);
-
-        // if(selector){
-        //     $(selector + ' > i').hide();
-        // }
-
-        // filesLoaded++;
-        // progress.animate(filesLoaded / filesToLoad);                
       }); 
     },
     getFileNameFromURL(url) {
@@ -237,44 +166,54 @@ export default {
       station.fileName = `${station.id}.csv`;
       station.shortFileName = `${station.id}_v.csv`;
     },
-    loadChart(dataset, append, useShortFile){
+    loadChart(vueInstance, data, useShortFile){
 
         var delimiter = '\\s+';
-        if (dataset.fileName.includes('.csv')){
+        if (vueInstance.station.fileName.includes('.csv')){
             delimiter = ',';
         }
 
         var jsonData = null;
+        // vueInstance.convertFilteToJsonData(data, delimiter, vueInstance.station.name, vueInstance.dateFormat, dateFns);
+
+        if (data !== undefined && data.length > 0){
+
+            jsonData = vueInstance.createJSONDataset(data, delimiter, vueInstance.station, vueInstance.dateFormat, dateFns);
+
+            // dataset.data = cleanGOESDataset(roughData);
+        } else {
+            console.log("Not data for station " + vueInstance.station.name);
+            return;
+        }
 
         if (useShortFile){
-            jsonData = this.convertFilteToJsonData(dataset.data, delimiter, dataset.name);
-            dataset.dataRecords = jsonData.records;
+            vueInstance.recentDataJson = jsonData.records;
         } else {
-            jsonData = this.convertFilteToJsonData(dataset.filedata, delimiter, dataset.name);
-            dataset.filedataRecords = jsonData.records;
+            vueInstance.fullDataJson = jsonData.records;
         }        
 
         // console.log("ConvertFilteToJsonData " + useShortFile);
 
-        ShowChartdataset(dataset, append, useShortFile);
+        vueInstance.showChartDataset(vueInstance, jsonData.records);
     },
-    convertFilteToJsonData(data, delimiter, station){
+    showChartDataset(vueInstance, jsonRecords) {
+      // let chart = createSerialAMChartWeather(vueInstance.$refs.chartdiv);
+      let chart = createSerialAMChartWeather('chartdiv', vueInstance.dateFormat, jsonRecords);
+      // chart.data = jsonRecords;
+      this.weatherChart = chart;
 
-        if (data !== undefined && data.length > 0){
-
-            return createJSONDataset(data, delimiter, station, this.dateFormat);
-
-            // dataset.data = cleanGOESDataset(roughData);
-        } else {
-            console.log("Not data for station " + station);
-        }
-
-        return null;
+      // let chart = createSerialAMChartWind('chartdiv', vueInstance.dateFormat, jsonRecords);
+      // chart.data = jsonRecords;
+      // this.windChart = chart;
     },
   },
   data: () => ({
     fullData: null,
+    fullDataJson: null,
     recentData: null,
+    recentDataJson: null,
+    weatherChart: null,
+    windChart: null,
     dateFormat: 'MM/DD/YYYY HH:mm',
     baseurl: 'https://www.wsl.ch/gcnet/data/',
     currentFileLoading: '',
