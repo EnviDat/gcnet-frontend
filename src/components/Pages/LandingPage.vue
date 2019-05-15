@@ -105,10 +105,16 @@
         </v-flex>
       </v-flex>
 
-      <v-flex xs12 md8 offset-md2
+      <!-- <v-flex xs12 md8 offset-md2
               v-if="!showHomeScreen && showOverview" >
 
           <v-layout column >
+            <v-flex py-3 >
+              <chart :station="$store.getters.stations[0]" />
+            </v-flex>
+          </v-layout>
+
+      </v-flex> -->
 
             <!-- <v-flex py-3
                     v-for="station in $store.getters.stations"
@@ -117,17 +123,6 @@
               <chart :station="station" />
 
             </v-flex> -->
-
-            <v-flex py-3
-                    >
-
-              <chart :station="$store.getters.stations[0]" />
-
-            </v-flex>
-
-          </v-layout>
-
-      </v-flex>
 
     </v-layout>
   </v-container>
@@ -158,22 +153,29 @@ export default {
     // StationsMap,
   },
   data: () => ({
-    baseStationURL: 'https://www.wsl.ch/gcnet/stations/',
+    baseStationURL: 'https://www.wsl.ch/gcnet/cms/stations/',
     loadingStation: false,
     homeInfos,
     MapSelectionText: 'Select Stations via map',
     ListSelectionText: 'Choose Station from list',
-    dataRequestText: 'Request Greenland Data',
+    dataRequestText: 'Request GC-Net Data',
     showMoreInfos: false,
     showMoreInfosText: 'More Information',
     showOverviewText: 'Show Stations Overview',
     currentStationName: '',
+    stationOverviewUrl: 'https://www.wsl.ch/gcnet/stations.html',
     // mapHTML,
   }),
   watch: {
     currentStation: function updateStation() {
       if (this.currentStation) {
-        this.loadStation(this.currentStation);
+        this.loadStation(this.baseStationURL + this.currentStation.alias);
+      }
+    },
+    showOverview: function updateStationOverview(){
+      if (this.showOverview) {
+        this.currentStation = null;
+        this.loadStation(this.stationOverviewUrl);
       }
     },
   },
@@ -211,11 +213,11 @@ export default {
     anyClick(){
       this.$emit('anyClick');
     },
-    loadStation(station) {
+    loadStation(url) {
       this.loadingStation = true;
 
       this.$refs.iframe_parent.innerHTML = null;
-      this.$refs.iframe_parent.innerHTML = this.iframeWithSource(this.baseStationURL + station.alias);
+      this.$refs.iframe_parent.innerHTML = this.iframeWithSource(url);
     },
   },
 
