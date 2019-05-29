@@ -11,6 +11,10 @@
     <div v-show="!currentFileLoading" ref="chartdiv" id="chartdiv"
           style="height: 600px;" >
     </div>    
+
+    <div v-show="!currentFileLoading" ref="wchartdiv" id="wchartdiv"
+          style="height: 600px;" >
+    </div>    
       <!-- <v-container grid-list-md pa-0>
         <v-layout column >
 
@@ -51,18 +55,22 @@ import {
 import {
     createJSONDataset,
 } from "@/chartData/data_conversion";
+import { ENODEV } from 'constants';
+import { delay } from 'q';
 
 
-am4core.useTheme(am4themes_animated);
+// am4core.useTheme(am4themes_animated);
 
 export default {
   props: {
     station: Object,
+    delay: Number,
   },
   components: {
     BaseRectangleButton,
   },
   mounted() {
+    am4core.options.minPolylineStep = 5;
     this.createJSONDataset = createJSONDataset;
 
     // if (!station){
@@ -71,7 +79,7 @@ export default {
 
     this.enhanceStation(this.station);
 
-    this.loadFileFromBackend(this.station, this.$refs.chartdiv, true);
+    this.loadFileFromBackend(this.station, this.$refs.chartdiv, false);
 
   },
   beforeDestroy() {
@@ -197,14 +205,20 @@ export default {
         vueInstance.showChartDataset(vueInstance, jsonData.records);
     },
     showChartDataset(vueInstance, jsonRecords) {
-      // let chart = createSerialAMChartWeather(vueInstance.$refs.chartdiv);
-      let chart = createSerialAMChartWeather('chartdiv', vueInstance.dateFormat, jsonRecords);
-      // chart.data = jsonRecords;
-      this.weatherChart = chart;
+      let that = this;
 
-      // let chart = createSerialAMChartWind('chartdiv', vueInstance.dateFormat, jsonRecords);
-      // chart.data = jsonRecords;
-      // this.windChart = chart;
+      setTimeout(() => {
+        // let chart = createSerialAMChartWeather(vueInstance.$refs.chartdiv);
+        let chart = createSerialAMChartWeather('chartdiv', vueInstance.dateFormat, jsonRecords);
+        // chart.data = jsonRecords;
+        that.weatherChart = chart;
+      }, delay);
+
+      // setTimeout(() => {
+      //   let wchart = createSerialAMChartWind('wchartdiv', vueInstance.dateFormat, jsonRecords);
+      //   wchart.data = jsonRecords;
+      //   that.windChart = wchart;
+      // }, delay);
     },
   },
   data: () => ({
@@ -215,6 +229,7 @@ export default {
     weatherChart: null,
     windChart: null,
     dateFormat: 'MM/DD/YYYY HH:mm',
+    // dateFormat: 'MMM dd YYYY HH:mm',
     baseurl: 'https://www.wsl.ch/gcnet/data/',
     currentFileLoading: '',
   }),

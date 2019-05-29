@@ -8,21 +8,31 @@ const createSerialAMChartWeather = function createSerialAMChartWeather(selector,
 
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.dataFields.category = "time";
-    dateAxis.title.text = "Date";
-    // dateAxis.dateFormats.setKey("day", dateFormat);
-    chart.dateFormatter.dateFormat = dateFormat;
-
-    // dateAxis.dateFormats.setKey("minute", "HH:mm");
-    // dateAxis.periodChangeDateFormats.setKey("day", "MMMM dt"); 
-    // dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
+    dateAxis.renderer.minGridDistance = 20;
+    // dateAxis.title.text = "Date";
     
-    dateAxis.baseInterval = {
-        "timeUnit": "minute",
-        "count": 30,
-    }
+    // chart.dateFormatter.inputDateFormat = dateFormat;
+    chart.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm";
+    dateAxis.dateFormats.setKey("minute", "dd/MM/yy HH:mm");
+    dateAxis.dateFormats.setKey("hour", "dd/MM/yy HH:mm");
+    dateAxis.dateFormats.setKey("day", "MMMM dd");
 
-    // var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());    
-    // valueAxis.title.text = "Turnover ($M)";
+    // dateAxis.periodChangeDateFormats.setKey("day", "MM dd"); 
+    dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
+    
+    if (chartData.length > 350){
+        am4core.options.minPolylineStep = 5;
+        dateAxis.baseInterval = {
+            "timeUnit": "hour",
+            "count": 1,
+        }
+    } else {
+        am4core.options.minPolylineStep = 1;
+            dateAxis.baseInterval = {
+            "timeUnit": "minute",
+            "count": 30,
+        }
+    }
 
     const graphs = [
     /*
@@ -88,55 +98,82 @@ const createSerialAMChartWeather = function createSerialAMChartWeather(selector,
         /* "negativeLineColor": "#7F7FCF", */
     }];
 
-    // for (let i = 0; i < graphs.length; i++) {
-    //     const graph = graphs[i];
-        
-    //     chart = addGraphToChart(chart, graph, dateAxis);
-    // }
-
-    chart = addGraphToChart(chart, graphs[0], dateAxis);
-
     chart.legend = new am4charts.Legend();
     chart.legend.parent = chart.plotContainer;
     chart.legend.zIndex = 100;
-    chart.legend.align = 'bottom';
+    // chart.legend.position = 'bottom';
+    chart.legend.position = 'absolute';
+    chart.legend.y = 500;
 
-    chart.cursor = new am4charts.XYCursor();    
+    // chart.legend.valign = 'bottom';
+    // chart.legend.contentAlign = 'center';
+
+    chart.cursor = new am4charts.XYCursor();
+    chart.responsive.enabled = true;
+
+    for (let i = 0; i < graphs.length; i++) {
+        const graph = graphs[i];
+        
+        chart = addGraphToChart(chart, graph, dateAxis, i);
+    }
+
+    // chart = addGraphToChart(chart, graphs[0], dateAxis);
 
     return chart;
 }
 
-function addGraphToChart(chart, graph, dateAxis) {
+function addGraphToChart(chart, graph, dateAxis, count) {
 
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.fill = am4core.color(graph.lineColor);
-    // valueAxis.title.text = graph.title;
+    valueAxis.title.text = graph.title;
+    valueAxis.renderer.opposite = count % 2 == 0;
+    // valueAxis.fill = am4core.color(graph.lineColor);
+    valueAxis.renderer.labels.template.fill = am4core.color(graph.lineColor);
+    valueAxis.renderer.minWidth = 30;
+    valueAxis.extraMin = 0.2;
+    valueAxis.extraMax = 0.2;
 
     let series = chart.series.push(new am4charts.LineSeries());
-    // series.autoGapCount = 3;
+    series.autoGapCount = 3;
     series.connect = false;
     series.stroke = am4core.color(graph.lineColor);
     series.strokeWidth = 3; // 3px
-    series.strokeOpacity = 0.8;
+    // series.strokeOpacity = 0.8;
+    // no transparence has better performance
+    series.strokeOpacity = 1;
+
     // "time" refeers to the json element "time" from the data_conversion.js
     series.dataFields.dateX = "time";
     series.dataFields.valueY = graph.valueField;
 
-    let bullet = new am4charts.CircleBullet();
-    bullet.width = 5;
-    bullet.height = 5;
-    bullet.minBulletDistance = 30;        
-    series.bullets.push(bullet);
-    // series.bullets.push(graph.bullet);
+    // let bullet = new am4charts.CircleBullet();
+    // bullet.width = 3;
+    // bullet.height = 3;
+
+    // let bullet = new am4core.Circle();
+    // bullet.radius = 5;
+
+    // // outline 
+    // bullet.stroke = am4core.color("#2F4858");
+    // bullet.strokeWidth = 1;
+    // // no transparence has better performance
+    // bullet.strokeOpacity = 1;
+
+    // // fill color
+    // bullet.stroke.color = am4core.color(graph.lineColor);
+    // bullet.minBulletDistance = graph.hideBulletsCount;
+    // series.bullets.push(bullet);
 
     series.name = graph.title;
-    series.tooltipText = "{name}: [bold]{valueY}[/] {dateX}";
+    series.tooltipText = "{name}: [bold] {valueY}";
     series.yAxis = valueAxis;
     series.xAxis = dateAxis;
 
     var scrollbarX = new am4charts.XYChartScrollbar();
     scrollbarX.series.push(series);
     chart.scrollbarX = scrollbarX;
+
+    chart.maskBullets = false;
 
     return chart;
 }
@@ -293,113 +330,200 @@ function addGraphToChart(chart, graph, dateAxis) {
 
 const createSerialAMChartWind = function createSerialAMChartWind(selector, dateFormat, chartData, amChartTheme)
 {
-    var chartConfig = {
-        "type": "serial",
-        // "theme": amChartTheme.themeName,
-        "dataDateFormat": dateFormat,            
-        "legend": {
-            "useGraphSettings": true
-        },
-        // "dataProvider": chartData,
-        "synchronizeGrid": true,
-        "valueAxes": [
-            {
-            "id":"v1",
-            "axisColor": "#73C8A9",
-            "axisThickness": 3,
-            "axisAlpha": 1,
-            "position": "right"
-        }, {
-            "id":"v2",
-            "axisColor": "#2E926F",
-            "axisThickness": 3,
-            "offset": 40,
-            "axisAlpha": 1,
-            "position": "right"
-        }, {
-            "id":"v3",
-            "axisColor": "#BD5532",
-            "axisThickness": 3,
-            "gridAlpha": 0,
-            "offset": 80,
-            "axisAlpha": 1,
-            "position": "right"
-        }, {
-            "id":"v4",
-            "axisColor": "#6D2600",
-            "axisThickness": 3,
-            "gridAlpha": 0,
-            "offset": 120,
-            "axisAlpha": 1,
-            "position": "right"
-        }],
-        "graphs": [{
-            "valueAxis": "v1",
-            "lineColor": "#73C8A9",
-            "bullet": "round",
-            "bulletBorderThickness": 1,
-            "hideBulletsCount": 30,
-            "title": "Wind Speed U1 M [m/s]",
-            "valueField": "wind_speed_u1",
-            // "connect": false,
-            "fillAlphas": 0
-        }, {
-            "valueAxis": "v2",
-            "lineColor": "#2E926F",
-            "bullet": "square",
-            "bulletBorderThickness": 1,
-            "hideBulletsCount": 30,
-            "title": "Wind Speed U2 N [m/s]",
-            "valueField": "wind_speed_u2",
-            //"connect": false,
-            "fillAlphas": 0
-        }, {
-            "valueAxis": "v3",
-            "lineColor": "#BD5532",
-            "bullet": "triangleUp",
-            "bulletBorderThickness": 1,
-            "hideBulletsCount": 30,
-            "title": "Wind direction 1 O [deg]",
-            "valueField": "wind_dir_u1",
-            //"connect": false,
-            "fillAlphas": 0,
-        }, {
-            "valueAxis": "v4",
-            "lineColor": "#6D2600",
-            "bullet": "triangleDown",
-            "bulletBorderThickness": 1,
-            "hideBulletsCount": 30,
-            "title": "Wind direction 2 P [deg]",
-            "valueField": "wind_dir_u2",
-            //"connect": false,
-            "fillAlphas": 0,
-        }],
-        "chartScrollbar": {},
-        "chartCursor": {
-            "categoryBalloonDateFormat": "JJ:NN, DD MMMM",            
-            "cursorPosition": "mouse"
-        },
-        "categoryField": "date",
-        "categoryAxis": {
-            "parseDates": true,
-            /* "axisColor": "#DADADA", */
-            "minorGridEnabled": true,
-            "minPeriod": "15mm"
-        },
-        "export": {
-            "enabled": false,
-        }
-    };
-
-    // var chart = am4core.create(selector, am4charts.XYChart);
     var chart = am4core.create(selector, am4charts.XYChart);
-    chart.config = chartConfig;
+    chart.data = chartData;
 
-    //chart.addListener("dataUpdated", zoomChart);
-    //zoomChart(chart);
+    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    dateAxis.dataFields.category = "time";
+    dateAxis.renderer.minGridDistance = 20;
+    // dateAxis.title.text = "Date";
+    
+    // chart.dateFormatter.inputDateFormat = dateFormat;
+    chart.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm";
+    dateAxis.dateFormats.setKey("minute", "dd/MM/yy HH:mm");
+    dateAxis.dateFormats.setKey("hour", "dd/MM/yy HH:mm");
+    dateAxis.dateFormats.setKey("day", "MMMM dd");
+
+    // dateAxis.periodChangeDateFormats.setKey("day", "MM dd"); 
+    dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
+    
+    if (chartData.length > 350){
+        am4core.options.minPolylineStep = 5;
+        dateAxis.baseInterval = {
+            "timeUnit": "hour",
+            "count": 1,
+        }
+    } else {
+        am4core.options.minPolylineStep = 1;
+            dateAxis.baseInterval = {
+            "timeUnit": "minute",
+            "count": 30,
+        }
+    }
+    
+    const graphs = [{
+        "valueAxis": "v1",
+        "lineColor": "#73C8A9",
+        "bullet": "round",
+        "bulletBorderThickness": 1,
+        "hideBulletsCount": 30,
+        "title": "Wind Speed U1 M [m/s]",
+        "valueField": "wind_speed_u1",
+        // "connect": false,
+        "fillAlphas": 0
+    }, {
+        "valueAxis": "v2",
+        "lineColor": "#2E926F",
+        "bullet": "square",
+        "bulletBorderThickness": 1,
+        "hideBulletsCount": 30,
+        "title": "Wind Speed U2 N [m/s]",
+        "valueField": "wind_speed_u2",
+        //"connect": false,
+        "fillAlphas": 0
+    }, {
+        "valueAxis": "v3",
+        "lineColor": "#BD5532",
+        "bullet": "triangleUp",
+        "bulletBorderThickness": 1,
+        "hideBulletsCount": 30,
+        "title": "Wind direction 1 O [deg]",
+        "valueField": "wind_dir_u1",
+        //"connect": false,
+        "fillAlphas": 0,
+    }, {
+        "valueAxis": "v4",
+        "lineColor": "#6D2600",
+        "bullet": "triangleDown",
+        "bulletBorderThickness": 1,
+        "hideBulletsCount": 30,
+        "title": "Wind direction 2 P [deg]",
+        "valueField": "wind_dir_u2",
+        //"connect": false,
+        "fillAlphas": 0,
+    }];
+
+
+    chart.legend = new am4charts.Legend();
+    chart.legend.parent = chart.plotContainer;
+    chart.legend.zIndex = 100;
+    // chart.legend.position = 'bottom';
+    chart.legend.position = 'absolute';
+    chart.legend.y = 500;
+
+    // chart.legend.valign = 'bottom';
+    // chart.legend.contentAlign = 'center';
+
+    chart.cursor = new am4charts.XYCursor();
+    chart.responsive.enabled = true;
+
+    for (let i = 0; i < graphs.length; i++) {
+        const graph = graphs[i];
+        
+        chart = addGraphToChart(chart, graph, dateAxis, i);
+    }
 
     return chart;
 }
+
+// var chartConfig = {
+//     "type": "serial",
+//     // "theme": amChartTheme.themeName,
+//     "dataDateFormat": dateFormat,            
+//     "legend": {
+//         "useGraphSettings": true
+//     },
+//     // "dataProvider": chartData,
+//     "synchronizeGrid": true,
+//     "valueAxes": [
+//         {
+//         "id":"v1",
+//         "axisColor": "#73C8A9",
+//         "axisThickness": 3,
+//         "axisAlpha": 1,
+//         "position": "right"
+//     }, {
+//         "id":"v2",
+//         "axisColor": "#2E926F",
+//         "axisThickness": 3,
+//         "offset": 40,
+//         "axisAlpha": 1,
+//         "position": "right"
+//     }, {
+//         "id":"v3",
+//         "axisColor": "#BD5532",
+//         "axisThickness": 3,
+//         "gridAlpha": 0,
+//         "offset": 80,
+//         "axisAlpha": 1,
+//         "position": "right"
+//     }, {
+//         "id":"v4",
+//         "axisColor": "#6D2600",
+//         "axisThickness": 3,
+//         "gridAlpha": 0,
+//         "offset": 120,
+//         "axisAlpha": 1,
+//         "position": "right"
+//     }],
+//     "graphs": [{
+//         "valueAxis": "v1",
+//         "lineColor": "#73C8A9",
+//         "bullet": "round",
+//         "bulletBorderThickness": 1,
+//         "hideBulletsCount": 30,
+//         "title": "Wind Speed U1 M [m/s]",
+//         "valueField": "wind_speed_u1",
+//         // "connect": false,
+//         "fillAlphas": 0
+//     }, {
+//         "valueAxis": "v2",
+//         "lineColor": "#2E926F",
+//         "bullet": "square",
+//         "bulletBorderThickness": 1,
+//         "hideBulletsCount": 30,
+//         "title": "Wind Speed U2 N [m/s]",
+//         "valueField": "wind_speed_u2",
+//         //"connect": false,
+//         "fillAlphas": 0
+//     }, {
+//         "valueAxis": "v3",
+//         "lineColor": "#BD5532",
+//         "bullet": "triangleUp",
+//         "bulletBorderThickness": 1,
+//         "hideBulletsCount": 30,
+//         "title": "Wind direction 1 O [deg]",
+//         "valueField": "wind_dir_u1",
+//         //"connect": false,
+//         "fillAlphas": 0,
+//     }, {
+//         "valueAxis": "v4",
+//         "lineColor": "#6D2600",
+//         "bullet": "triangleDown",
+//         "bulletBorderThickness": 1,
+//         "hideBulletsCount": 30,
+//         "title": "Wind direction 2 P [deg]",
+//         "valueField": "wind_dir_u2",
+//         //"connect": false,
+//         "fillAlphas": 0,
+//     }],
+//     "chartScrollbar": {},
+//     "chartCursor": {
+//         "categoryBalloonDateFormat": "JJ:NN, DD MMMM",            
+//         "cursorPosition": "mouse"
+//     },
+//     "categoryField": "date",
+//     "categoryAxis": {
+//         "parseDates": true,
+//         /* "axisColor": "#DADADA", */
+//         "minorGridEnabled": true,
+//         "minPeriod": "15mm"
+//     },
+//     "export": {
+//         "enabled": false,
+//     }
+// };
+
 
 export {
     createSerialAMChartWeather,
