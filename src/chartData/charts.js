@@ -14,25 +14,25 @@ const createSerialAMChartWeather = function createSerialAMChartWeather(selector,
     // chart.dateFormatter.inputDateFormat = dateFormat;
     chart.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm";
     dateAxis.dateFormats.setKey("minute", "dd/MM/yy HH:mm");
-    dateAxis.dateFormats.setKey("hour", "dd/MM/yy HH:mm");
+    // dateAxis.dateFormats.setKey("hour", "dd/MM/yy HH:mm");
     dateAxis.dateFormats.setKey("day", "MMMM dd");
 
     // dateAxis.periodChangeDateFormats.setKey("day", "MM dd"); 
     dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
     
-    if (chartData.length > 350){
-        am4core.options.minPolylineStep = 5;
-        dateAxis.baseInterval = {
-            "timeUnit": "hour",
-            "count": 1,
-        }
-    } else {
+    // if (chartData.length > 350){
+    //     am4core.options.minPolylineStep = 5;
+    //     dateAxis.baseInterval = {
+    //         "timeUnit": "hour",
+    //         "count": 1,
+    //     }
+    // } else {
         am4core.options.minPolylineStep = 1;
             dateAxis.baseInterval = {
             "timeUnit": "minute",
             "count": 30,
         }
-    }
+    // }
 
     const graphs = [
     /*
@@ -130,8 +130,8 @@ function addGraphToChart(chart, graph, dateAxis, count) {
     // valueAxis.fill = am4core.color(graph.lineColor);
     valueAxis.renderer.labels.template.fill = am4core.color(graph.lineColor);
     valueAxis.renderer.minWidth = 30;
-    valueAxis.extraMin = 0.2;
-    valueAxis.extraMax = 0.2;
+    valueAxis.extraMin = 0.1;
+    valueAxis.extraMax = 0.1;
 
     let series = chart.series.push(new am4charts.LineSeries());
     series.autoGapCount = 3;
@@ -360,7 +360,7 @@ const createSerialAMChartWind = function createSerialAMChartWind(selector, dateF
             "count": 30,
         }
     }
-    
+
     const graphs = [{
         "valueAxis": "v1",
         "lineColor": "#73C8A9",
