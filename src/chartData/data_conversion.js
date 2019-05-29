@@ -46,6 +46,10 @@ function cleanGOESDataset(dataset, dateFns){
 
 function recordsAreIdentical(recordA, recordB, dateFns){
 
+    if (recordA === undefined || recordB === undefined){
+        return false;
+    }
+    
     if (recordA.station === recordB.station && dateFns.isEqual(recordA.time, recordB.time)){
         return true;
     }
@@ -119,20 +123,30 @@ const createJSONDataset = function createJSONDataset(fileString, delimiter, stat
     //var fileLines = fileString.split('\n');
     var fileLines = fileString.split(/\r\n|\r|\n/g);
     var regex = new RegExp(delimiter, 'g');
+    let lastRecord;
+    let skip = false;
 
     for (var i = 0; i < fileLines.length; i++) {
 
         var line = fileLines[i];
         var fileLineSplit = line.trim().split(regex);
+        skip = false;
 
         if (fileLineSplit.length > 1){
             var record = convertRecord(fileLineSplit, 3, dateFormat, dateFns);
-
+            
             if(!record){
                 console.log("station " + station + " couldn't convert record " + i);
-            }
+            } else {
 
-            records.push(record);
+                skip = recordsAreIdentical(record, lastRecord, dateFns);
+
+                if (!skip){
+                    records.push(record);
+                }
+
+                lastRecord = record;
+            }
         } else if (line.length > 0) {
             console.log("station " + station + " couldn't split record " + i );
         }
@@ -171,12 +185,16 @@ function convertRecord(fileLineSplit, firstParameterIndex, dateFormat, dateFns)
 
 
 const getDateFromJulianDays = function getDateFromJulianDays(year, julianDays, dateFns){
-    var time = new Date(year.toString());
+    // var time = new Date(year.toString());
+    var time = new Date();
+    dateFns.setYear(time, year);
 
     var splits = julianDays.split(".");
     var days = Number.parseInt(splits[0]);
 
     time = dateFns.setDayOfYear(time, days);
+    time = dateFns.setMinutes(time, 0);
+    time = dateFns.setSeconds(time, 0);
 
     var daysFloat = Number.parseFloat(julianDays);
     var hoursDecimal = daysFloat - days;
@@ -185,7 +203,7 @@ const getDateFromJulianDays = function getDateFromJulianDays(year, julianDays, d
     time = dateFns.setHours(time, hours);
 
     // console.log(year + " days " + julianDays + " to " + time);
-
+    // return dateFns.getTime(time);
     return time;
 }
 
@@ -208,7 +226,9 @@ function getRecordFromLine(fileLineSplit, firstParameterIndex, station, year, ti
     return {
         station: station != undefined ? station.trim() : '',
         year: year,
-        time: dateFns.format(time, dateFormat),
+        // time: dateFns.format(time, dateFormat),
+        // time: dateFns.getTime(time),
+        time,
         sw_down: sw_down != undefined ? sw_down.trim() : 'undefined',
         sw_up: sw_up != undefined ? sw_up.trim() : 'undefined',
         net_radiation: net_radiation != undefined ? net_radiation.trim() : 'undefined',
