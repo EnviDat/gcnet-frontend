@@ -105,16 +105,16 @@
         </v-flex>
       </v-flex>
 
-      <!-- <v-flex xs12 md8 offset-md2
+      <v-flex xs12 mx-5
               v-if="!showHomeScreen && showOverview" >
 
           <v-layout column >
             <v-flex py-3 >
-              <chart :station="$store.getters.stations[0]" />
+              <chart :station="$store.getters.stations[0]" :delay="0" />
             </v-flex>
           </v-layout>
 
-      </v-flex> -->
+      </v-flex>
 
             <!-- <v-flex py-3
                     v-for="station in $store.getters.stations"
@@ -175,7 +175,7 @@ export default {
     showOverview: function updateStationOverview(){
       if (this.showOverview) {
         this.currentStation = null;
-        this.loadStation(this.stationOverviewUrl);
+        // this.loadStation(this.stationOverviewUrl);
       }
     },
   },
