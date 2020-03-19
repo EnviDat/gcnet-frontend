@@ -1,20 +1,18 @@
 process.env.APP_VERSION = require('./package.json').version;
 
 module.exports = {
-  // configureWebpack: {
-  //   rules: [
-  //     {
-  //       test: /map_html\.html$/,
-  //       use: {
-  //         loader: 'html-loader',
-  //         options: {
-  //           attrs: [':data-src']
-  //         }
-  //       }
-  //     }
-  //   ],
-  // },
-  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  // publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  publicPath: './',
+  assetsDir: './static',
+  runtimeCompiler: true,
+  css: {
+    modules: false,
+    sourceMap: true,
+  },
+  transpileDependencies: [
+    'vuetify',
+    'date-fns',
+  ],
   // devServer: {
   //   proxy: {
   //     '/gcnet': {
