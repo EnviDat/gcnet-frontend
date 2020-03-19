@@ -44,18 +44,18 @@
 <script>
 import axios from 'axios';
 import dateFns from 'date-fns';
-import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
+// import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import * as am4core from "@amcharts/amcharts4/core";
-import * as am4charts from "@amcharts/amcharts4/charts";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+// import * as am4charts from "@amcharts/amcharts4/charts";
+// import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import {
   createSerialAMChartWeather,
-  createSerialAMChartWind,
+  // createSerialAMChartWind,
 } from "@/chartData/charts";
 import {
     createJSONDataset,
 } from "@/chartData/data_conversion";
-import { ENODEV } from 'constants';
+// import { ENODEV } from 'constants';
 import { delay } from 'q';
 
 
@@ -67,7 +67,7 @@ export default {
     delay: Number,
   },
   components: {
-    BaseRectangleButton,
+    // BaseRectangleButton,
   },
   mounted() {
     am4core.options.minPolylineStep = 5;
@@ -163,7 +163,8 @@ export default {
     },
     getFileNameFromURL(url) {
         var splits = url.split('/');
-        fileName = splits[splits.length - 1];
+        let fileName = splits[splits.length - 1];
+        
         if (fileName.includes('?')){
             fileName = fileName.split('?')[0];
         }
