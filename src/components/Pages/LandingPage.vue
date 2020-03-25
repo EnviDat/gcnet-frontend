@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import vuex from 'vuex';
+// import vuex from 'vuex';
 // import { mapGetters } from 'vuex';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton.vue';
 import ControlPanelView from '@/components/ControlPanelView.vue';
