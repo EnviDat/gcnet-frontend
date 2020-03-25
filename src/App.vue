@@ -2,15 +2,9 @@
   <v-app class="application" :style="dynamicBackground()">
 
     <v-content app >
-      <landing-page :currentStation="currentStation" 
-                    :showHomeScreen="showHomeScreen"
-                    :showOverview="showOverview"
-                    v-on:anyClick="catchAnyClick"
-                    v-on:mapViewClick="catchMapViewClick"
-                    v-on:overviewClick="catchOverviewClick"
-                    v-on:listViewClick="catchListViewClick"
-                    v-on:updateDrawer="catchUpdateDrawer"
-                    />
+      <StationsDetailPage :currentStation="currentStation" />
+
+
     </v-content>
 
       <the-navigation :mini="drawerIsMini"
@@ -38,7 +32,7 @@
 import TheNavigation from '@/components/TheNavigation';
 import StationsMap from '@/components/StationsMap';
 import StationsList from '@/components/StationsList';
-import LandingPage from '@/components/Pages/LandingPage';
+import StationsDetailPage from '@/components/Pages/StationsDetailPage';
 
 export default {
   name: 'App',
@@ -46,7 +40,7 @@ export default {
     TheNavigation,
     StationsMap,
     StationsList,
-    LandingPage,
+    StationsDetailPage,
   },
   beforeMount() {
       const imgs = require.context('./assets/', false, /\.jpg$/);
