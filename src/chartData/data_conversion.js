@@ -1,5 +1,12 @@
+import {
+  setDayOfYear,
+  setHours,
+  setMinutes,
+  setSeconds,
+  isEqual,
+} from 'date-fns';
 
-function cleanGOESDataset(dataset, dateFns){
+/* function cleanGOESDataset(dataset){
 
     var cleanRecords = [];
     var lastRecord;
@@ -27,7 +34,7 @@ function cleanGOESDataset(dataset, dateFns){
         }
 
         if (lastRecord !== undefined && !skip){
-            skip = recordsAreIdentical(record, lastRecord, dateFns);
+            skip = recordsAreIdentical(record, lastRecord);
         }
 
         if (!skip && (record.time === 'Invalid Date' || record.station === '')){
@@ -43,14 +50,15 @@ function cleanGOESDataset(dataset, dateFns){
 
     return {header: dataset.header, records: cleanRecords };
 }
+ */
 
-function recordsAreIdentical(recordA, recordB, dateFns){
+function recordsAreIdentical(recordA, recordB){
 
     if (recordA === undefined || recordB === undefined){
         return false;
     }
     
-    if (recordA.station === recordB.station && dateFns.isEqual(recordA.time, recordB.time)){
+    if (recordA.station === recordB.station && isEqual(recordA.time, recordB.time)){
         return true;
     }
 
@@ -108,12 +116,8 @@ function cleanParameter(dataparameter){
     return dataparameter;
 }
 
-function isParamInvalid(dataparameter){
-    return dataparameter === invalidMarkerValue;
-}
 
-
-const createJSONDataset = function createJSONDataset(fileString, delimiter, station, dateFormat, dateFns){
+const createJSONDataset = function createJSONDataset(fileString, delimiter, station){
 
     var dataset;
     var header = [];
@@ -133,13 +137,13 @@ const createJSONDataset = function createJSONDataset(fileString, delimiter, stat
         skip = false;
 
         if (fileLineSplit.length > 1){
-            var record = convertRecord(fileLineSplit, 3, dateFormat, dateFns);
+            var record = convertRecord(fileLineSplit, 3);
             
             if(!record){
                 console.log("station " + station + " couldn't convert record " + i);
             } else {
 
-                skip = recordsAreIdentical(record, lastRecord, dateFns);
+                skip = recordsAreIdentical(record, lastRecord);
 
                 if (!skip){
                     records.push(record);
@@ -158,16 +162,16 @@ const createJSONDataset = function createJSONDataset(fileString, delimiter, stat
 }
 
 
-function convertRecord(fileLineSplit, firstParameterIndex, dateFormat, dateFns)
+function convertRecord(fileLineSplit, firstParameterIndex)
 {
     var year = Number.parseInt(fileLineSplit[1]);
     var julianDays = fileLineSplit[2];
 
-    var time = getDateFromJulianDays(year, julianDays, dateFns);
+    var time = getDateFromJulianDays(year, julianDays);
 
     var station = fileLineSplit[0];
     
-    var record = getRecordFromLine(fileLineSplit, firstParameterIndex, station, year, time, dateFormat, dateFns);
+    var record = getRecordFromLine(fileLineSplit, firstParameterIndex, station, year, time);
 
     var wind_speed_u1 = cleanParameter(fileLineSplit[12]);
     var wind_speed_u2 = cleanParameter(fileLineSplit[13]);
@@ -184,23 +188,23 @@ function convertRecord(fileLineSplit, firstParameterIndex, dateFormat, dateFns)
 }
 
 
-const getDateFromJulianDays = function getDateFromJulianDays(year, julianDays, dateFns){
-    // var time = new Date(year.toString());
-    var time = new Date();
-    dateFns.setYear(time, year);
+const getDateFromJulianDays = function getDateFromJulianDays(year, julianDays){
+    var time = new Date(year.toString());
+    // var time = new Date();
+    // dateFns.setYear(time, year);
 
     var splits = julianDays.split(".");
     var days = Number.parseInt(splits[0]);
 
-    time = dateFns.setDayOfYear(time, days);
-    time = dateFns.setMinutes(time, 0);
-    time = dateFns.setSeconds(time, 0);
+    time = setDayOfYear(time, days);
+    time = setMinutes(time, 0);
+    time = setSeconds(time, 0);
 
     var daysFloat = Number.parseFloat(julianDays);
     var hoursDecimal = daysFloat - days;
 
     var hours = Math.round(hoursDecimal * 24);
-    time = dateFns.setHours(time, hours);
+    time = setHours(time, hours);
 
     // console.log(year + " days " + julianDays + " to " + time);
     // return dateFns.getTime(time);
@@ -208,7 +212,7 @@ const getDateFromJulianDays = function getDateFromJulianDays(year, julianDays, d
 }
 
 
-function getRecordFromLine(fileLineSplit, firstParameterIndex, station, year, time, dateFormat, dateFns){
+function getRecordFromLine(fileLineSplit, firstParameterIndex, station, year, time){
 
     // the index start at 0 vs the parameter description
     var sw_down = cleanParameter(fileLineSplit[3]);
