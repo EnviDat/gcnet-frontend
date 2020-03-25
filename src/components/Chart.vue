@@ -1,41 +1,64 @@
 <template>
 
-  <v-card >  
+  <v-card >
+    <v-card-title class="display-1">
+      {{ station.name }}
+    </v-card-title>
 
-    <div v-if="currentFileLoading" >
-      Loading {{ currentFileLoading }}
-    </div>
+    <v-card-text>
+      <v-layout row wrap>
+        
+      <v-flex v-if="currentFileLoading && !dataError"
+              xs12
+              pb-3 >
+        Loading {{ currentFileLoading }}
+      </v-flex>
 
-    <h2>{{ station.name }}</h2>
+      <v-flex v-if="!currentFileLoading && dataError"
+            xs12
+            pb-3
+            style="color: red;" >
+        Could not load the chart, an error occured: {{ dataError }}
+      </v-flex>
 
-    <div v-show="!currentFileLoading" ref="chartdiv" id="chartdiv"
-          style="height: 600px;" >
-    </div>    
+      <v-flex>
+        <base-rectangle-button :buttonText="loadAllDataText"
+                              :isSmall="true"
+                              :color="hasData && !loadRecentData ? 'green' : 'primary'"
+                              @clicked="loadRecentData = false; loadChart();" />
 
-    <div v-show="!currentFileLoading" ref="wchartdiv" id="wchartdiv"
-          style="height: 600px;" >
-    </div>    
-      <!-- <v-container grid-list-md pa-0>
-        <v-layout column >
+        <base-rectangle-button :buttonText="loadRecentDataText"
+                              :isSmall="true"
+                              :color="hasData && loadRecentData ? 'green' : 'primary'"
+                              @clicked="loadRecentData = true; loadChart();" />
+      </v-flex>
 
-          <v-flex xs5 py-0>
-            <div class="hello" ref="chartdiv">
-            </div>    
-          </v-flex>
+      <!-- <v-flex v-show="hasData"
+              xs12 >
+        {{ loadRecentData ? 'Recent data loaded' : 'All data loaded' }}
+      </v-flex> -->
 
-        </v-layout>
-      </v-container> -->
+      <v-flex v-show="hasData"
+              xs12 >
+        <div ref="chartdiv" id="chartdiv"
+              style="height: 350px;" >
+        </div>    
+      </v-flex>
+      
+      <!-- <div v-show="hasData" ref="chartdiv" id="wchartdiv"
+            style="height: 350px;" >
+      </div>     -->
+
+      </v-layout>
+
+    </v-card-text>
 
 
-    <v-card-actions class="ma-0 pa-2"
+    <!-- <v-card-actions class="ma-0 pa-2"
                     style="position: absolute; bottom: 0; right: 0;">
 
-      <!-- <base-rectangle-button :buttonText="buttonText"
-                            :isSmall="true"
-                            v-on:clicked="buttonCallback"
-                            /> -->
 
-    </v-card-actions>
+    </v-card-actions> -->
   </v-card>
 
 </template>
@@ -44,43 +67,29 @@
 <script>
 import axios from 'axios';
 import dateFns from 'date-fns';
-// import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-import * as am4core from "@amcharts/amcharts4/core";
-// import * as am4charts from "@amcharts/amcharts4/charts";
-// import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import {
   createSerialAMChartWeather,
-  // createSerialAMChartWind,
+  createSerialAMChartWind,
 } from "@/chartData/charts";
 import {
     createJSONDataset,
 } from "@/chartData/data_conversion";
-// import { ENODEV } from 'constants';
-import { delay } from 'q';
 
-
-// am4core.useTheme(am4themes_animated);
 
 export default {
   props: {
     station: Object,
-    delay: Number,
   },
   components: {
-    // BaseRectangleButton,
+    BaseRectangleButton,
   },
   mounted() {
-    am4core.options.minPolylineStep = 5;
     this.createJSONDataset = createJSONDataset;
-
-    // if (!station){
-    //   return;
-    // }
 
     this.enhanceStation(this.station);
 
-    this.loadFileFromBackend(this.station, this.$refs.chartdiv, false);
-
+    this.loadChart();
   },
   beforeDestroy() {
     if (this.chart) {
@@ -88,13 +97,20 @@ export default {
     }
   },
   computed: {
-
+    hasData() {
+      return !this.currentFileLoading && !this.dataError;
+    },
   },
   methods: {
+    loadChart(){
+      this.loadFileFromBackend(this.station, this.$refs.chartdiv, this.loadRecentData);
+    },
+    loadDataText(){
+      return this.loadRecentData ? this.loadRecentDataText : this.loadAllDataText;
+    },
     loadChartData(records) {
       var data = [];
 
-      //var dataset = {header: [label1, label2], records:[] }
       var record;
 
       for (var i = 0; i < records.length; i++) {
@@ -125,46 +141,53 @@ export default {
       this.currentFileLoading = fileName;
 
       // add the timestamp to prevent server side caching
-      const url = this.baseurl + fileName + '?t=' + Date.now();
+      const url = process.env.NODE_ENV === 'production' ? `${this.baseurl}${fileName}?t=${Date.now()}` : `./testdata/${fileName}`;
 
-      // let token = 'your auth token'
       let headers = {
         // 'Authorization': `Bearer ${token}`,
-        'Cache-Control': 'no-cache'
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'text/csv'
       }
 
-      const dataCall = axios.create({
+      const dataCall =  axios.create({
         // baseURL: process.env.VUE_APP_API_URL,
         headers: headers
-      })
+      });
 
       const that = this;
+      that.dataError = '';
 
       dataCall.get(url)
-      .then(function (response) {
-        if (that.currentFileLoading === station.fileName) {
-            that.fullData = response.data;
-
-            that.loadChart(that, that.fullData, false);
-        } else if (that.currentFileLoading === station.shortFileName) {
-            that.recentData = response.data;
-
-            that.loadChart(that, that.recentData, true);
-        } else {
-            // ShowError("Dataset for " + this.currentFileLoading + " is empty ");
-            console.log("Dataset for " + that.currentFileLoading + " is empty ");
-        }
-
-        that.currentFileLoading = ''
+      .then(response => {
+        that.handleResponse(that, station, response.data);
       })
-      .catch(function (error) {
-        console.log("got error: " + error.message + ' ' + error.status);
-      }); 
+      .catch(error => {
+        that.dataError = error;
+      }).finally (() => {
+        that.currentFileLoading = ''
+      });
+    },
+    handleResponse(vueInstance, station, data){
+      if (vueInstance.currentFileLoading === station.fileName) {
+          vueInstance.fullData = data;
+
+          vueInstance.fillChart(vueInstance, vueInstance.fullData, false);
+      } else if (vueInstance.currentFileLoading === station.shortFileName) {
+          vueInstance.recentData = data;
+
+          vueInstance.fillChart(vueInstance, vueInstance.recentData, true);
+      } else {
+          // ShowError("Dataset for " + this.currentFileLoading + " is empty ");
+          // console.log("Dataset for " + that.currentFileLoading + " is empty ");
+          vueInstance.dataError = 'Dataset for " + that.currentFileLoading + " is empty ';
+      }
+
+      // vueInstance.currentFileLoading = ''
     },
     getFileNameFromURL(url) {
         var splits = url.split('/');
         let fileName = splits[splits.length - 1];
-        
+
         if (fileName.includes('?')){
             fileName = fileName.split('?')[0];
         }
@@ -175,7 +198,7 @@ export default {
       station.fileName = `${station.id}.csv`;
       station.shortFileName = `${station.id}_v.csv`;
     },
-    loadChart(vueInstance, data, useShortFile){
+    fillChart(vueInstance, data, useShortFile){
 
         var delimiter = '\\s+';
         if (vueInstance.station.fileName.includes('.csv')){
@@ -206,20 +229,20 @@ export default {
         vueInstance.showChartDataset(vueInstance, jsonData.records);
     },
     showChartDataset(vueInstance, jsonRecords) {
-      let that = this;
+      try {
+        let chart = createSerialAMChartWeather('chartdiv', vueInstance.dateFormat, jsonRecords, 0, this.theme);
+        this.weatherChart = chart;
+        
+      } catch (error) {
+        vueInstance.dataError = `Error creating the weather chart: ${error}`;
+      }
 
-      setTimeout(() => {
-        // let chart = createSerialAMChartWeather(vueInstance.$refs.chartdiv);
-        let chart = createSerialAMChartWeather('chartdiv', vueInstance.dateFormat, jsonRecords);
-        // chart.data = jsonRecords;
-        that.weatherChart = chart;
-      }, delay);
-
-      // setTimeout(() => {
-      //   let wchart = createSerialAMChartWind('wchartdiv', vueInstance.dateFormat, jsonRecords);
-      //   wchart.data = jsonRecords;
-      //   that.windChart = wchart;
-      // }, delay);
+      try {
+        let chart = createSerialAMChartWind('wchartdiv', vueInstance.dateFormat, jsonRecords, 500, this.theme);
+        this.windChart = chart;
+      } catch (error) {
+        vueInstance.dataError = `Error creating the wind chart: ${error}`;
+      }
     },
   },
   data: () => ({
@@ -230,9 +253,13 @@ export default {
     weatherChart: null,
     windChart: null,
     dateFormat: 'MM/DD/YYYY HH:mm',
-    // dateFormat: 'MMM dd YYYY HH:mm',
     baseurl: 'https://www.wsl.ch/gcnet/data/',
     currentFileLoading: '',
+    dataError: '',
+    loadRecentData: true,
+    loadRecentDataText: 'Load data from last 14 days',
+    loadAllDataText: 'Load all data',
+    theme: 'light',
   }),
 };
 </script>
