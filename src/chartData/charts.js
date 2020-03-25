@@ -1,7 +1,7 @@
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 
-const createSerialAMChartWeather = function createSerialAMChartWeather(selector, dateFormat, chartData, amChartTheme, delay)
+const createSerialAMChartWeather = function createSerialAMChartWeather(selector, dateFormat, chartData)
 {
     var chart = am4core.create(selector, am4charts.XYChart);
     chart.data = chartData;
@@ -328,7 +328,7 @@ function addGraphToChart(chart, graph, dateAxis, count) {
 // }    
 
 
-const createSerialAMChartWind = function createSerialAMChartWind(selector, dateFormat, chartData, amChartTheme)
+const createSerialAMChartWind = function createSerialAMChartWind(selector, dateFormat, chartData)
 {
     var chart = am4core.create(selector, am4charts.XYChart);
     chart.data = chartData;
