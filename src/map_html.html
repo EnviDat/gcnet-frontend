@@ -28,33 +28,25 @@
 
         g.stations a {
             cursor: pointer;
-            /* fill: #1DB409 !important; */
         }
         g.stations a circle {
             cursor: pointer;
-            /* fill: #1DB409 !important; */
         }
         g.stations > a > circle:first-child {
             fill: #1DB409 !important;
         }
-
-        g.stations a:hover path{
-            fill:#FFFFFF !important;
-        }
-
-        g > circle {
-            fill:#d7601b !important;
-        }
-
-        
         g.stations > a:hover circle:first-child{
             fill:#FFFFFF !important;
         }
-
         g.stations > a circle:nth-child(2){
             opacity: 0.45;
             fill:#FFFFFF !important;
         }
+
+        g.stations > a:hover rect {
+            opacity: 1;
+        }
+
 
     </style>
 <!-- <body> -->
@@ -384,7 +376,7 @@
             <!-- Station 4 Gits -->
             <g transform="scale(.99987)" class="stations" fill-rule="evenodd" font-size="54.167"
                 stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-                <circle cx="1247" cy="1770.2" r="40" stroke-width="10" stroke="black"  />
+                <circle cx="1247" cy="1770.2" r="40" stroke-width="10" fill="red" stroke="black"  />
             </g>
             <g transform="matrix(.99987 0 0 .99987 1294.1 1725.3)" fill="#1db409" font-size="100"
                 stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
@@ -466,24 +458,50 @@
             </g>
 
             <!-- Station 9 JAR-1 -->
-		    <!-- "latitude" : "69.498358", "longitude" : "49.68156", -->
-            <g transform="scale(.99987)" class="stations" fill-rule="evenodd" font-size="54.167"
-                stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+            <!-- "latitude" : "69.498358", "longitude" : "49.68156", -->
+            <g transform="scale(.99987)" class="stations" fill-rule="evenodd" font-size="130"
+                font-weight="700" stroke-width="10"
+                stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/jar1"
                     xlink:title="Elevation 932m">
-                    <!-- THIS NEEDS ADJUSTMENTS, COORDS AREN't CORRECT -->
-                    <circle cx="1692" cy="3954.4" r="40" fill="yellow" stroke-width="10" stroke="black"  />
-                    <circle cx="1692" cy="3954.4" r="125" />
-                </a>
+                    <circle cx="1692" cy="3954.4" r="40" stroke-width="10" />
+                    <!-- <circle cx="1692" cy="3954.4" r="125" stroke-width="10" /> -->
+                    <!-- <circle cx="1392" cy="4073" r="175" fill="white" opacity="0.75" /> -->
+
+                    <line x1="1660" y1="3980" x2="1392" y2="4100"  />
+
+                    <rect transform="matrix(.99987 0 0 .99987 1192 4273)" width="500" height="250"
+                        y="-165" x="-75" fill="white" opacity="0.6" />
+
+                    <text transform="matrix(.99987 0 0 .99987 1192 4273)" fill="#000000"
+                        font-family=".SF NS Text" stroke="none" xml:space="preserve">JAR-1</text>
+                </a>                
             </g>
-            <g transform="matrix(.99987 0 0 .99987 1392 4073)" fill="#1db409" font-size="100"
+
+
+            <!-- <g transform="scale(.99987)" class="stations" fill-rule="evenodd" font-size="54.167"
                 stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
                 <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/jar1"
                     xlink:title="Elevation 932m">
-                    <text fill="#000000" font-family=".SF NS Text" font-weight="400"
+                    <circle cx="1692" cy="3954.4" r="40" stroke-width="10" stroke="black"  />
+                    <line x1="1672" y1="3934.4" x2="1392" y2="4273" stroke="black" stroke-width="15"
+                            opacity="0.75" />
+                </a>                
+            </g> -->
+                    <!-- <circle cx="1692" cy="3954.4" r="125" /> -->
+                    <!-- <circle cx="1392" cy="4073" r="175" fill="white" opacity="0.75" /> -->
+
+            <!-- <g transform="matrix(.99987 0 0 .99987 1192 4273)" fill="#1db409" font-size="130"
+                stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/jar1"
+                    xlink:title="Elevation 932m">
+                    <rect width="500" height="250" y="-150" x="-75" fill="white"
+                        stroke="black" stroke-width="10" opacity="0.6" />
+
+                    <text fill="#000000" font-family=".SF NS Text" font-weight="700"
                         stroke="none" xml:space="preserve">JAR-1</text>
                 </a>
-            </g>
+            </g> -->
 
             <!-- Station 10 Saddle -->
             <g transform="scale(.99987)" class="stations" fill-rule="evenodd" font-size="54.167"
@@ -507,7 +525,7 @@
             <!-- Station 11 South Dome -->
             <g transform="scale(.99987)" font-size="54.167" stroke="#000"
                 stroke-linecap="square" stroke-linejoin="bevel">
-                <circle cx="2210.4" cy="5704.4" r="40" stroke-width="10" stroke="black"  />
+                <circle cx="2210.4" cy="5704.4" r="40" stroke-width="10" fill="red" stroke="black"  />
             </g>
             <g transform="matrix(.99987 0 0 .99987 2257.9 5659.1)" fill="#1db409" font-size="100"
                 stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
@@ -545,7 +563,7 @@
             <!-- "latitude" : "66.4797", "longitude" : "42.5002" -->
             <g transform="scale(.99987)" font-size="54.167" stroke="#000"
                 stroke-linecap="square" stroke-linejoin="bevel">
-                <circle cx="2463.6" cy="4778.1" r="40" stroke-width="10" stroke="black"  />
+                <circle cx="2463.6" cy="4778.1" r="40" stroke-width="10"  fill="red" stroke="black"  />
             </g>
             <g transform="matrix(.99987 0 0 .99987 2509 4732.9)" fill="#1db409" font-size="100"
                 stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
