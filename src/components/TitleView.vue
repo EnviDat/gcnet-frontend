@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import SloganCard from '@/components/SloganCard';
+// import SloganCard from '@/components/SloganCard';
 import gcNetlogo from '@/assets/gc_net_logo.png';
 // import smLogo from '@/assets/logo/EnviDat_logo_64.png';
 // import mdLogo from '@/assets/logo/EnviDat_logo_128.png';
@@ -123,7 +123,7 @@ export default {
   computed: {
   },
   components: {
-    SloganCard,
+    // SloganCard,
   },
 };
 </script>
