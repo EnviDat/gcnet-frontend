@@ -127,7 +127,7 @@ export default {
     // StationsMap,
   },
   data: () => ({
-    baseStationURL: 'https://www.wsl.ch/gcnet/stations/',
+    baseStationURL: 'https://www.wsl.ch/gcnet/cms/stations/',
     loadingStation: false,
     homeInfos,
     MapSelectionText: 'Select Stations via map',
@@ -135,6 +135,7 @@ export default {
     showMoreInfos: false,
     showMoreInfosText: 'More Information',
     currentStationName: '',
+    dataRequestText: 'Request GC-Net data',
     // mapHTML,
   }),
   watch: {
