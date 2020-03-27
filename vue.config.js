@@ -1,4 +1,24 @@
-process.env.APP_VERSION = require('./package.json').version;
+const fs = require('fs');
+
+const version = require('./package.json').version;
+process.env.VUE_APP_VERSION = version;
+
+if (process.env.NODE_ENV === 'production') {
+  const fileName = `version_${version}.txt`;
+  const filePath = `${__dirname}/public/${fileName}`;
+
+  fs.writeFile(filePath, version, (err) => {
+
+    if (err) {
+      return console.log(`Tried to created file ${fileName}. Error: ${err}`);
+    }
+
+    return console.log(`Created version file ${fileName} for easy build version highlight.`);
+  });
+}
+
+console.log(`starting ${version} with on ${process.env.NODE_ENV}`);
+
 
 module.exports = {
   // publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
