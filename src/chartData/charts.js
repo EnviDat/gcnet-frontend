@@ -1,6 +1,19 @@
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 
+const chartSettings = {
+  lineStrokeWidth: 3,
+  lineOpacity: 1,
+  // the auto gap depends on the baseInterval, which might be "hours"
+  // works if the lineConnect is false
+  lineAutoGap: 2,
+  lineConncet: false,
+  bulletsStrokeWidth: 2,
+  bulletsRadius: 3,
+  bulletsfillOpacity: 0,
+  bulletsStrokeOpacity: 1,
+};
+
 const createSerialAMChartWeather = function createSerialAMChartWeather(selector, dateFormat, chartData)
 {
     var chart = am4core.create(selector, am4charts.XYChart);
@@ -8,31 +21,32 @@ const createSerialAMChartWeather = function createSerialAMChartWeather(selector,
 
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.dataFields.category = "time";
-    dateAxis.renderer.minGridDistance = 20;
-    // dateAxis.title.text = "Date";
+    dateAxis.renderer.minGridDistance = 40;
+    dateAxis.groupData = true;
     
-    // chart.dateFormatter.inputDateFormat = dateFormat;
-    chart.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm";
-    dateAxis.dateFormats.setKey("minute", "dd/MM/yy HH:mm");
-    // dateAxis.dateFormats.setKey("hour", "dd/MM/yy HH:mm");
-    dateAxis.dateFormats.setKey("day", "MMMM dd");
+    dateAxis.renderer.inside = true;
+    dateAxis.renderer.labels.template.dy = 5;
+    // dateAxis.renderer.labels.template.rotation = -45;
+    // dateAxis.renderer.labels.template.verticalCenter = "middle";
+    // dateAxis.renderer.labels.template.horizontalCenter = "right";
 
-    // dateAxis.periodChangeDateFormats.setKey("day", "MM dd"); 
+    chart.dateFormatter.dateFormat = dateFormat;
+
     dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
     
-    // if (chartData.length > 350){
-    //     am4core.options.minPolylineStep = 5;
-    //     dateAxis.baseInterval = {
-    //         "timeUnit": "hour",
-    //         "count": 1,
-    //     }
-    // } else {
-        am4core.options.minPolylineStep = 1;
-            dateAxis.baseInterval = {
-            "timeUnit": "minute",
-            "count": 30,
-        }
-    // }
+    am4core.options.minPolylineStep = 2;
+  
+    if (chartData.length > 350){
+      dateAxis.baseInterval = {
+        "timeUnit": "day",
+        "count": 1,
+      }
+    } else {
+      dateAxis.baseInterval = {
+        "timeUnit": "hour",
+        "count": 1,
+      }
+    }
 
     const graphs = [
     /*
@@ -101,80 +115,88 @@ const createSerialAMChartWeather = function createSerialAMChartWeather(selector,
     chart.legend = new am4charts.Legend();
     chart.legend.parent = chart.plotContainer;
     chart.legend.zIndex = 100;
-    // chart.legend.position = 'bottom';
-    chart.legend.position = 'absolute';
-    chart.legend.y = 500;
+    chart.legend.position = 'top';
+    // chart.legend.position = 'absolute';
+    // chart.legend.y = 500;
 
     // chart.legend.valign = 'bottom';
     // chart.legend.contentAlign = 'center';
 
     chart.cursor = new am4charts.XYCursor();
     chart.responsive.enabled = true;
+  
+    const scrollbarX = new am4charts.XYChartScrollbar();
 
-    for (let i = 0; i < graphs.length; i++) {
-        const graph = graphs[i];
+    chart = addGraphToChart(chart, graphs[0], dateAxis, 0, scrollbarX, chartSettings);
+    chart = addGraphToChart(chart, graphs[1], dateAxis, 1, scrollbarX, chartSettings);
+
+    // for (let i = 0; i < graphs.length; i++) {
+    //     const graph = graphs[i];
         
-        chart = addGraphToChart(chart, graph, dateAxis, i);
-    }
+    //     chart = addGraphToChart(chart, graph, dateAxis, i, chartSettings);
+    // }
 
-    // chart = addGraphToChart(chart, graphs[0], dateAxis);
+    chart.maskBullets = false;
+
+    scrollbarX.height = 25;
+    // scrollbarX.scrollbarChart.xAxes.values[0].renderer.inside = false;
+    scrollbarX.scrollbarChart.xAxes.values[0].renderer.labels.template.dy = -10;
+    chart.scrollbarX = scrollbarX;
+    chart.scrollbarX.parent = chart.bottomAxesContainer;
 
     return chart;
 }
 
-function addGraphToChart(chart, graph, dateAxis, count) {
+
+function addGraphToChart(chart, graph, dateAxis, count, scrollbarX, chartSettings) {
 
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.title.text = graph.title;
     valueAxis.renderer.opposite = count % 2 == 0;
+    valueAxis.renderer.minGridDistance = 25;
+    
     // valueAxis.fill = am4core.color(graph.lineColor);
     valueAxis.renderer.labels.template.fill = am4core.color(graph.lineColor);
     valueAxis.renderer.minWidth = 30;
-    valueAxis.extraMin = 0.1;
-    valueAxis.extraMax = 0.1;
+    valueAxis.extraMin = 0.2;
+    valueAxis.extraMax = 0.2;
 
-    let series = chart.series.push(new am4charts.LineSeries());
-    series.autoGapCount = 3;
-    series.connect = false;
-    series.stroke = am4core.color(graph.lineColor);
-    series.strokeWidth = 3; // 3px
-    // series.strokeOpacity = 0.8;
-    // no transparence has better performance
-    series.strokeOpacity = 1;
-
-    // "time" refeers to the json element "time" from the data_conversion.js
-    series.dataFields.dateX = "time";
-    series.dataFields.valueY = graph.valueField;
-
-    // let bullet = new am4charts.CircleBullet();
-    // bullet.width = 3;
-    // bullet.height = 3;
-
-    // let bullet = new am4core.Circle();
-    // bullet.radius = 5;
-
-    // // outline 
-    // bullet.stroke = am4core.color("#2F4858");
-    // bullet.strokeWidth = 1;
-    // // no transparence has better performance
-    // bullet.strokeOpacity = 1;
-
-    // // fill color
-    // bullet.stroke.color = am4core.color(graph.lineColor);
-    // bullet.minBulletDistance = graph.hideBulletsCount;
-    // series.bullets.push(bullet);
-
+    let series = new am4charts.LineSeries();
     series.name = graph.title;
     series.tooltipText = "{name}: [bold] {valueY}";
     series.yAxis = valueAxis;
     series.xAxis = dateAxis;
+  
+    // "time" refeers to the json element "time" from the data_conversion.js
+    series.dataFields.dateX = "time";
+    series.dataFields.valueY = graph.valueField;
+    // series.minBulletDistance = graph.hideBulletsCount;
 
-    var scrollbarX = new am4charts.XYChartScrollbar();
-    scrollbarX.series.push(series);
-    chart.scrollbarX = scrollbarX;
+    series.autoGapCount = chartSettings.lineAutoGap;
+    series.connect = chartSettings.lineConncet;
+    series.stroke = am4core.color(graph.lineColor);
+    series.strokeWidth = chartSettings.lineStrokeWidth;
+    series.strokeOpacity = chartSettings.lineOpacity;
 
-    chart.maskBullets = false;
+    let bullet = new am4core.Circle();
+    bullet.radius = chartSettings.bulletsRadius;
+    bullet.fillOpacity = chartSettings.bulletsfillOpacity;
+    bullet.stroke = am4core.color(graph.lineColor);
+    bullet.strokeWidth = chartSettings.bulletsStrokeWidth;
+    bullet.strokeOpacity = chartSettings.bulletsStrokeOpacity;
+    bullet.stroke.color = am4core.color(graph.lineColor);
 
+    let bullethover = bullet.states.create("hover");
+    bullethover.properties.scale = 1.3;
+  
+    series.bullets.push(bullet);
+  
+    chart.series.push(series);
+
+    if (count <= 0) {
+      scrollbarX.series.push(series);
+    }
+  
     return chart;
 }
     
@@ -335,31 +357,39 @@ const createSerialAMChartWind = function createSerialAMChartWind(selector, dateF
 
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.dataFields.category = "time";
-    dateAxis.renderer.minGridDistance = 20;
+    dateAxis.renderer.minGridDistance = 30;
+    dateAxis.renderer.strokeDasharray = "2";
     // dateAxis.title.text = "Date";
     
+    chart.dateFormatter.dateFormat = dateFormat;
     // chart.dateFormatter.inputDateFormat = dateFormat;
-    chart.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm";
-    dateAxis.dateFormats.setKey("minute", "dd/MM/yy HH:mm");
-    dateAxis.dateFormats.setKey("hour", "dd/MM/yy HH:mm");
-    dateAxis.dateFormats.setKey("day", "MMMM dd");
+    // chart.dateFormatter. = "yyyy-MM-dd HH:mm";
+    // dateAxis.dateFormats.setKey("minute", "dd/MM/yy HH:mm");
+    // dateAxis.dateFormats.setKey("hour", "dd/MM/yy HH:mm");
+    // dateAxis.dateFormats.setKey("day", "MMMM dd");
 
     // dateAxis.periodChangeDateFormats.setKey("day", "MM dd"); 
     dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
-    
-    if (chartData.length > 350){
-        am4core.options.minPolylineStep = 5;
-        dateAxis.baseInterval = {
-            "timeUnit": "hour",
-            "count": 1,
-        }
-    } else {
-        am4core.options.minPolylineStep = 1;
-            dateAxis.baseInterval = {
-            "timeUnit": "minute",
-            "count": 30,
-        }
+
+    am4core.options.minPolylineStep = 2;
+    dateAxis.baseInterval = {
+        "timeUnit": "hour",
+        "count": 1,
     }
+    
+    // if (chartData.length > 350){
+    //     am4core.options.minPolylineStep = 5;
+    //     dateAxis.baseInterval = {
+    //         "timeUnit": "hour",
+    //         "count": 1,
+    //     }
+    // } else {
+    //     am4core.options.minPolylineStep = 1;
+    //         dateAxis.baseInterval = {
+    //         "timeUnit": "minute",
+    //         "count": 30,
+    //     }
+    // }
 
     const graphs = [{
         "valueAxis": "v1",
