@@ -6,12 +6,6 @@
     app
     :width="open"
   >
-    <!-- 
-    :mini-variant-width="$vuetify.breakpoint.mdAndUp ? 80 : 50"
-    v-model="drawer"
-    :mini-variant.sync="drawerIsMini"
-    stateless
-      :temporary="$vuetify.breakpoint.mdAndUp" -->
 
     <v-toolbar flat class="transparent">
       <v-list class="pa-0 gc_net_nav" :dense="$vuetify.breakpoint.smAndDown">
@@ -26,14 +20,6 @@
             <v-list-tile-title>{{ gcNetHomeText }}</v-list-tile-title>
           </v-list-tile-content>
 
-          <!-- <v-list-tile-action>
-            <v-btn
-              icon
-              @click.stop="catchDrawerClick"
-            >
-              <v-icon>chevron_left</v-icon>
-            </v-btn>
-          </v-list-tile-action> -->
         </v-list-tile>
       </v-list>
     </v-toolbar>
@@ -78,6 +64,21 @@
         </v-list-tile-content>
         
       </v-list-group>
+
+      <!-- Domi: StationOverview list tile with click, icon and title -->
+      <v-list-tile avatar :class="$vuetify.breakpoint.mdAndUp ? '' : 'px-0'"
+                    @click.stop="catchStationOverviewClick"
+      >
+        <v-list-tile-action class="v-list__group__header__prepend-icon">
+          <v-icon >{{ navItems[2].icon }}</v-icon>
+        </v-list-tile-action>        
+
+        <v-list-tile-content>
+          <v-list-tile-title>{{ navItems[2].title }}</v-list-tile-title>
+        </v-list-tile-content>
+
+      </v-list-tile>
+
     </v-list>
 
   </v-navigation-drawer>
@@ -117,6 +118,8 @@ export default {
 
       let open = false;
       const wideOpen = 500;
+      // Domi: new width for Stations in single line
+      const wideOpenStation = 300;
       const wideClosed = 240;
       const smallOpen = 250;
       const smallClosed = 50;
@@ -126,6 +129,10 @@ export default {
       }
 
       if (this.$vuetify.breakpoint.mdAndUp){
+        if (this.navItems[1].active){
+          return open ? wideOpenStation : wideClosed;
+        }
+
         return open ? wideOpen : wideClosed;
       } else {
         return open ? smallOpen : smallClosed;
@@ -138,6 +145,9 @@ export default {
     },
     catchHomeClick(){
       this.$emit('homeClick');
+    },
+    catchStationOverviewClick(){
+      this.$emit('stationOverviewClick');
     },
   },
   data: () => ({

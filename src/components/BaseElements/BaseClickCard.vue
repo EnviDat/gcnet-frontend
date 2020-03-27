@@ -16,6 +16,7 @@
                 >
           <img v-if="img"
                 ref="card_image"
+                style="height: 100%;"
                 v-on:load="setRandomPosition()"
                 :src="img" />                        
         </v-flex>

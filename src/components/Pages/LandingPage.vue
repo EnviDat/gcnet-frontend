@@ -101,6 +101,25 @@
         </v-flex>
       </v-flex>
 
+      <!-- <v-flex xs12 md8 offset-md2
+              v-if="!showHomeScreen && showOverview" >
+
+          <v-layout column >
+            <v-flex py-3 >
+              <chart :station="$store.getters.stations[0]" />
+            </v-flex>
+          </v-layout>
+
+      </v-flex> -->
+
+            <!-- <v-flex py-3
+                    v-for="station in $store.getters.stations"
+                    :key="station.id">
+
+              <chart :station="station" />
+
+            </v-flex> -->
+
     </v-layout>
   </v-container>
 </template>
@@ -132,16 +151,23 @@ export default {
     homeInfos,
     MapSelectionText: 'Select Stations via map',
     ListSelectionText: 'Choose Station from list',
+    dataRequestText: 'Request GC-Net Data',
     showMoreInfos: false,
     showMoreInfosText: 'More Information',
     currentStationName: '',
-    dataRequestText: 'Request GC-Net data',
+    stationOverviewUrl: 'https://www.wsl.ch/gcnet/stations.html',
     // mapHTML,
   }),
   watch: {
     currentStation: function updateStation() {
       if (this.currentStation) {
-        this.loadStation(this.currentStation);
+        this.loadStation(this.baseStationURL + this.currentStation.alias);
+      }
+    },
+    showOverview: function updateStationOverview(){
+      if (this.showOverview) {
+        this.currentStation = null;
+        this.loadStation(this.stationOverviewUrl);
       }
     },
   },
@@ -176,38 +202,11 @@ export default {
     anyClick(){
       this.$emit('anyClick');
     },
-    loadStation(station) {
+    loadStation(url) {
       this.loadingStation = true;
 
       this.$refs.iframe_parent.innerHTML = null;
-      this.$refs.iframe_parent.innerHTML = this.iframeWithSource(this.baseStationURL + station.alias);
-/*
-      // this.$refs.station_iframe.src = null;
-      // this.$refs.station_iframe.innerHTML = '';
-      // this.$refs.station_iframe.contentDocument.innerHTML = null;
-
-				// iframe = null
-      const that = this;
-      this.$refs.station_iframe.onload = function(event){
-        that.loadingStation = false;
-        // console.log('loaded iframe ' + this + " content : " + this.contentDocument + " window : " + this.contentWindow);
-        // const header = that.$refs.station_iframe.contentWindow.onload = function (e){
-        //   const header = that.$el.querySelector('#station_iframe > html > body > header');
-        //   header.setAttribute('display', 'none');
-        // }
-
-        // const header = that.$el.querySelector('#station_iframe > html > body > header');
-        // header.setAttribute('display', 'none');
-      };
-
-      this.$refs.station_iframe.onerror = function(err){
-        // this.loadingStation = false;
-        // console.log('error the iframe ' + err);
-        that.$refs.station_iframe.src = null;
-      };
-
-      this.$refs.station_iframe.src = this.baseStationURL + station.alias;
-      */
+      this.$refs.iframe_parent.innerHTML = this.iframeWithSource(url);
     },
     iframeScreenHeight() {
       return window.innerHeight - 150;

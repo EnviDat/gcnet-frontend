@@ -14,7 +14,8 @@
       <the-navigation :mini="drawerIsMini"
                       :navItems="navItems"
                       v-on:homeClick="catchHomeClick"
-                      v-on:drawerClick="catchDrawerClick">
+                      v-on:drawerClick="catchDrawerClick"
+                      v-on:stationOverviewClick="catchStationOverviewClick">
 
         <template v-slot:map>        
           <stations-map :currentStation="currentStation"
@@ -76,7 +77,10 @@ export default {
           this.resetNavigationChoice();
         }
       });
-
+    },
+    catchStationOverviewClick(){
+      this.showHomeScreen = false;
+      this.showOverview = true;
     },
     resetNavigationChoice(){
       this.navItems[0].active = false;
@@ -99,6 +103,7 @@ export default {
     },
     mapStationClick(stationUrl){
       this.showHomeScreen = false;
+      this.showOverview = false;
       // console.log('clicked on ' + stationUrl);
 
       const splits = stationUrl.split('/');
@@ -111,6 +116,8 @@ export default {
     },
     listStationClick(stationName) {
       this.showHomeScreen = false;
+      this.showOverview = false;
+
       this.currentStation = this.getStation(stationName);
     },
     getStation(stationName) {
@@ -165,6 +172,7 @@ export default {
       navItems: [
         { title: 'Greenland Map', icon: 'map', active: false },
         { title: 'Station List', icon: 'list', active: false },
+        { title: 'Stations Overview', icon: 'dashboard', active: false },
       ],
     }
   },

@@ -3,7 +3,8 @@
 
     <v-layout row wrap>
 
-      <v-flex my-1 xs12 sm5 md6
+      <!-- Domi: For single line only the "xs12" css-class is needed  -->
+      <v-flex my-1 xs12 
               v-for="station in $store.getters.stations"
               :key="station.name"
               v-show="station.active" >
@@ -11,10 +12,13 @@
         <base-click-card :title="station.name"
                         v-on:clicked="station.alias ? listClick(station.name) : ''"
                         :style="backgroundColor(station)"
-                        :img="randomImg(station.elevation + station.alias)"
-                        :randomImgPosition="true"
+                        :img="stationImg(station.alias)"
                         :disabled="!station.alias"
                         />
+                        <!-- Domi: remove randomImg and added Station Img
+                          :randomImgPosition="true"
+                          :img="randomImg(station.elevation + station.alias)"
+                          -->
 
       </v-flex>
 
@@ -63,6 +67,10 @@ export default {
     },
     listClick(cardTitle) {
       this.$emit('listClick', cardTitle);
+    },
+    stationImg(alias){
+      // Domi: used alias as key for the station file name
+      return this.cardImgs[`./${alias}.jpg`];
     },
     randomImg(name) {
       const keys = Object.keys(this.cardImgs);
