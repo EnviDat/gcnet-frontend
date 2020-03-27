@@ -2,13 +2,19 @@
   <v-app class="application" :style="dynamicBackground()">
 
     <v-content app >
-      <StationsDetailPage :currentStation="currentStation" />
-
-
+      <landing-page :currentStation="currentStation" 
+                    :showHomeScreen="showHomeScreen"
+                    :showOverview="showOverview"
+                    v-on:anyClick="catchAnyClick"
+                    v-on:mapViewClick="catchMapViewClick"
+                    v-on:listViewClick="catchListViewClick"
+                    v-on:updateDrawer="catchUpdateDrawer"
+                    />
     </v-content>
 
       <the-navigation :mini="drawerIsMini"
                       :navItems="navItems"
+                      :version="version"
                       v-on:homeClick="catchHomeClick"
                       v-on:drawerClick="catchDrawerClick"
                       v-on:stationOverviewClick="catchStationOverviewClick">
@@ -32,7 +38,7 @@
 import TheNavigation from '@/components/TheNavigation';
 import StationsMap from '@/components/StationsMap';
 import StationsList from '@/components/StationsList';
-import StationsDetailPage from '@/components/Pages/StationsDetailPage';
+import LandingPage from '@/components/Pages/LandingPage';
 
 export default {
   name: 'App',
@@ -40,7 +46,7 @@ export default {
     TheNavigation,
     StationsMap,
     StationsList,
-    StationsDetailPage,
+    LandingPage,
   },
   beforeMount() {
       const imgs = require.context('./assets/', false, /\.jpg$/);
@@ -168,8 +174,9 @@ export default {
       name: 'App',
       appBGImages: {},
       currentStation: null,
-      showHomeScreen: true,
-      showOverview: false,
+      showHomeScreen: false,
+      showOverview: true,
+      version: process.env.VUE_APP_VERSION,
       drawerIsMini: true, // this.$vuetify.breakpoint.smAndDown ? true : false,
       navItems: [
         { title: 'Greenland Map', icon: 'map', active: false },

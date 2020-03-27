@@ -18,6 +18,7 @@
 
           <v-list-tile-content>
             <v-list-tile-title>{{ gcNetHomeText }}</v-list-tile-title>
+            <p class="mb-0" style="font-size: 9px;" >{{ version }}</p>
           </v-list-tile-content>
 
         </v-list-tile>
@@ -92,6 +93,7 @@ export default {
   props: {
     mini: Boolean,
     navItems: Array,
+    version: String,
   },
   watch: {
     mini: function overwrite(){

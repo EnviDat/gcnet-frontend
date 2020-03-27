@@ -2,7 +2,24 @@
 
   <v-card >
     <v-card-title class="display-1">
-      {{ station.name }}
+      <v-layout row justify-space-around>
+        <v-flex grow>
+          {{ station.name }}
+        </v-flex>
+        <v-flex shrink>
+          <base-rectangle-button :buttonText="loadAllDataText"
+                                  :isSmall="true"
+                                  :color="hasData && !loadRecentData ? 'green' : 'primary'"
+                                  @clicked="loadRecentData = false; loadChart();" />
+        </v-flex>
+        <v-flex shrink>
+          <base-rectangle-button :buttonText="loadRecentDataText"
+                                  :isSmall="true"
+                                  :color="hasData && loadRecentData ? 'green' : 'primary'"
+                                  @clicked="loadRecentData = true; loadChart();" />
+        </v-flex>
+      </v-layout>
+
     </v-card-title>
 
     <v-card-text>
@@ -21,17 +38,6 @@
         Could not load the chart, an error occured: {{ dataError }}
       </v-flex>
 
-      <v-flex>
-        <base-rectangle-button :buttonText="loadAllDataText"
-                              :isSmall="true"
-                              :color="hasData && !loadRecentData ? 'green' : 'primary'"
-                              @clicked="loadRecentData = false; loadChart();" />
-
-        <base-rectangle-button :buttonText="loadRecentDataText"
-                              :isSmall="true"
-                              :color="hasData && loadRecentData ? 'green' : 'primary'"
-                              @clicked="loadRecentData = true; loadChart();" />
-      </v-flex>
 
       <!-- <v-flex v-show="hasData"
               xs12 >
@@ -45,20 +51,16 @@
         </div>    
       </v-flex>
       
-      <!-- <div v-show="hasData" ref="chartdiv" id="wchartdiv"
-            style="height: 350px;" >
-      </div>     -->
+      <v-flex v-show="hasData"
+              xs12 >
+        <div v-show="hasData" ref="chartdiv" id="wchartdiv"
+              style="height: 350px;" >
+        </div>    
+      </v-flex>
 
       </v-layout>
 
     </v-card-text>
-
-
-    <!-- <v-card-actions class="ma-0 pa-2"
-                    style="position: absolute; bottom: 0; right: 0;">
-
-
-    </v-card-actions> -->
   </v-card>
 
 </template>
@@ -135,6 +137,33 @@ export default {
 
       this.chartData = data;
     },
+    getJSONFilesurlObjs(station, loadRecentData){
+      const urlObjs = [];
+
+      for (let i = 0; i < this.filePrefixes.length; i++) {
+        const prefix = this.filePrefixes[i];
+        const fileName = `${station.id}${prefix}${loadRecentData ? '_v' : ''}.json`;
+
+        // add the timestamp to prevent server side caching
+        const url = process.env.NODE_ENV === 'production' ? `${this.baseurl}${fileName}?t=${Date.now()}` : `./testdata/${fileName}`;
+        urlObjs.push({ fileType: prefix, recentData: loadRecentData, url });
+      }
+
+      return urlObjs;
+    },
+    // loadJSONFiles(station, urlObjs) {    
+
+    //   for (let i = 0; i < urlObjs.length; i++) {
+    //     const urlObj = urlObjs[i];
+    //     axios.get(urlObj.url)
+    //     .then(response => {
+    //       this.
+    //     }).catch(error => {
+
+    //     }).finally();
+    //   }
+      
+    // },
     loadFileFromBackend(station, selector, loadRecentData){
 
       const fileName = loadRecentData ? station.shortFileName : station.fileName;
@@ -231,18 +260,24 @@ export default {
     showChartDataset(vueInstance, jsonRecords) {
       try {
         let chart = createSerialAMChartWeather('chartdiv', vueInstance.dateFormat, jsonRecords, 0, this.theme);
+        // chart.paddingTop = 25;
+        chart.events.on('ready', () => {
+          console.log('WindChart is ready');
+        });
+
+
         this.weatherChart = chart;
         
       } catch (error) {
         vueInstance.dataError = `Error creating the weather chart: ${error}`;
       }
 
-      try {
-        let chart = createSerialAMChartWind('wchartdiv', vueInstance.dateFormat, jsonRecords, 500, this.theme);
-        this.windChart = chart;
-      } catch (error) {
-        vueInstance.dataError = `Error creating the wind chart: ${error}`;
-      }
+      // try {
+      //   let chart = createSerialAMChartWind('wchartdiv', vueInstance.dateFormat, jsonRecords, 500, this.theme);
+      //   this.windChart = chart;
+      // } catch (error) {
+      //   vueInstance.dataError = `Error creating the wind chart: ${error}`;
+      // }
     },
   },
   data: () => ({
@@ -252,7 +287,7 @@ export default {
     recentDataJson: null,
     weatherChart: null,
     windChart: null,
-    dateFormat: 'MM/DD/YYYY HH:mm',
+    dateFormat: 'HH:mm DD/MM/YYYY',
     baseurl: 'https://www.wsl.ch/gcnet/data/',
     currentFileLoading: '',
     dataError: '',
@@ -260,6 +295,8 @@ export default {
     loadRecentDataText: 'Load data from last 14 days',
     loadAllDataText: 'Load all data',
     theme: 'light',
+    filePrefixes: ['temp', 'press', 'rad', 'wd', 'battvolt'],
+    jsonFiles: {},
   }),
 };
 </script>
