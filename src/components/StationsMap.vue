@@ -1,6 +1,6 @@
 <template>
   <div
-        :style="`height: ${iframeScreenHeight()}px; height: 80vh; overflow: auto;`"
+        :style="`height: ${iframeScreenHeight()}px; height: 75vh; overflow: auto;`"
         class="pa-1"
         id="map_svg"
         ref="map_svg"
