@@ -4,6 +4,7 @@
     <v-content app >
       <landing-page :currentStation="currentStation" 
                     :showHomeScreen="showHomeScreen"
+                    :showOverview="showOverview"
                     v-on:anyClick="catchAnyClick"
                     v-on:mapViewClick="catchMapViewClick"
                     v-on:listViewClick="catchListViewClick"
@@ -168,6 +169,7 @@ export default {
       appBGImages: {},
       currentStation: null,
       showHomeScreen: true,
+      showOverview: false,
       drawerIsMini: true, // this.$vuetify.breakpoint.smAndDown ? true : false,
       navItems: [
         { title: 'Greenland Map', icon: 'map', active: false },

@@ -138,6 +138,7 @@ export default {
   props: {
     currentStation: Object,
     showHomeScreen: Boolean,
+    showOverview: Boolean,
   },
   components: {
     BaseRectangleButton,
