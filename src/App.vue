@@ -14,6 +14,7 @@
 
       <the-navigation :mini="drawerIsMini"
                       :navItems="navItems"
+                      :version="version"
                       v-on:homeClick="catchHomeClick"
                       v-on:drawerClick="catchDrawerClick"
                       v-on:stationOverviewClick="catchStationOverviewClick">
@@ -170,6 +171,7 @@ export default {
       currentStation: null,
       showHomeScreen: true,
       showOverview: false,
+      version: process.env.VUE_APP_VERSION,
       drawerIsMini: true, // this.$vuetify.breakpoint.smAndDown ? true : false,
       navItems: [
         { title: 'Greenland Map', icon: 'map', active: false },
