@@ -190,8 +190,6 @@ function convertRecord(fileLineSplit, firstParameterIndex)
 
 const getDateFromJulianDays = function getDateFromJulianDays(year, julianDays){
     var time = new Date(year.toString());
-    // var time = new Date();
-    // dateFns.setYear(time, year);
 
     var splits = julianDays.split(".");
     var days = Number.parseInt(splits[0]);
