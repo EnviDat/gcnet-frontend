@@ -2,16 +2,17 @@
   <v-container fluid
                 fill-height
                 :class="$vuetify.breakpoint.smAndDown ? 'px-3 py-1' : 'px-2 py-1'"
-                @click="anyClick">  
+                @click="anyClick">
 
     <v-layout row wrap >
-  
+
       <v-flex xs12 mx-5
               v-if="!showHomeScreen && showOverview" >
 
           <v-layout column >
             <v-flex py-3 >
-                <DetailChart />
+                <DetailChartTemperature />
+<!--                <DetailChart />-->
 <!--              <chart :station="$store.getters.stations[0]" :delay="0" />-->
             </v-flex>
           </v-layout>
@@ -24,14 +25,15 @@
 
 <script>
 //import Chart from '@/components/Chart.vue';
-import DetailChart from "../DetailChart";
+//import DetailChart from "../DetailChart";
+import DetailChartTemperature from "../DetailChartTemperature";
 
 export default {
   props: {
     currentStation: Object,
   },
   components: {
-    DetailChart: DetailChart
+    DetailChartTemperature
   },
   data: () => ({
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',

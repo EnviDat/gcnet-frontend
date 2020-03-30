@@ -1,16 +1,23 @@
 <template>
   <v-app class="application" :style="dynamicBackground()">
 
-    <v-content app >
-      <landing-page :currentStation="currentStation" 
-                    :showHomeScreen="showHomeScreen"
-                    :showOverview="showOverview"
-                    v-on:anyClick="catchAnyClick"
-                    v-on:mapViewClick="catchMapViewClick"
-                    v-on:listViewClick="catchListViewClick"
-                    v-on:updateDrawer="catchUpdateDrawer"
-                    />
+      <v-content app >
+<!--      <StationsDetailPage :currentStation="currentStation" />-->
+        <DetailTemperaturePage :currentStation="currentStation" />
+
+
     </v-content>
+
+<!--    <v-content app >-->
+<!--      <landing-page :currentStation="currentStation" -->
+<!--                    :showHomeScreen="showHomeScreen"-->
+<!--                    :showOverview="showOverview"-->
+<!--                    v-on:anyClick="catchAnyClick"-->
+<!--                    v-on:mapViewClick="catchMapViewClick"-->
+<!--                    v-on:listViewClick="catchListViewClick"-->
+<!--                    v-on:updateDrawer="catchUpdateDrawer"-->
+<!--                    />-->
+<!--    </v-content>-->
 
       <the-navigation :mini="drawerIsMini"
                       :navItems="navItems"
@@ -38,15 +45,20 @@
 import TheNavigation from '@/components/TheNavigation';
 import StationsMap from '@/components/StationsMap';
 import StationsList from '@/components/StationsList';
-import LandingPage from '@/components/Pages/LandingPage';
+//import StationsDetailPage from "./components/Pages/StationsDetailPage";
+import DetailTemperaturePage from "./components/Pages/DetailTemperaturePage";
+//import LandingPage from '@/components/Pages/LandingPage';
+
 
 export default {
   name: 'App',
   components: {
+    DetailTemperaturePage,
     TheNavigation,
     StationsMap,
     StationsList,
-    LandingPage,
+  //  LandingPage,
+   // StationsDetailPage,
   },
   beforeMount() {
       const imgs = require.context('./assets/', false, /\.jpg$/);
