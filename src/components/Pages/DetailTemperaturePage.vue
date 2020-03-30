@@ -1,17 +1,19 @@
 <template>
   <v-container fluid
                 fill-height
-                :class="$vuetify.breakpoint.smAndDown ? 'px-3 py-1' : 'px-2 py-1'"
-                @click="anyClick">
+                :class="$vuetify.breakpoint.smAndDown ? 'px-3 py-1' : 'px-2 py-1'" >
+
 
     <v-layout row wrap >
 
-      <v-flex xs12 mx-5
-              v-if="!showHomeScreen && showOverview" >
+      <v-flex xs12 mx-5>
+
 
           <v-layout column >
-            <v-flex py-3 >
-                <DetailChartTemperature />
+            <v-flex  v-for="file in generateFileList" :key="file">
+
+
+                <DetailChartTemperature :url="file"/>
 <!--                <DetailChart />-->
 <!--              <chart :station="$store.getters.stations[0]" :delay="0" />-->
             </v-flex>
@@ -36,11 +38,14 @@ export default {
     DetailChartTemperature
   },
   data: () => ({
-    baseStationURL: 'https://www.wsl.ch/gcnet/data/',
+    // baseStationURL: 'https://www.wsl.ch/gcnet/data/',
+    baseStationURL: './testdata/',
     loadingStation: false,
-    fileNames: ['battvolt.json', 'battvolt_v.json', 'press.json', 'press_v.json', 'rad.json', 'rad_v.json', 'rh.json', 'rh_v.json', 'sheight.json', 'sheight_v.json',
-    'stemp.json', 'stemp_v.json', 'temp.json', 'temp_v.json', 'wd.json', 'wd_v.json', 'ws.json', 'ws_v.json']
-
+    // fileNames: ['battvolt.json', 'battvolt_v.json', 'press.json', 'press_v.json', 'rad.json', 'rad_v.json', 'rh.json', 'rh_v.json', 'sheight.json', 'sheight_v.json',
+    // 'stemp.json', 'stemp_v.json', 'temp.json', 'temp_v.json', 'wd.json', 'wd_v.json', 'ws.json', 'ws_v.json']
+    // fileNames: ['battvolt_v.json', 'press_v.json', 'rad_v.json', 'rh_v.json', 'sheight_v.json',
+    // 'stemp_v.json', 'temp_v.json', 'wd_v.json', 'ws_v.json']
+    fileNames: ['temp_v.json', 'press_v.json']
   }),
   watch: {
     // currentStation: function updateStation() {
@@ -49,15 +54,15 @@ export default {
     //   }
     // },
   },
-  methods: {
+  computed: {
     // loadStation() {
     // },
     generateFileList() {
-      this.fileList = []
+      let fileList = []
       for (let i = 0; i < this.fileNames.length; i++) {
-        this.fileList.push(this.currentStation.id + this.fileNames[i])
+        fileList.push(this.baseStationURL + this.currentStation.id + this.fileNames[i])
       }
-      return this.FileList
+      return fileList
     }
   },
 

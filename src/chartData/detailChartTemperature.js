@@ -40,6 +40,7 @@ const createLineChartTemperature = function createLineChart(selector, dateFormat
     dateAxis.renderer.grid.template.strokeDasharray = "4";
 
     chart.dateFormatter.dateFormat = dateFormat;
+    // chart.dateFormatter.inputDateFormat = "x";
 
     dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]");
 

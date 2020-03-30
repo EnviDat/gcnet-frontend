@@ -1,46 +1,145 @@
 <template>
+
+
   <div>
-    <br />
-    <h1 class="display-4"><strong>GC-Net</strong></h1>
-    <br />
-    <br />
-    <table class="table table-bordered table-sm">
-      <thead class="thead-dark">
-        <tr>
-          <th>Date</th>
-          <th>Air Temperature 1</th>
-          <th>Air Temperature 2</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="record in records" :key="record.id" :record="record">
-          <th>{{ record.timestamp }}</th>
-          <th>{{ record.AirTC1 }}</th>
-          <th>{{ record.AirTC1 }}</th>
-        </tr>
-      </tbody>
-    </table>
+
+
+    <div id="chartdiv"
+              style="height: 350px;" >
+    </div>
+
+
+
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import {createLineChart} from "../chartData/charts";
+import * as am4core from "@amcharts/amcharts4/core";
+//import * as bullets from "@amcharts/amcharts4/plugins/bullets";
+
 export default {
-  data() {
+  props: {
+    url: String,
+  },
+  data()  {
     return {
-      records: []
+      graphs: [],
+      dateFormat: 'HH:mm DD/MM/YYYY',
+      records: [],
+      valueFieldMapping: {
+      'temp': ['AirTC1', 'AirTC2'],
+      'press': ['press'],
+      'ws': ['WS1', 'WS2'],
+    },
+      seriesSettings: {
+      // lineStrokeWidth: 3,
+      // lineOpacity: 1,
+      // // the auto gap depends on the baseInterval, which might be "hours"
+      // // works if the lineConnect is false
+      // lineAutoGap: 2,
+      // lineConnect: false,
+      // bulletsStrokeWidth: 2,
+      bulletsRadius: 3,
+      // bulletFill: 'black',
+      // bulletsfillOpacity: 1,
+      // bulletsStrokeOpacity: 1,
+    },
     }
   },
   created() {
+      const keys = Object.keys(this.valueFieldMapping);
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        if (this.url.includes(key)) {
+          const dataParameters = this.valueFieldMapping[key];
+          for (let j = 0; j < dataParameters.length; j++) {
+            const param = dataParameters[j];
+            this.graphs.push(this.buildGraph(param));
+          }
+        }
+
+      }
+
     axios
-      .get('https://www.wsl.ch/gcnet/data/0temp.json')
+      .get(this.url)
       .then(response => {
-        this.records = response.data
+        this.records = response.data;
+        this.loadChart();
       })
       .catch(error => {
         console.log('There was an error:' + error.response)
       })
-  }
+  },
+  computed: {
+    // TODO: replace with ChartID
+    // windChartId(){
+    //   return `${this.stationId}_wind`;
+    // },
+    weatherGraphs() {
+      return [{
+        "lineColor": "#F39D01",
+        "bullet": new am4core.Circle(),
+        "bulletRadius": this.seriesSettings.bulletsRadius,
+        "title": "Air Temperature 1",
+        "valueField": "AirT1",
+        "hideBulletsCount": 0
+      }, {
+        "lineColor": "#B0DE09",
+        "bullet": new am4core.Rectangle(),
+        "bulletRadius": this.seriesSettings.bulletsRadius * 2,
+        "title": "Air Temperature 2",
+        "valueField": "AirT2",
+        "hideBulletsCount": 0
+      // }, {
+      //   "lineColor": "#00F4FF",
+      //   "bullet": new am4core.Triangle(),
+      //   "bulletRadius": this.seriesSettings.bulletsRadius * 2,
+      //   "title": "Air Temperature-TC Air 1",
+      //   "valueField": "tc_air_1",
+      //   "hideBulletsCount": 0
+      // }, {
+      //   "lineColor": "#AAAAE5",
+      //   "bullet": new bullets.Star(),
+      //   "bulletRadius": this.seriesSettings.bulletsRadius * 2,
+      //   "title": "Air Temperature-TC Air 2",
+      //   "valueField": "tc_air_2",
+      //   "hideBulletsCount": 0
+      }];
+    },
+  },
+
+
+  methods: {
+    buildGraph(parameter){
+      return {
+        "lineColor": "#73C8A9",
+        "bullet": new am4core.Circle(),
+        "bulletRadius": this.seriesSettings.bulletsRadius,
+        "title": parameter,
+        "valueField": parameter,
+        "hideBulletsCount": 20
+      };
+    },
+    loadChart() {
+       try {
+        let chart = createLineChart('chartdiv', this.dateFormat, this.records, this.graphs, false);
+
+        // chart.events.on('ready', () => {
+        //   console.log('WeatherChart is ready');
+        // });
+
+
+        this.weatherChart = chart;
+
+      } catch (error) {
+        console.log(`Error creating the weather chart: ${error}`);
+      }
+
+    }
+  },
+
 }
 </script>
 
