@@ -1,6 +1,6 @@
 <template>
 
-  <v-card >
+  <v-card :id="_uid" :station="stationId" >
     <v-card-title class="display-1">
       <v-layout row justify-space-around>
         <v-flex grow>
@@ -53,14 +53,15 @@
 
       <v-flex v-show="hasData"
               xs12 >
-        <div ref="chartdiv" id="chartdiv"
+        <div :id="weatherChartId"
               style="height: 350px;" >
         </div>    
       </v-flex>
       
       <v-flex v-show="hasData"
               xs12 >
-        <div v-show="hasData" ref="chartdiv" id="wchartdiv"
+        <div v-show="hasData"
+              :id="windChartId"
               style="height: 350px;" >
         </div>    
       </v-flex>
@@ -97,6 +98,24 @@ export default {
     BaseIconButton,
   },
   mounted() {
+    // const url = './testdata/0temp_v.json';
+
+    // const keys = Object.keys(this.valueFieldMapping);
+
+    // for (let i = 0; i < keys.length; i++) {
+    //   const key = keys[i];
+
+    //   if (url.includes(key)) {
+    //     const dataParameters = this.valueFieldMapping[key];
+
+    //     for (let j = 0; j < dataParameters.length; j++) {
+    //       const param = dataParameters[j];
+    //       this.graphs.push(this.createGraph(param));          
+    //     }
+    //   }
+      
+    // }
+
     this.createJSONDataset = createJSONDataset;
 
     this.enhanceStation(this.station);
@@ -110,6 +129,15 @@ export default {
     hasData() {
       return !this.currentFileLoading && !this.dataError;
     },
+    weatherChartId(){
+      return `${this.stationId}_weather`;
+    },
+    windChartId(){
+      return `${this.stationId}_wind`;
+    },
+    stationId(){
+      return `${this._uid}_${this.station.alias}_${this.station.id}`;
+    },
     weatherGraphs(){
       return [{
         "lineColor": "#F39D01",
@@ -117,28 +145,28 @@ export default {
         "bulletRadius": this.seriesSettings.bulletsRadius,
         "title": "Atmos Pressure",
         "valueField": "pressure",
-        "hideBulletsCount": 0
+        "hideBulletsCount": 20
       }, {
         "lineColor": "#B0DE09",
         "bullet": new am4core.Rectangle(),
         "bulletRadius": this.seriesSettings.bulletsRadius * 2,
         "title": "Net Radiation",
         "valueField": "net_radiation",
-        "hideBulletsCount": 0
+        "hideBulletsCount": 20
       }, {
         "lineColor": "#00F4FF",
         "bullet": new am4core.Triangle(),
         "bulletRadius": this.seriesSettings.bulletsRadius * 2,
         "title": "Air Temperture-TC Air 1",
         "valueField": "tc_air_1",
-        "hideBulletsCount": 0
+        "hideBulletsCount": 20
       }, {
         "lineColor": "#AAAAE5",
         "bullet": new bullets.Star(),
         "bulletRadius": this.seriesSettings.bulletsRadius * 2,
         "title": "Air Temperture-TC Air 2",
         "valueField": "tc_air_2",
-        "hideBulletsCount": 0
+        "hideBulletsCount": 20
       }];
     },
     windGraphs(){
@@ -148,32 +176,43 @@ export default {
         "bulletRadius": this.seriesSettings.bulletsRadius,
         "title": "Wind Speed U1 M [m/s]",
         "valueField": "wind_speed_u1",
-        "hideBulletsCount": 0
+        "hideBulletsCount": 20
       }, {
         "lineColor": "#2E926F",
         "bullet": new am4core.Rectangle(),
         "bulletRadius": this.seriesSettings.bulletsRadius * 2,
         "title": "Wind Speed U2 N [m/s]",
         "valueField": "wind_speed_u2",
-        "hideBulletsCount": 0
+        "hideBulletsCount": 20
       }, {
         "lineColor": "#BD5532",
         "bullet": new am4core.Triangle(),
         "bulletRadius": this.seriesSettings.bulletsRadius * 2,
         "title": "Wind direction 1 O [deg]",
         "valueField": "wind_dir_u1",
-        "hideBulletsCount": 0
+        "hideBulletsCount": 20
       }, {
         "lineColor": "#6D2600",
         "bullet": new bullets.Star(),
         "bulletRadius": this.seriesSettings.bulletsRadius * 2,
         "title": "Wind direction 2 P [deg]",
         "valueField": "wind_dir_u2",
-        "hideBulletsCount": 0
+        "hideBulletsCount": 20
       }];
     },
   },
   methods: {
+    createGraph(parameter){
+      return {
+        "lineColor": "#73C8A9",
+        "bullet": new am4core.Circle(),
+        "bulletRadius": this.seriesSettings.bulletsRadius,
+        "title": parameter,
+        "valueField": parameter,
+        "hideBulletsCount": 20
+      };
+    },
+
     clearChart(){
       if (this.weatherChart) {
         this.weatherChart.dispose();
@@ -183,9 +222,9 @@ export default {
       }
     },
     loadChart(){
-      this.clearChart();
+      // this.clearChart();
 
-      this.loadFileFromBackend(this.station, this.$refs.chartdiv, this.loadRecentData);
+      this.loadFileFromBackend(this.station, this.loadRecentData);
     },
     loadDataText(){
       return this.loadRecentData ? this.loadRecentDataText : this.loadAllDataText;
@@ -244,7 +283,7 @@ export default {
     //   }
       
     // },
-    loadFileFromBackend(station, selector, loadRecentData){
+    loadFileFromBackend(station, loadRecentData){
 
       const fileName = loadRecentData ? station.shortFileName : station.fileName;
       this.currentFileLoading = fileName;
@@ -276,24 +315,24 @@ export default {
         that.currentFileLoading = ''
       });
     },
-    handleResponse(vueInstance, station, data){
-      if (vueInstance.currentFileLoading === station.fileName) {
-          vueInstance.fullData = data;
+    handleResponse(that, station, data){
+      if (that.currentFileLoading === station.fileName) {
+          that.fullData = data;
 
-          // vueInstance.useShortFile = false;
-          vueInstance.fillChart(vueInstance, vueInstance.fullData);
-      } else if (vueInstance.currentFileLoading === station.shortFileName) {
-          vueInstance.recentData = data;
+          // that.useShortFile = false;
+          that.fillChart(that, that.fullData);
+      } else if (that.currentFileLoading === station.shortFileName) {
+          that.recentData = data;
 
-          // vueInstance.useShortFile = true;
-          vueInstance.fillChart(vueInstance, vueInstance.recentData);
+          // that.useShortFile = true;
+          that.fillChart(that, that.recentData);
       } else {
           // ShowError("Dataset for " + this.currentFileLoading + " is empty ");
           // console.log("Dataset for " + that.currentFileLoading + " is empty ");
-          vueInstance.dataError = 'Dataset for " + that.currentFileLoading + " is empty ';
+          that.dataError = 'Dataset for " + that.currentFileLoading + " is empty ';
       }
 
-      // vueInstance.currentFileLoading = ''
+      // that.currentFileLoading = ''
     },
     getFileNameFromURL(url) {
         var splits = url.split('/');
@@ -309,63 +348,65 @@ export default {
       station.fileName = `${station.id}.csv`;
       station.shortFileName = `${station.id}_v.csv`;
     },
-    fillChart(vueInstance, data){
+    fillChart(that, data){
 
         var delimiter = '\\s+';
-        if (vueInstance.station.fileName.includes('.csv')){
+        if (that.station.fileName.includes('.csv')){
             delimiter = ',';
         }
 
         var jsonData = null;
-        // vueInstance.convertFilteToJsonData(data, delimiter, vueInstance.station.name, vueInstance.dateFormat);
+        // that.convertFilteToJsonData(data, delimiter, that.station.name, that.dateFormat);
 
         if (data !== undefined && data.length > 0){
 
-            jsonData = vueInstance.createJSONDataset(data, delimiter, vueInstance.station, vueInstance.dateFormat);
+            jsonData = that.createJSONDataset(data, delimiter, that.station, that.dateFormat);
 
             // dataset.data = cleanGOESDataset(roughData);
         } else {
-            console.log("Not data for station " + vueInstance.station.name);
+            console.log("No data for station " + that.station.name);
             return;
         }
 
-        if (vueInstance.loadRecentData){
-            vueInstance.recentDataJson = jsonData.records;
+        if (that.loadRecentData){
+            that.recentDataJson = jsonData.records;
         } else {
-            vueInstance.fullDataJson = jsonData.records;
+            that.fullDataJson = jsonData.records;
         }        
 
         // console.log("ConvertFilteToJsonData " + useShortFile);
 
-        vueInstance.showChartDataset(vueInstance);
+        that.showChartDataset(that);
     },
-    showChartDataset(vueInstance) {
-      const jsonRecords = vueInstance.loadRecentData ? vueInstance.recentDataJson : vueInstance.fullDataJson;
+    showChartDataset(that) {
+      const jsonRecords = that.loadRecentData ? that.recentDataJson : that.fullDataJson;
 
       try {
-        let chart = createLineChart('chartdiv', vueInstance.dateFormat, jsonRecords, vueInstance.weatherGraphs, vueInstance.groupData);
-
-        // chart.events.on('ready', () => {
-        //   console.log('WeatherChart is ready');
-        // });
-
-
-        this.weatherChart = chart;
+        if (!this.weatherChart) {
+          this.weatherChart = createLineChart(that.weatherChartId, that.dateFormat, jsonRecords, that.weatherGraphs, that.groupData);
+          // this.weatherChart.events.on('ready', () => {
+          //   console.log('WeatherChart is ready');
+          // });
+        } else {
+          this.weatherChart.data = jsonRecords;
+        }
         
       } catch (error) {
-        vueInstance.dataError = `Error creating the weather chart: ${error}`;
+        that.dataError = `Error creating the weather chart: ${error}`;
       }
 
       try {
-        let chart = createLineChart('wchartdiv', vueInstance.dateFormat, jsonRecords, vueInstance.windGraphs, vueInstance.groupData);
+        if (!this.windChart) {
+          this.windChart = createLineChart(that.windChartId, that.dateFormat, jsonRecords, that.windGraphs, that.groupData);
+          // this.windChart.events.on('ready', () => {
+          //   console.log('WindChart is ready');
+          // });
+        } else {
+          this.windChart.data = jsonRecords;
+        }
 
-        // chart.events.on('ready', () => {
-        //   console.log('WindChart is ready');
-        // });
-
-        this.windChart = chart;
       } catch (error) {
-        vueInstance.dataError = `Error creating the wind chart: ${error}`;
+        that.dataError = `Error creating the wind chart: ${error}`;
       }
     },
   },
@@ -390,7 +431,8 @@ export default {
       'temp': ['AirTC1', 'AirTC2'],
       'press': ['press'],
       'ws': ['WS1', 'WS2'],
-    },    
+    },
+    graphs: [],
     jsonFiles: {},
     seriesSettings: {
       // lineStrokeWidth: 3,

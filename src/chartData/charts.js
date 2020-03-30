@@ -18,6 +18,7 @@ const defaultSettings = {
 const defaultOptions = {
   queue: true,
   onlyShowOnViewport: true,
+  minPolylineStep: 20,
 }
 
 const createLineChart = function createLineChart(selector, dateFormat, chartData, graphs, groupData, chartOptions = defaultOptions, seriesSettings = defaultSettings)
@@ -42,9 +43,7 @@ const createLineChart = function createLineChart(selector, dateFormat, chartData
     chart.dateFormatter.dateFormat = dateFormat;
 
     dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
-    
-    am4core.options.minPolylineStep = 2;
-  
+      
     if (chartData.length > 350){
       dateAxis.baseInterval = {
         "timeUnit": "day",
