@@ -61,7 +61,7 @@ export default {
           const dataParameters = this.valueFieldMapping[key];
           for (let j = 0; j < dataParameters.length; j++) {
             const param = dataParameters[j];
-            this.graphs.push(this.buildGraph(param, j));
+            this.graphs.push(this.buildGraph(param));
           }
         }
 
@@ -103,17 +103,86 @@ export default {
 
 
   methods: {
-    buildGraph(parameter, colorIndex){
+    buildGraph(parameter){
 
-      const colorArray = ['#73C8A9', '#BD5532', '#6D2600', '#2E926F', ]
-      // add a count parameter to swap the color
-      let color = colorArray[colorIndex];
+      // Assign default lineColor
+      let color = '#73C8A9';
+
+      // Assign default titleString to data parameter (i.e. legend)
+      let titleString = parameter;
+
+      // Match lineColor for series to original GC-Net website chart colors and legend strings by evaluating parameter
+      switch (parameter) {
+         case 'AirTC1':
+             color = '#0EAACD';
+             titleString = 'Thermocouple 1';
+             break;
+         case 'AirTC2':
+             color = '#D26200';
+             titleString = 'Thermocouple 2';
+             break;
+         case 'RH1':
+             color = '#1DAFD7';
+             titleString = 'Relative humidity 1';
+             break;
+         case 'RH2':
+             color = '#393DA3';
+             titleString = 'Relative humidity 2';
+             break;
+         case 'NetRad':
+             color = '#1C5197';
+             titleString = 'Net radiation';
+             break;
+         case 'SWin':
+             color = '#E79F32';
+             titleString = 'Short-wave incoming';
+             break;
+         case 'SWout':
+             color = '#9A6008';
+             titleString = 'Short-wave outgoing';
+             break;
+         case 'Sheight1':
+             color = '#679DE2';
+             titleString = 'Snow height 1';
+             break;
+         case 'Sheight2':
+             color = '#3375CD';
+             titleString = 'Snow height 2';
+             break;
+         case 'WS1':
+             color = '#046401';
+             titleString = 'Wind-speed 1';
+             break;
+         case 'WS2':
+             color = '#5ED352';
+             titleString = 'Wind-speed 2';
+             break;
+         case 'WD1':
+             color = '#046401';
+             titleString = 'Wind-direction 1';
+             break;
+         case 'WD2':
+             color = '#2FCE32';
+             titleString = 'Wind-direction 2';
+             break;
+         case 'press':
+             color = '#FF01FF';
+             titleString = 'Atmospheric pressure';
+             break;
+         case 'Battvolt':
+             color = '#27AE61';
+             titleString = 'Battery voltage';
+             break;
+         default:
+             color = '#73C8A9';
+             titleString = parameter;
+      }
 
       return {
         "lineColor": color,
         "bullet": new am4core.Circle(),
         "bulletRadius": this.seriesSettings.bulletsRadius,
-        "title": parameter,
+        "title": titleString,
         "valueField": parameter,
         "hideBulletsCount": 10
       };
@@ -135,31 +204,6 @@ export default {
 
     },
 
-    // Function to load charts into multiple divs
-    loadChartDivs() {
-       try {
-        let fileCount = this.fileNames.length
-        for (let i = 0; i < fileCount; i++) {
-          let assignedDiv = this.chartdivID
-          let chart = createLineChart(assignedDiv, this.dateFormat, this.records, this.graphs, false);
-          // let assignedDiv = 'chartdiv' + i;
-          // let chart = createLineChart(assignedDiv, this.dateFormat, this.records, this.graphs, false);
-          this.weatherChart = chart;
-        }
-
-
-        // chart.events.on('ready', () => {
-        //   console.log('WeatherChrt is ready');
-        // });
-
-
-
-
-      } catch (error) {
-        console.log(`Error creating the weather chart: ${error}`);
-      }
-
-    }
   },
 
 }
