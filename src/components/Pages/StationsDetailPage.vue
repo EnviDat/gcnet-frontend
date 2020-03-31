@@ -11,26 +11,11 @@
 
           <v-layout column >
 
-            <v-flex  v-for="(file, index) in generateFileList" :key="file">
-                  <DetailChart :url="file" v-bind:chartdivID="`chartdiv${index}`"/>
+            <v-flex  v-for="file in generateFileList" :key="file">
+
+              <DetailChart :url="baseStationURL + file" :chartdivID="file"/>
+
             </v-flex>
-
-<!--            <v-flex  v-bind:url=generateFileList[0]>-->
-<!--                <DetailChart v-bind:url=generateFileList[0] />-->
-<!--            </v-flex>-->
-
-<!--            <v-flex  v-bind:url=generateFileList[1]>-->
-<!--                <DetailChartTest v-bind:url=generateFileList[1] />-->
-<!--            </v-flex>-->
-
-<!--              Base Code!-->
-<!--            <v-flex  v-for="file in generateFileList" :key="file">-->
-<!--                <DetailChart :url="file"/>-->
-<!--            </v-flex>-->
-
-<!--            <v-flex  v-for="file in generateFileList" :key="file">-->
-<!--                <DetailChartTest :url="file"/>-->
-<!--            </v-flex>-->
 
           </v-layout>
 
@@ -78,9 +63,16 @@ export default {
     // },
     generateFileList() {
       let fileList = []
-      for (let i = 0; i < this.fileNames.length; i++) {
-        fileList.push(this.baseStationURL + this.currentStation.id + this.fileNames[i])
+
+      if (!this.currentStation){
+        // handle empty case, just return the empty list
+        return fileList;
       }
+
+      for (let i = 0; i < this.fileNames.length; i++) {
+        fileList.push(this.currentStation.id + this.fileNames[i])
+      }
+
       return fileList
     }
   },
