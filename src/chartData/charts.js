@@ -1,7 +1,7 @@
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 
-const defaultSettings = {
+const defaultSeriesSettings = {
   lineStrokeWidth: 3,
   lineOpacity: 1,
   // the auto gap depends on the baseInterval, which might be "hours"
@@ -13,6 +13,7 @@ const defaultSettings = {
   bulletFill: 'black',
   bulletsfillOpacity: 1,
   bulletsStrokeOpacity: 1,
+  reloadFrequency: 0,
 };
 
 const defaultOptions = {
@@ -26,11 +27,21 @@ const defaultFormatingInfos = {
   inputFormat: null,
 }
 
-const createLineChart = function createLineChart(selector, dateValueField, chartData, graphs, groupData, chartOptions = defaultOptions, seriesSettings = defaultSettings, dateFormatingInfos = defaultFormatingInfos)
+const createLineChart = function createLineChart(selector, dateValueField, chartData, graphs, groupData,
+                                                    chartOptions = defaultOptions, seriesSettings = defaultSeriesSettings,
+                                                    dateFormatingInfos = defaultFormatingInfos)
 {
+    am4core.options.queue = chartOptions.queue;
+    am4core.options.onlyShowOnViewport = chartOptions.onlyShowOnViewport;
+
     var chart = am4core.create(selector, am4charts.XYChart);
+    chart.hiddenState.properties.opacity = 0;
     chart.options = chartOptions;
-    chart.data = chartData;
+
+    if (chartData) {
+        // chartData is optional, to be able to give the series directly a datasource
+        chart.data = chartData;
+    }
 
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.dataFields.category = dateValueField;
@@ -52,7 +63,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
 
     dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
       
-    if (chartData.length > 350){
+    if (chartData && chartData.length > 350){
       dateAxis.baseInterval = {
         "timeUnit": "day",
         "count": 1,
@@ -111,7 +122,25 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
 
     let series = new am4charts.LineSeries();
     series.name = graph.title;
+    series.hidden = graph.hidden ? graph.hidden : false;
+
+    if (graph.dataUrl) {
+        series.dataSource.url = graph.dataUrl;
+
+        series.dataSource.events.on('error', (err) => {
+            console.log(`${graph.title} got an error: ${err}`);
+        });
+
+        series.dataSource.events.on('done', () => {
+            console.log(`${graph.title} finished loading`);
+        });
+
+        series.dataSource.reloadFrequency = seriesSettings.reloadFrequency;
+        series.dataSource.updateCurrentData = true;
+    }
+
     series.tooltipText = "{name}: [bold] {valueY}";
+
     series.yAxis = valueAxis;
     series.xAxis = dateAxis;
   
@@ -145,7 +174,7 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
   
     chart.series.push(series);
 
-    if (count <= 0) {
+    if (count <= 0 && scrollbarX) {
       scrollbarX.series.push(series);
       scrollbarX.scrollbarChart.xAxes.values[count].renderer.labels.template.inside = false;
       scrollbarX.scrollbarChart.xAxes.values[count].renderer.labels.template.dy = -50;
@@ -154,7 +183,124 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
     return chart;
 }
 
+const createMicroLineChart = function createMicroLineChart(selector, dateValueField, chartData, graphs, groupData,
+                                                            seriesSettings = defaultSeriesSettings,
+                                                            dateFormatingInfos = defaultFormatingInfos) {
+  
+  am4core.options.queue = defaultOptions.queue;
+  // am4core.options.onlyShowOnViewport = defaultOptions.onlyShowOnViewport;
+
+  var chart = am4core.create(selector, am4charts.XYChart);
+  // chart.options = { minPolylineStep: 10 };
+  chart.padding(0, 0, 0, 0);
+
+  if (chartData) {
+    // chartData is optional, to be able to give the series directly a datasource
+    chart.data = chartData;
+  }
+
+  var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+  dateAxis.dataFields.category = dateValueField;
+  dateAxis.groupData = groupData;
+
+  dateAxis.renderer.grid.template.disabled = true;
+  dateAxis.renderer.labels.template.disabled = true;
+  // dateAxis.startLocation = 0.5;
+  // dateAxis.endLocation = 0.7;
+  dateAxis.cursorTooltipEnabled = false;
+
+  chart.dateFormatter.dateFormat = dateFormatingInfos.dateFormat;
+  if (dateFormatingInfos.inputFormat) {
+    chart.dateFormatter.inputDateFormat = dateFormatingInfos.inputFormat;
+  }
+
+  if (chartData && chartData.length > 350) {
+    dateAxis.baseInterval = {
+      "timeUnit": "day",
+      "count": 1,
+    }
+  } else {
+    dateAxis.baseInterval = {
+      "timeUnit": "hour",
+      "count": 1,
+    }
+  }
+
+  let graph = graphs[0];
+  
+  let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+  valueAxis.renderer.labels.template.fill = am4core.color(graph.lineColor);
+  valueAxis.extraMin = 0.1;
+  valueAxis.extraMax = 0.1;
+
+  valueAxis.renderer.grid.template.disabled = true;
+  valueAxis.renderer.baseGrid.disabled = true;
+  valueAxis.renderer.labels.template.disabled = true;
+  valueAxis.cursorTooltipEnabled = false;
+
+  chart.cursor = new am4charts.XYCursor();
+  chart.cursor.lineY.disabled = true;
+
+  var series = chart.series.push(new am4charts.LineSeries());
+  series.name = graph.title;
+
+  if (graph.dataUrl) {
+    series.dataSource.url = graph.dataUrl;
+
+    series.dataSource.events.on('error', (err) => {
+      console.log(`${graph.title} got an error: ${err}`);
+    });
+
+    // series.dataSource.events.on('done', () => {
+    //   console.log(`${graph.title} finished loading`);
+    // });
+
+    series.dataSource.reloadFrequency = seriesSettings.reloadFrequency;
+    series.dataSource.updateCurrentData = true;
+  }  
+
+  series.tooltipText = `[bold]{${graph.valueField}}`;
+
+  series.yAxis = valueAxis;
+  series.xAxis = dateAxis;
+
+  series.dataFields.dateX = dateValueField;
+  series.dataFields.valueY = graph.valueField;
+  // series.tensionX = 0.8;
+  // series.strokeWidth = 2;
+  series.stroke = am4core.color(graph.lineColor);
+  series.strokeWidth = seriesSettings.lineStrokeWidth;
+  series.strokeOpacity = seriesSettings.lineOpacity;
+
+  // render data points as bullets
+  var bullet = series.bullets.push(new am4charts.CircleBullet());
+  bullet.circle.opacity = 0;
+  bullet.circle.propertyFields.opacity = "opacity";
+  bullet.circle.radius = seriesSettings.bulletsRadius;
+  
+  // let bullet = graph.bullet;
+  // // let bullet = new am4core.Circle();
+  // // let bullet = new am4core.Rectangle();
+  // bullet.width = graph.bulletRadius;
+  // bullet.height = graph.bulletRadius;
+  // bullet.radius = graph.bulletRadius;
+  // bullet.fill = seriesSettings.bulletFill;
+  // bullet.fillOpacity = seriesSettings.bulletsfillOpacity;
+  // bullet.stroke = am4core.color(graph.lineColor);
+  // bullet.strokeWidth = seriesSettings.bulletsStrokeWidth;
+  // bullet.strokeOpacity = seriesSettings.bulletsStrokeOpacity;
+  // bullet.stroke.color = am4core.color(graph.lineColor);
+
+  // series.bullets.push(bullet);
+
+  chart.maskBullets = true;
+
+  return chart;
+}
+
+
 
 export {
   createLineChart,
+  createMicroLineChart,
 }
