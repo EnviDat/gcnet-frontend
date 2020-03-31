@@ -380,15 +380,17 @@ export default {
     },
     showChartDataset(that) {
       const jsonRecords = that.loadRecentData ? that.recentDataJson : that.fullDataJson;
+      const dateFormatingInfos = { dateFormat: that.dateFormat };
 
       try {
         if (!this.weatherChart) {
-          this.weatherChart = createLineChart(that.weatherChartId, that.dateFormat, jsonRecords, that.weatherGraphs, that.groupData);
+          this.weatherChart = createLineChart(that.weatherChartId, 'time', jsonRecords, that.weatherGraphs, that.groupData, undefined, undefined, dateFormatingInfos);
           // this.weatherChart.events.on('ready', () => {
           //   console.log('WeatherChart is ready');
           // });
         } else {
           this.weatherChart.data = jsonRecords;
+          this.weatherChart.invalidateData();
         }
         
       } catch (error) {
@@ -397,12 +399,13 @@ export default {
 
       try {
         if (!this.windChart) {
-          this.windChart = createLineChart(that.windChartId, that.dateFormat, jsonRecords, that.windGraphs, that.groupData);
+          this.windChart = createLineChart(that.windChartId, 'time', jsonRecords, that.windGraphs, that.groupData, undefined, undefined, dateFormatingInfos);
           // this.windChart.events.on('ready', () => {
           //   console.log('WindChart is ready');
           // });
         } else {
           this.windChart.data = jsonRecords;
+          this.windChart.invalidateData();
         }
 
       } catch (error) {

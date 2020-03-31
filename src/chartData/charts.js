@@ -21,15 +21,20 @@ const defaultOptions = {
   minPolylineStep: 20,
 }
 
-const createLineChart = function createLineChart(selector, dateFormat, chartData, graphs, groupData, chartOptions = defaultOptions, seriesSettings = defaultSettings)
+const defaultFormatingInfos = {
+  dateFormat: '',
+  inputFormat: null,
+}
+
+const createLineChart = function createLineChart(selector, dateValueField, chartData, graphs, groupData, chartOptions = defaultOptions, seriesSettings = defaultSettings, dateFormatingInfos = defaultFormatingInfos)
 {
     var chart = am4core.create(selector, am4charts.XYChart);
     chart.options = chartOptions;
     chart.data = chartData;
 
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    dateAxis.dataFields.category = "time";
-    dateAxis.renderer.minGridDistance = 40;
+    dateAxis.dataFields.category = dateValueField;
+    dateAxis.renderer.minGridDistance = 50;
     dateAxis.groupData = groupData;
     
     dateAxis.renderer.inside = true;
@@ -40,7 +45,10 @@ const createLineChart = function createLineChart(selector, dateFormat, chartData
     // dateAxis.renderer.labels.template.horizontalCenter = "right";
     dateAxis.renderer.grid.template.strokeDasharray = "4";
 
-    chart.dateFormatter.dateFormat = dateFormat;
+    chart.dateFormatter.dateFormat = dateFormatingInfos.dateFormat;
+    if (dateFormatingInfos.inputFormat) {
+      chart.dateFormatter.inputDateFormat = dateFormatingInfos.inputFormat;
+    }
 
     dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
       
@@ -68,13 +76,13 @@ const createLineChart = function createLineChart(selector, dateFormat, chartData
   
     const scrollbarX = new am4charts.XYChartScrollbar();
 
-    // addGraphToChart(chart, graphs[0], dateAxis, 0, scrollbarX, seriesSettings);
-    // addGraphToChart(chart, graphs[1], dateAxis, 1, scrollbarX, seriesSettings);
+    // addGraphToChart(chart, graphs[0], dateAxis, dateValueField, 0, scrollbarX, seriesSettings);
+    // addGraphToChart(chart, graphs[1], dateAxis, dateValueField, 1, scrollbarX, seriesSettings);
 
     for (let i = 0; i < graphs.length; i++) {
       const graph = graphs[i];
         
-      chart = addGraphToChart(chart, graph, dateAxis, i, scrollbarX, seriesSettings);
+        chart = addGraphToChart(chart, graph, dateAxis, dateValueField, i, scrollbarX, seriesSettings);
     }
 
     chart.maskBullets = true;
@@ -86,7 +94,7 @@ const createLineChart = function createLineChart(selector, dateFormat, chartData
 }
 
 
-function addGraphToChart(chart, graph, dateAxis, count, scrollbarX, seriesSettings) {
+function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings) {
 
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     // valueAxis.title.text = graph.title;
@@ -107,8 +115,7 @@ function addGraphToChart(chart, graph, dateAxis, count, scrollbarX, seriesSettin
     series.yAxis = valueAxis;
     series.xAxis = dateAxis;
   
-    // "time" refeers to the json element "time" from the data_conversion.js
-    series.dataFields.dateX = "time";
+    series.dataFields.dateX = dateValueField;
     series.dataFields.valueY = graph.valueField;
     series.minBulletDistance = graph.hideBulletsCount;
 
