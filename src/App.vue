@@ -2,11 +2,10 @@
   <v-app class="application" :style="dynamicBackground()">
 
       <v-content app >
-<!--      <StationsDetailPage :currentStation="currentStation" />-->
-        <DetailTemperaturePage :currentStation="currentStation" />
 
+        <StationsDetailPage :currentStation="currentStation" />
 
-    </v-content>
+      </v-content>
 
 <!--    <v-content app >-->
 <!--      <landing-page :currentStation="currentStation" -->
@@ -45,20 +44,19 @@
 import TheNavigation from '@/components/TheNavigation';
 import StationsMap from '@/components/StationsMap';
 import StationsList from '@/components/StationsList';
-//import StationsDetailPage from "./components/Pages/StationsDetailPage";
-import DetailTemperaturePage from "./components/Pages/DetailTemperaturePage";
+import StationsDetailPage from "./components/Pages/StationsDetailPage";
+//import DetailTemperaturePage from "./components/Pages/DetailTemperaturePage";
 //import LandingPage from '@/components/Pages/LandingPage';
 
 
 export default {
   name: 'App',
   components: {
-    DetailTemperaturePage,
     TheNavigation,
     StationsMap,
     StationsList,
   //  LandingPage,
-   // StationsDetailPage,
+    StationsDetailPage,
   },
   beforeMount() {
       const imgs = require.context('./assets/', false, /\.jpg$/);

@@ -7,7 +7,7 @@ const defaultSettings = {
   // the auto gap depends on the baseInterval, which might be "hours"
   // works if the lineConnect is false
   lineAutoGap: 2,
-  lineConncet: false,
+  lineConnect: false,
   bulletsStrokeWidth: 2,
   bulletsRadius: 3,
   bulletFill: 'black',
@@ -27,7 +27,7 @@ const createLineChart = function createLineChart(selector, dateFormat, chartData
     chart.data = chartData;
 
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    dateAxis.dataFields.category = "time";
+    dateAxis.dataFields.category = "timestamp";
     dateAxis.renderer.minGridDistance = 40;
     dateAxis.groupData = groupData;
     
@@ -40,6 +40,7 @@ const createLineChart = function createLineChart(selector, dateFormat, chartData
     dateAxis.renderer.grid.template.strokeDasharray = "4";
 
     chart.dateFormatter.dateFormat = dateFormat;
+     chart.dateFormatter.inputDateFormat = "x";
 
     dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
     
@@ -108,8 +109,8 @@ function addGraphToChart(chart, graph, dateAxis, count, scrollbarX, seriesSettin
     series.yAxis = valueAxis;
     series.xAxis = dateAxis;
   
-    // "time" refeers to the json element "time" from the data_conversion.js
-    series.dataFields.dateX = "time";
+    // "timestamp" refeers to the json element "timestamp" from the data_conversion.js
+    series.dataFields.dateX = "timestamp";
     series.dataFields.valueY = graph.valueField;
     series.minBulletDistance = graph.hideBulletsCount;
 
