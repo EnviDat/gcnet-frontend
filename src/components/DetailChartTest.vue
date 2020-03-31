@@ -4,7 +4,6 @@
 
     <div id="chartdiv1"
               style="height: 350px;" >
-             <p>test text</p>
     </div>
 
 <!--     <div id="chartdiv0"-->

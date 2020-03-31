@@ -2,19 +2,19 @@
 
   <div>
 
-    <div id="chartdiv"
+<!--    <div id="chartdiv"-->
+<!--              style="height: 350px;" >-->
+<!--    </div>-->
+
+     <div id="chartdiv0"
               style="height: 350px;" >
+             <p>chartdiv0</p>
     </div>
 
-<!--     <div id="chartdiv0"-->
-<!--              style="height: 350px;" >-->
-<!--             <p>chartdiv0</p>-->
-<!--    </div>-->
-
-<!--      <div id="chartdiv1"-->
-<!--              style="height: 350px;" >-->
-<!--             <p>chartdiv1</p>-->
-<!--    </div>-->
+      <div id="chartdiv1"
+              style="height: 350px;" >
+             <p>chartdiv1</p>
+    </div>
 
   </div>
 </template>
@@ -28,8 +28,8 @@ import * as am4core from "@amcharts/amcharts4/core";
 export default {
   props: {
     url: String,
-    // Trying to create unique chartdivID
-    //chartdivID: Number,
+    // Trying to create unique chart div ID
+    chartdivID: String,
   },
   data()  {
     return {
@@ -75,7 +75,7 @@ export default {
       .then(response => {
         this.records = response.data;
         this.loadChart();
-     //   this.loadChartDivs();
+      //  this.loadChartDivs();
       })
       .catch(error => {
         console.log('There was an error:' + error.response)
@@ -153,8 +153,10 @@ export default {
        try {
         let fileCount = this.fileNames.length
         for (let i = 0; i < fileCount; i++) {
-          let assignedDiv = 'chartdiv' + i;
+          let assignedDiv = this.chartdivID
           let chart = createLineChart(assignedDiv, this.dateFormat, this.records, this.graphs, false);
+          // let assignedDiv = 'chartdiv' + i;
+          // let chart = createLineChart(assignedDiv, this.dateFormat, this.records, this.graphs, false);
           this.weatherChart = chart;
         }
 

@@ -11,21 +11,23 @@
 
           <v-layout column >
 
-            <v-flex  v-bind:url=generateFileList[0]>
-                <DetailChart v-bind:url=generateFileList[0] />
+            <v-flex  v-for="(file, index) in generateFileList" :key="file">
+                  <DetailChart :url="file" v-bind:chartdivID="`chartdiv${index}`"/>
             </v-flex>
 
-            <v-flex  v-bind:url=generateFileList[1]>
-                <DetailChartTest v-bind:url=generateFileList[1] />
-            </v-flex>
+<!--            <v-flex  v-bind:url=generateFileList[0]>-->
+<!--                <DetailChart v-bind:url=generateFileList[0] />-->
+<!--            </v-flex>-->
 
+<!--            <v-flex  v-bind:url=generateFileList[1]>-->
+<!--                <DetailChartTest v-bind:url=generateFileList[1] />-->
+<!--            </v-flex>-->
 
-
-
+<!--              Base Code!-->
 <!--            <v-flex  v-for="file in generateFileList" :key="file">-->
 <!--                <DetailChart :url="file"/>-->
 <!--            </v-flex>-->
-<!--              -->
+
 <!--            <v-flex  v-for="file in generateFileList" :key="file">-->
 <!--                <DetailChartTest :url="file"/>-->
 <!--            </v-flex>-->
@@ -42,7 +44,7 @@
 <script>
 //import Chart from '@/components/Chart.vue';
 import DetailChart from "../DetailChart";
-import DetailChartTest from "../DetailChartTest";
+//import DetailChartTest from "../DetailChartTest";
 
 export default {
   props: {
@@ -50,7 +52,7 @@ export default {
   },
   components: {
     DetailChart,
-    DetailChartTest
+   // DetailChartTest
   },
   data: () => ({
     // baseStationURL: 'https://www.wsl.ch/gcnet/data/',
