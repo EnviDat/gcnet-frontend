@@ -6,19 +6,19 @@
 
     <v-layout row wrap >
 
-      <!-- <v-flex xs12
+      <!-- <v-flex xs2
               py-3 >
         
-        <chart :station="stations[0]" :JSONUrls="getJSONUrls(stations[0])" :fileValueMapping="fileValueMapping" />
+        <micro-chart :station="stations[0]" :JSONUrls="getJSONUrls(stations[0])" :fileValueMapping="fileValueMapping" />
 
       </v-flex> -->
 
       <v-flex v-for="station in stations"
               :key="`${station.id}_${station.alias}`"
-              xs12
+              xs2
               py-3 >
         
-        <mirco-chart :station="station" :JSONUrls="getJSONUrls(station)" :fileValueMapping="fileValueMapping" />
+        <micro-chart :station="station" :JSONUrls="getJSONUrls(station)" :fileValueMapping="fileValueMapping" />
 
       </v-flex>
 
@@ -37,14 +37,14 @@
 
 <script>
 // import Chart from '@/components/Chart.vue';
-import MircoChart from '@/components/MircoChart.vue';
+import MicroChart from '@/components/MicroChart.vue';
 
 export default {
   props: {
   },
   components: {
     // Chart,
-    MircoChart,
+    MicroChart,
   },
   data: () => ({
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',

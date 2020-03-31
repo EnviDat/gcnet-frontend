@@ -1,60 +1,43 @@
 <template>
 
   <v-card :id="_uid" :station="stationId" >
-    <v-card-title class="display-1">
-      <v-layout row justify-space-around>
-        <v-flex grow>
-          {{ station.name }}
-        </v-flex>
-        <v-flex shrink>
-          <base-rectangle-button :buttonText="loadAllDataText"
-                                  :isSmall="false"
-                                  :color="hasData && !loadRecentData ? 'green' : 'primary'"
-                                  @clicked="groupData = true; loadRecentData = false; loadChart();" />
-        </v-flex>
-        <v-flex shrink>
-          <base-rectangle-button :buttonText="loadRecentDataText"
-                                  :isSmall="false"
-                                  :color="hasData && loadRecentData ? 'green' : 'primary'"
-                                  @clicked="loadRecentData = true; loadChart();" />
-        </v-flex>
-        <v-flex shrink>
-          <base-icon-button materialIconName="compress"
-                                  :outlined="true"
-                                  :isToggled="groupData"
-                                  :iconColor="groupData ? 'white' : 'primary'"
-                                  @clicked="groupData = !groupData" />
-        </v-flex>
-      </v-layout>
+    <v-card-title >
 
-    </v-card-title>
+      <v-layout column>
+        <v-flex>
+          <v-layout row justify-space-between>
 
-    <v-card-text>
-      <v-layout row wrap>
-        
-        <v-flex v-if="!hasData"
-                xs12
-                pb-3 >
-          Loading {{ currentFileLoading }}
+            <v-flex grow>
+              {{ station.name }}
+            </v-flex>
+
+            <v-flex shrink>
+              {{ graphs && graphs[0] ? graphs[0].title : '' }}
+            </v-flex>
+          </v-layout>
         </v-flex>
 
-        <v-flex v-if="!currentFileLoading && dataError"
+        <v-flex xs12 style="height: 20px;">
+          <div class='skeleton skeleton-animation-shimmer' >
+            <div class='bone bone-type-image'></div>
+          </div>
+        </v-flex>
+
+        <v-flex v-if="dataError"
               xs12
-              pb-3
               style="color: red;" >
-          Could not load the chart, an error occured: {{ dataError }}
+          {{ dataError }}
         </v-flex>
 
-        <v-flex v-show="hasData"
-                xs12 >
-          <div :id="weatherChartId"
-                style="width: 200px; height: 30px; border: 1px dotted #eee;" >
+        <v-flex xs12 >
+          <div :id="microChartId"
+                style="width: 100%; height: 50px; border: 1px solid #eee;" >
           </div>    
         </v-flex>
 
       </v-layout>
 
-    </v-card-text>
+    </v-card-title>
   </v-card>
 
 </template>
@@ -63,13 +46,13 @@
 <script>
 import * as am4core from '@amcharts/amcharts4/core';
 import microchart from '@amcharts/amcharts4/themes/microchart';
+// import animated from '@amcharts/amcharts4/themes/animated';
 import * as bullets from '@amcharts/amcharts4/plugins/bullets';
 
 am4core.useTheme(microchart);
+// am4core.useTheme(animated);
 
-import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-import { createLineChart } from "@/chartData/charts";
+import { createMicroLineChart } from "@/chartData/charts";
 
 
 export default {
@@ -94,8 +77,6 @@ export default {
     },
   },
   components: {
-    BaseRectangleButton,
-    BaseIconButton,
   },
   mounted() {
     this.urlValueMapping = this.getUrlValueMapping();
@@ -110,13 +91,10 @@ export default {
   computed: {
     hasData() {
       // return !this.currentFileLoading && !this.dataError;
-      return this.weatherChart && this.weatherChart.isReady();
+      return this.microChart && this.microChart.isReady();
     },
-    weatherChartId(){
-      return `${this.stationId}_weather`;
-    },
-    windChartId(){
-      return `${this.stationId}_wind`;
+    microChartId(){
+      return `${this.stationId}_micro`;
     },
     stationId(){
       return `${this._uid}_${this.station.alias}_${this.station.id}`;
@@ -193,11 +171,8 @@ export default {
       };
     },
     clearChart(){
-      if (this.weatherChart) {
-        this.weatherChart.dispose();
-      }
-      if (this.windChart) {
-        this.windChart.dispose();
+      if (this.microChart) {
+        this.microChart.dispose();
       }
     },
     loadJsonCharts(){
@@ -207,43 +182,38 @@ export default {
       };
 
       try {
-        // if (!this.weatherChart) {
-          this.weatherChart = createLineChart(this.weatherChartId, 'timestamp', null, this.graphs, this.groupData, undefined, undefined, dateFormatingInfos);
-          // this.weatherChart.events.on('ready', () => {
-          //   console.log('WeatherChart is ready');
+        // if (!this.microChart) {
+          this.microChart = createMicroLineChart(this.microChartId, 'timestamp', null, this.graphs, this.groupData, undefined, dateFormatingInfos);
+          // this.microChart.events.on('ready', () => {
+          //   console.log('microChart is ready');
           // });
         // } else {
-        //   this.weatherChart.data = jsonRecords;
-        //   this.weatherChart.invalidateRawData();
+        //   this.microChart.data = jsonRecords;
+        //   this.microChart.invalidateRawData();
         // }
         
       } catch (error) {
-        this.dataError = `Error creating the weather chart: ${error}`;
+        this.dataError = `Error creating chart: ${error}`;
       }
 
     },
   },
   data: () => ({
-    weatherChart: null,
-    windChart: null,
+    microChart: null,
     dateFormat: 'HH:mm DD/MM/YYYY',
-    currentFileLoading: '',
     dataError: '',
     loadRecentData: true,
-    loadRecentDataText: 'Load data from last 14 days',
-    loadAllDataText: 'Load all data',
-    theme: 'light',
     groupData: true,
     graphs: [],
     seriesSettings: {
-      // lineStrokeWidth: 3,
+      lineStrokeWidth: 3,
       // lineOpacity: 1,
       // // the auto gap depends on the baseInterval, which might be "hours"
       // // works if the lineConnect is false
       // lineAutoGap: 2,
       // lineConncet: false,
       // bulletsStrokeWidth: 2,
-      bulletsRadius: 3,
+      bulletsRadius: 2,
       // bulletFill: 'black',
       // bulletsfillOpacity: 1,
       // bulletsStrokeOpacity: 1,
