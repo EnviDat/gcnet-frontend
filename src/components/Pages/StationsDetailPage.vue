@@ -11,12 +11,22 @@
 
           <v-layout column >
 
-            <v-flex  v-for="file in generateFileList" :key="file">
-
-                <DetailChart :url="file"/>
-<!--                <DetailChart />-->
-<!--              <chart :station="$store.getters.stations[0]" :delay="0" />-->
+            <v-flex >
+                <DetailChart url="./testdata/0temp_v.json"/>
             </v-flex>
+
+            <v-flex>
+                <DetailChartTest url="./testdata/0press_v.json"/>
+            </v-flex>
+
+
+<!--            <v-flex  v-for="file in generateFileList" :key="file">-->
+<!--                <DetailChart :url="file"/>-->
+<!--            </v-flex>-->
+<!--              -->
+<!--            <v-flex  v-for="file in generateFileList" :key="file">-->
+<!--                <DetailChartTest :url="file"/>-->
+<!--            </v-flex>-->
 
           </v-layout>
 
@@ -24,19 +34,21 @@
 
     </v-layout>
   </v-container>
+
 </template>
 
 <script>
 //import Chart from '@/components/Chart.vue';
 import DetailChart from "../DetailChart";
-//import DetailChartTemperature from "../DetailChartTemperature";
+import DetailChartTest from "../DetailChartTest";
 
 export default {
   props: {
     currentStation: Object,
   },
   components: {
-    DetailChart
+    DetailChart,
+    DetailChartTest
   },
   data: () => ({
     // baseStationURL: 'https://www.wsl.ch/gcnet/data/',
@@ -48,6 +60,7 @@ export default {
     // 'stemp_v.json', 'temp_v.json', 'wd_v.json', 'ws_v.json']
     fileNames: ['temp_v.json', 'press_v.json']
     //fileNames: ['temp_v.json']
+   // fileNames: ['press_v.json', 'rad_v.json']
   }),
   watch: {
     // currentStation: function updateStation() {

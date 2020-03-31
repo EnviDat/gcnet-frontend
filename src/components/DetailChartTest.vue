@@ -2,8 +2,9 @@
 
   <div>
 
-    <div id="chartdiv"
+    <div id="chartdiv1"
               style="height: 350px;" >
+             <p>test text</p>
     </div>
 
 <!--     <div id="chartdiv0"-->
@@ -133,7 +134,7 @@ export default {
     },
     loadChart() {
        try {
-        let chart = createLineChart('chartdiv', this.dateFormat, this.records, this.graphs, false);
+        let chart = createLineChart('chartdiv1', this.dateFormat, this.records, this.graphs, false);
 
         // chart.events.on('ready', () => {
         //   console.log('WeatherChrt is ready');

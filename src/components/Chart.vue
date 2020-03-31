@@ -129,14 +129,14 @@ export default {
         "lineColor": "#00F4FF",
         "bullet": new am4core.Triangle(),
         "bulletRadius": this.seriesSettings.bulletsRadius * 2,
-        "title": "Air Temperture-TC Air 1",
+        "title": "Air Temperature-TC Air 1",
         "valueField": "tc_air_1",
         "hideBulletsCount": 0
       }, {
         "lineColor": "#AAAAE5",
         "bullet": new bullets.Star(),
         "bulletRadius": this.seriesSettings.bulletsRadius * 2,
-        "title": "Air Temperture-TC Air 2",
+        "title": "Air Temperature-TC Air 2",
         "valueField": "tc_air_2",
         "hideBulletsCount": 0
       }];

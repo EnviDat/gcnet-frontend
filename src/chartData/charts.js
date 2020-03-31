@@ -45,8 +45,9 @@ const createLineChart = function createLineChart(selector, dateFormat, chartData
     dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
     
     am4core.options.minPolylineStep = 2;
-  
-    if (chartData.length > 350){
+
+    // Changed chartData.length from 350 to 10
+    if (chartData.length > 10){
       dateAxis.baseInterval = {
         "timeUnit": "day",
         "count": 1,
