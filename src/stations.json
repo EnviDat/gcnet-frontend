@@ -16,7 +16,7 @@
 		"latitude" : "69.56833",
 		"longitude" : "49.31582",
 		"elevation" : 1176,
-		"startdate" : "1990.30  ",
+		"startdate" : "1990.30",
 		"active" : true,
 		"alias" : "swisscamp",
 		"data" : 1
@@ -27,7 +27,7 @@
 		"latitude" : "69.87975",
 		"longitude" : "46.98667",
 		"elevation" : 2022,
-		"startdate" : "1995.39    ",
+		"startdate" : "1995.39",
 		"active" : true,
 		"alias" : "crawfordpoint",
 		"data" : 1
@@ -38,7 +38,7 @@
 		"latitude" : "73.84189",
 		"longitude" : "49.49831",
 		"elevation" : 2369,
-		"startdate" : "1995.41    ",
+		"startdate" : "1995.41",
 		"active" : true,
 		"alias" : "nasau",
 		"data" : 0
@@ -49,7 +49,7 @@
 		"latitude" : "77.13781",
 		"longitude" : "61.04113",
 		"elevation" : 1887,
-		"startdate" : "1995.43 ",
+		"startdate" : "1995.43",
 		"active" : true,
 		"alias" : "gits",
 		"data" : 0
@@ -60,7 +60,7 @@
 		"latitude" : "78.5266",
 		"longitude" : "56.8305",
 		"elevation" : 1995,
-		"startdate" : "1995.47  ",
+		"startdate" : "1995.47",
 		"active" : true,
 		"alias" : "humboldt",
 		"data" : 1
@@ -82,7 +82,7 @@
 		"latitude" : "78.01677",
 		"longitude" : "33.99387",
 		"elevation" : 2113,
-		"startdate" : "1996.38   ",
+		"startdate" : "1996.38",
 		"active" : true,
 		"alias" : "tununorth",
 		"data" : 1
@@ -93,7 +93,7 @@
 		"latitude" : "66.48001",
 		"longitude" : "46.27889",
 		"elevation" : 2165,
-		"startdate" : "1996.40   ",
+		"startdate" : "1996.40",
 		"active" : true,
 		"alias" : "dyeii",
 		"data" : 1
@@ -115,7 +115,7 @@
 		"latitude" : "65.99947",
 		"longitude" : "44.50016",
 		"elevation" : 2467,
-		"startdate" : "1997.30 ",
+		"startdate" : "1997.30",
 		"active" : true,
 		"alias" : "saddle",
 		"data" : 1
@@ -126,7 +126,7 @@
 		"latitude" : "63.1488",
 		"longitude" : "44.81717",
 		"elevation" : 2922,
-		"startdate" : "1997.31   ",
+		"startdate" : "1997.31",
 		"active" : true,
 		"alias" : "southdome",
 		"data" : 0
@@ -137,7 +137,7 @@
 		"latitude" : "75.00000",
 		"longitude" : "29.99972",
 		"elevation" : 2631,
-		"startdate" : "1997.34    ",
+		"startdate" : "1997.34",
 		"active" : true,
 		"alias" : "nasaeast",
 		"data" : 1
@@ -170,7 +170,7 @@
 		"latitude" : "66.4797",
 		"longitude" : "42.5002",
 		"elevation" : 2425,
-		"startdate" : "1998.30  ",
+		"startdate" : "1998.30",
 		"active" : false,
 		"alias" : "nasasoutheast",
 		"data" : 0

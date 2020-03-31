@@ -62,6 +62,7 @@ export default {
   methods: {
     catchHomeClick() {
       this.showHomeScreen = true;
+      this.showOverview = false;
     },
     catchAnyClick(){
 
@@ -103,6 +104,10 @@ export default {
       }
       this.navItems[1].active = true;
     },
+    catchOverviewClick() {
+      this.showHomeScreen = false;
+      this.showOverview = true;
+    },    
     mapStationClick(stationUrl){
       this.showHomeScreen = false;
       this.showOverview = false;
@@ -169,8 +174,8 @@ export default {
       name: 'App',
       appBGImages: {},
       currentStation: null,
-      showHomeScreen: true,
-      showOverview: false,
+      showHomeScreen: false,
+      showOverview: true,
       version: process.env.VUE_APP_VERSION,
       drawerIsMini: true, // this.$vuetify.breakpoint.smAndDown ? true : false,
       navItems: [
