@@ -1,22 +1,14 @@
 <template>
 
-  <div>
+  <v-card>
 
-<!--    <div id="chartdiv"-->
-<!--              style="height: 350px;" >-->
-<!--    </div>-->
-
-     <div id="chartdiv0"
+     <div :id="chartdivID"
               style="height: 350px;" >
-             <p>chartdiv0</p>
+      <p>chartdiv0</p>
     </div>
 
-      <div id="chartdiv1"
-              style="height: 350px;" >
-             <p>chartdiv1</p>
-    </div>
+  </v-card>
 
-  </div>
 </template>
 
 <script>
@@ -56,7 +48,7 @@ export default {
     },
     }
   },
-  created() {
+  mounted() {
       const keys = Object.keys(this.valueFieldMapping);
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
@@ -78,7 +70,7 @@ export default {
       //  this.loadChartDivs();
       })
       .catch(error => {
-        console.log('There was an error:' + error.response)
+        console.log('There was an error:' + error.response.statusText + ' url: ' + error.request.responseURL);
       })
   },
   computed: {
@@ -122,18 +114,21 @@ export default {
 
   methods: {
     buildGraph(parameter){
+      // add a count parameter to swap the color
+      let color = "#73C8A9";
+
       return {
-        "lineColor": "#73C8A9",
+        "lineColor": color,
         "bullet": new am4core.Circle(),
         "bulletRadius": this.seriesSettings.bulletsRadius,
         "title": parameter,
         "valueField": parameter,
-        "hideBulletsCount": 20
+        "hideBulletsCount": 0
       };
     },
     loadChart() {
        try {
-        let chart = createLineChart('chartdiv', this.dateFormat, this.records, this.graphs, false);
+        let chart = createLineChart(this.chartdivID, this.dateFormat, this.records, this.graphs, false);
 
         // chart.events.on('ready', () => {
         //   console.log('WeatherChrt is ready');
