@@ -11,13 +11,15 @@
 
           <v-layout column >
 
-            <v-flex >
-                <DetailChart url="./testdata/0temp_v.json"/>
+            <v-flex  v-bind:url=generateFileList[0]>
+                <DetailChart v-bind:url=generateFileList[0] />
             </v-flex>
 
-            <v-flex>
-                <DetailChartTest url="./testdata/0press_v.json"/>
+            <v-flex  v-bind:url=generateFileList[1]>
+                <DetailChartTest v-bind:url=generateFileList[1] />
             </v-flex>
+
+
 
 
 <!--            <v-flex  v-for="file in generateFileList" :key="file">-->
