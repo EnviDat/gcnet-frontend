@@ -18,7 +18,7 @@
               xs12
               py-3 >
         
-        <chart :station="station" :JSONUrls="getJSONUrls(station)" :fileValueMapping="fileValueMapping" />
+        <mirco-chart :station="station" :JSONUrls="getJSONUrls(station)" :fileValueMapping="fileValueMapping" />
 
       </v-flex>
 
@@ -36,21 +36,23 @@
 </template>
 
 <script>
-import Chart from '@/components/Chart.vue';
+// import Chart from '@/components/Chart.vue';
+import MircoChart from '@/components/MircoChart.vue';
 
 export default {
   props: {
   },
   components: {
-    Chart,
+    // Chart,
+    MircoChart,
   },
   data: () => ({
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',
     baseStationURLTestdata: './testdata/',
     loadingStation: false,
     fileValueMapping: {
-      'temp': ['AirT1', 'AirT2'],
-      'press': ['press'],
+      'temp': ['AirT1'],
+      // 'press': ['press'],
       // 'wd': ['WD1', 'WD2'],
       // 'ws': ['WS1', 'WS2'],
       // 'battvolt': ['battvolt'],

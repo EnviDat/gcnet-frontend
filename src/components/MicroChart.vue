@@ -48,7 +48,7 @@
         <v-flex v-show="hasData"
                 xs12 >
           <div :id="weatherChartId"
-                style="height: 350px;" >
+                style="width: 200px; height: 30px; border: 1px dotted #eee;" >
           </div>    
         </v-flex>
 
@@ -61,12 +61,16 @@
 
 
 <script>
-import * as am4core from "@amcharts/amcharts4/core";
+import * as am4core from '@amcharts/amcharts4/core';
+import microchart from '@amcharts/amcharts4/themes/microchart';
 import * as bullets from '@amcharts/amcharts4/plugins/bullets';
+
+am4core.useTheme(microchart);
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
 import { createLineChart } from "@/chartData/charts";
+
 
 export default {
   props: {
