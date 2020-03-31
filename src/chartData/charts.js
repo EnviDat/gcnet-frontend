@@ -46,8 +46,7 @@ const createLineChart = function createLineChart(selector, dateFormat, chartData
     
     am4core.options.minPolylineStep = 2;
 
-    // Changed chartData.length from 350 to 10
-    if (chartData.length > 10){
+    if (chartData.length > 350){
       dateAxis.baseInterval = {
         "timeUnit": "day",
         "count": 1,

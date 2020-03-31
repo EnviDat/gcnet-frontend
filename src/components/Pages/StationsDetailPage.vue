@@ -45,9 +45,9 @@ export default {
     loadingStation: false,
     // fileNames: ['battvolt.json', 'battvolt_v.json', 'press.json', 'press_v.json', 'rad.json', 'rad_v.json', 'rh.json', 'rh_v.json', 'sheight.json', 'sheight_v.json',
     // 'stemp.json', 'stemp_v.json', 'temp.json', 'temp_v.json', 'wd.json', 'wd_v.json', 'ws.json', 'ws_v.json']
-    // fileNames: ['battvolt_v.json', 'press_v.json', 'rad_v.json', 'rh_v.json', 'sheight_v.json',
-    // 'stemp_v.json', 'temp_v.json', 'wd_v.json', 'ws_v.json']
-    fileNames: ['temp_v.json', 'press_v.json']
+    fileNames: ['temp_v.json', 'rh_v.json', 'rad_v.json', 'sheight_v.json', 'ws_v.json', 'wd_v.json', 'press_v.json',
+       'battvolt_v.json']
+    //fileNames: ['temp_v.json', 'press_v.json']
     //fileNames: ['temp_v.json']
    // fileNames: ['press_v.json', 'rad_v.json']
   }),

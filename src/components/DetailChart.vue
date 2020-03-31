@@ -4,7 +4,6 @@
 
      <div :id="chartdivID"
               style="height: 350px;" >
-      <p>chartdiv0</p>
     </div>
 
   </v-card>
@@ -20,7 +19,6 @@ import * as am4core from "@amcharts/amcharts4/core";
 export default {
   props: {
     url: String,
-    // Trying to create unique chart div ID
     chartdivID: String,
   },
   data()  {
@@ -31,7 +29,14 @@ export default {
       valueFieldMapping: {
       'temp': ['AirTC1', 'AirTC2'],
       'press': ['press'],
-      'ws': ['WS1', 'WS2']
+      'ws': ['WS1', 'WS2'],
+      'battvolt': ['Battvolt'],
+      'rad': ['NetRad', 'SWin', 'SWout'],
+      'rh': ['RH1', 'RH2'],
+      'sheight': ['Sheight1', 'Sheight2'],
+      'wd': ['WD1', 'WD2'],
+
+
     },
       seriesSettings: {
       // lineStrokeWidth: 3,
@@ -56,7 +61,7 @@ export default {
           const dataParameters = this.valueFieldMapping[key];
           for (let j = 0; j < dataParameters.length; j++) {
             const param = dataParameters[j];
-            this.graphs.push(this.buildGraph(param));
+            this.graphs.push(this.buildGraph(param, j));
           }
         }
 
@@ -74,7 +79,6 @@ export default {
       })
   },
   computed: {
-    // TODO: replace with ChartID
     // windChartId(){
     //   return `${this.stationId}_wind`;
     // },
@@ -93,29 +97,17 @@ export default {
         "title": "Air Temperature 2",
         "valueField": "AirT2",
         "hideBulletsCount": 0
-      // }, {
-      //   "lineColor": "#00F4FF",
-      //   "bullet": new am4core.Triangle(),
-      //   "bulletRadius": this.seriesSettings.bulletsRadius * 2,
-      //   "title": "Air Temperature-TC Air 1",
-      //   "valueField": "tc_air_1",
-      //   "hideBulletsCount": 0
-      // }, {
-      //   "lineColor": "#AAAAE5",
-      //   "bullet": new bullets.Star(),
-      //   "bulletRadius": this.seriesSettings.bulletsRadius * 2,
-      //   "title": "Air Temperature-TC Air 2",
-      //   "valueField": "tc_air_2",
-      //   "hideBulletsCount": 0
       }];
     },
   },
 
 
   methods: {
-    buildGraph(parameter){
+    buildGraph(parameter, colorIndex){
+
+      const colorArray = ['#73C8A9', '#BD5532', '#6D2600', '#2E926F', ]
       // add a count parameter to swap the color
-      let color = "#73C8A9";
+      let color = colorArray[colorIndex];
 
       return {
         "lineColor": color,
@@ -123,7 +115,7 @@ export default {
         "bulletRadius": this.seriesSettings.bulletsRadius,
         "title": parameter,
         "valueField": parameter,
-        "hideBulletsCount": 0
+        "hideBulletsCount": 10
       };
     },
     loadChart() {
