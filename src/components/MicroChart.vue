@@ -1,13 +1,13 @@
 <template>
 
-  <v-card :id="_uid" :station="stationId" >
+  <v-card :id="_uid" :station="stationId" style="height: 135px;" >
     <v-card-title >
 
       <v-layout column>
         <v-flex>
           <v-layout row justify-space-between>
 
-            <v-flex grow>
+            <v-flex grow style="font-weight: 700;">
               {{ station.name }}
             </v-flex>
 
@@ -17,22 +17,37 @@
           </v-layout>
         </v-flex>
 
-        <v-flex xs12 style="height: 20px;">
-          <div class='skeleton skeleton-animation-shimmer' >
-            <div class='bone bone-type-image'></div>
+        <v-flex v-show="chartIsLoading"
+                xs12 
+                style="width: 100%">
+          <div class='skeleton skeleton-animation-shimmer' :style="`height: ${chartHeight};`" >
+            <div style="width: 100%;" class='bone bone-type-image'></div>
           </div>
         </v-flex>
 
-        <v-flex v-if="dataError"
+        <v-flex v-show="!chartIsLoading && dataLength <= 0"
               xs12
               style="color: red;" >
+          {{ noDataText }}
+        </v-flex>
+
+        <v-flex v-show="dataError"
+                xs12
+                style="color: red; font-size: 9px;" >
           {{ dataError }}
         </v-flex>
 
-        <v-flex xs12 >
+        <v-flex v-show="!chartIsLoading && dataLength > 0"
+                xs12 >
           <div :id="microChartId"
-                style="width: 100%; height: 50px; border: 1px solid #eee;" >
+                :style="`width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
           </div>    
+        </v-flex>
+
+        <v-flex v-if="!dataError"
+                xs12 
+                style="font-size: 9px;">
+          {{ `${chartIsLoading ? 'Loading ' : ''}${loadRecentData ? 'recent data' : 'data'} from ${currentDataUrl}` }}
         </v-flex>
 
       </v-layout>
@@ -44,14 +59,6 @@
 
 
 <script>
-import * as am4core from '@amcharts/amcharts4/core';
-import microchart from '@amcharts/amcharts4/themes/microchart';
-// import animated from '@amcharts/amcharts4/themes/animated';
-import * as bullets from '@amcharts/amcharts4/plugins/bullets';
-
-am4core.useTheme(microchart);
-// am4core.useTheme(animated);
-
 import { createMicroLineChart } from "@/chartData/charts";
 
 
@@ -79,11 +86,7 @@ export default {
   components: {
   },
   mounted() {
-    this.urlValueMapping = this.getUrlValueMapping();
-
-    this.buildGraphs();
-
-    this.loadJsonCharts();
+    this.loadChart();
   },
   beforeDestroy() {
     this.clearChart();
@@ -101,14 +104,23 @@ export default {
     },
   },
   methods: {
-    getUrlValueMapping(){
+    loadChart(){
+      this.chartIsLoading = true;
+
+      this.urlValueMapping = this.getUrlValueMapping(this.loadRecentData);
+
+      this.buildGraphs();
+
+      this.loadJsonCharts();
+    },
+    getUrlValueMapping(loadRecentData){
       const urlValueMapping = {};
       const keys = Object.keys(this.fileValueMapping);
 
       for (let i = 0; i < keys.length; i++) {
         const prefix = keys[i];
 
-        const url = this.getUrlToPrefix(prefix, true);
+        const url = this.getUrlToPrefix(prefix, loadRecentData);
         
         if (url) {
           urlValueMapping[url] = this.fileValueMapping[prefix];
@@ -140,35 +152,17 @@ export default {
 
         for (let j = 0; j < dataParameters.length; j++) {
           const param = dataParameters[j];
-          graphs.push(this.createGraph(param, url, j));
+
+          graphs.push({
+            lineColor: this.seriesSettings.lineColor,
+            title: param,
+            valueField: param,
+            dataUrl: url,
+          });
         }
       }
 
       this.graphs = graphs;
-    },
-    createGraph(parameter, url, count){
-      // let lineColor = '#73C8A9';
-
-      // if (count == 1) {
-      //   lineColor = '#B0DE09';
-      // } else if (count == 2) {
-      //   lineColor = '#00F4FF';
-      // } else if (count == 2) {
-      //   lineColor = '#AAAAE5';
-      // }
-      let lineColor = this.colorPalette[this.colorCount];
-      this.colorCount++;
-      
-      return {
-        lineColor,
-        bullet: this.bulletForms[count],
-        bulletRadius: this.seriesSettings.bulletsRadius,
-        title: parameter,
-        valueField: parameter,
-        hideBulletsCount: 20,
-        dataUrl: url,
-        hidden: count > 0 ? true : false,
-      };
     },
     clearChart(){
       if (this.microChart) {
@@ -176,55 +170,68 @@ export default {
       }
     },
     loadJsonCharts(){
+      this.chartIsLoading = true;
+      this.currentDataUrl = this.graphs[0].dataUrl;
+      this.dataLength = 0;
+
       const dateFormatingInfos = {
         dateFormat: this.dateFormat,
         inputFormat: 'x',
       };
 
       try {
-        // if (!this.microChart) {
-          this.microChart = createMicroLineChart(this.microChartId, 'timestamp', null, this.graphs, this.groupData, undefined, dateFormatingInfos);
-          // this.microChart.events.on('ready', () => {
-          //   console.log('microChart is ready');
-          // });
-        // } else {
-        //   this.microChart.data = jsonRecords;
-        //   this.microChart.invalidateRawData();
-        // }
+        if (!this.microChart) {
+          this.microChart = createMicroLineChart(this.microChartId, 'timestamp', [this.graphs[0]], this.seriesSettings,
+                                                  dateFormatingInfos, this.seriesDone, this.seriesError);
+        } else {
+          const source = this.microChart.series.values[0].dataSource;
+          source.url = this.currentDataUrl;
+          source.load();
+        }
         
       } catch (error) {
         this.dataError = `Error creating chart: ${error}`;
       }
+    },
+    seriesError(error) {
+      this.chartIsLoading = false;
+      this.dataError = error.message;
 
+      if (this.loadRecentData ) {
+        this.recentDataAvailable = false;
+        this.loadRecentData = false;
+        this.loadChart();
+      }
+    },
+    seriesDone(doneResponse) {
+      this.chartIsLoading = false;
+      this.dataLength = doneResponse && doneResponse.data ? doneResponse.data.length : 0;
+
+      if (this.dataLength <= 0 && this.loadRecentData ) {
+        this.recentDataAvailable = false;
+        this.loadRecentData = false;
+        this.loadChart();
+      }
     },
   },
   data: () => ({
     microChart: null,
+    chartHeight: '50px',
     dateFormat: 'HH:mm DD/MM/YYYY',
     dataError: '',
+    dataLength: 0,
+    noDataText: 'No data available',
     loadRecentData: true,
+    recentDataAvailable: true,
+    chartIsLoading: true,
+    currentDataUrl: '',
     groupData: true,
     graphs: [],
     seriesSettings: {
       lineStrokeWidth: 3,
-      // lineOpacity: 1,
-      // // the auto gap depends on the baseInterval, which might be "hours"
-      // // works if the lineConnect is false
-      // lineAutoGap: 2,
-      // lineConncet: false,
-      // bulletsStrokeWidth: 2,
-      bulletsRadius: 2,
-      // bulletFill: 'black',
-      // bulletsfillOpacity: 1,
-      // bulletsStrokeOpacity: 1,
+      lineColor: '#8ACDCE',
     },    
     urlValueMapping: {},
-    bulletForms: [new am4core.Circle(), new am4core.Rectangle(), new am4core.Triangle() , new bullets.Star()],
-    colorCount: 0,
-    colorPalette: ['#DCECC9', '#B3DDCC', '#8ACDCE',
-                   '#62BED2', '#46AACE', '#3D91BE',
-                   '#3577AE', '#2D5E9E', '#24448E',
-                   '#1C2B7F', '#162065', '#11174B'],
   }),
 };
 </script>
