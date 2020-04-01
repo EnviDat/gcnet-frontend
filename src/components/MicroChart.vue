@@ -4,7 +4,7 @@
     <v-card-title >
 
       <v-layout column>
-        <v-flex>
+        <v-flex py-0>
           <v-layout row justify-space-between>
 
             <v-flex grow style="font-weight: 700;">
@@ -17,35 +17,35 @@
           </v-layout>
         </v-flex>
 
-        <v-flex v-show="chartIsLoading"
-                xs12 
+        <v-flex v-if="chartIsLoading"
+                xs12 py-0
                 style="width: 100%">
           <div class='skeleton skeleton-animation-shimmer' :style="`height: ${chartHeight};`" >
             <div style="width: 100%;" class='bone bone-type-image'></div>
           </div>
         </v-flex>
 
-        <v-flex v-show="!chartIsLoading && dataLength <= 0"
-              xs12
+        <v-flex v-if="!chartIsLoading && dataLength <= 0"
+              xs12 py-0
               style="color: red;" >
           {{ noDataText }}
         </v-flex>
 
-        <v-flex v-show="dataError"
-                xs12
+        <v-flex v-if="dataError"
+                xs12 py-0
                 style="color: red; font-size: 9px;" >
           {{ dataError }}
         </v-flex>
 
         <v-flex v-show="!chartIsLoading && dataLength > 0"
-                xs12 >
+                xs12 py-0 >
           <div :id="microChartId"
                 :style="`width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
           </div>    
         </v-flex>
 
         <v-flex v-if="!dataError"
-                xs12 
+                xs12 py-0
                 style="font-size: 9px;">
           {{ `${chartIsLoading ? 'Loading ' : ''}${loadRecentData ? 'recent data' : 'data'} from ${currentDataUrl}` }}
         </v-flex>
