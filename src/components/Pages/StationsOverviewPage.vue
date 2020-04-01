@@ -1,35 +1,25 @@
 <template>
   <v-container fluid
                 fill-height
+                grid-list-md
                 :class="$vuetify.breakpoint.smAndDown ? 'px-3 py-1' : 'px-2 py-1'"
                 @click="anyClick">  
 
     <v-layout row wrap >
 
-      <!-- <v-flex xs2
-              py-3 >
-        
-        <micro-chart :station="stations[0]" :JSONUrls="getJSONUrls(stations[0])" :fileValueMapping="fileValueMapping" />
+      <v-flex xs12 class="title">
+        {{ 'GC-Net Stations Overview' }}
+      </v-flex>
 
+      <!-- <v-flex xs2>
+        <micro-chart :station="stations[9]" :JSONUrls="getJSONUrls(stations[9])" :fileValueMapping="fileValueMapping" />
       </v-flex> -->
 
       <v-flex v-for="station in stations"
               :key="`${station.id}_${station.alias}`"
-              xs2
-              py-3 >
-        
+              xs2>
         <micro-chart :station="station" :JSONUrls="getJSONUrls(station)" :fileValueMapping="fileValueMapping" />
-
       </v-flex>
-
-      <!-- <v-flex v-for="station in stations"
-              :key="`${station.id}_${station.alias}`"
-              xs12
-              py-3 >
-        
-        {{ getJSONUrls(station) }}
-
-      </v-flex> -->
 
     </v-layout>
   </v-container>
@@ -51,11 +41,8 @@ export default {
     baseStationURLTestdata: './testdata/',
     loadingStation: false,
     fileValueMapping: {
+      // only use one single file and parameter for the microCharts
       'temp': ['AirT1'],
-      // 'press': ['press'],
-      // 'wd': ['WD1', 'WD2'],
-      // 'ws': ['WS1', 'WS2'],
-      // 'battvolt': ['battvolt'],
     },
   }),
   computed: {
