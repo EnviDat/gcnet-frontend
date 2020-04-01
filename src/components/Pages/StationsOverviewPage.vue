@@ -64,12 +64,15 @@ export default {
         const prefix = keys[i];
         const fileName = `${station.id}${prefix}.json`;
         const recentFileName = `${station.id}${prefix}_v.json`;
+        const baseUrl = process.env.NODE_ENV === 'production' ? this.baseStationURL : this.baseStationURLTestdata;
 
         // add the timestamp to prevent server side caching
-        const url = process.env.NODE_ENV === 'production' ? `${this.baseurl}${fileName}?t=${Date.now()}` : `./testdata/${fileName}`;
+        // const url = `${baseUrl}${fileName}?t=${Date.now()}`;
+        const url = `${baseUrl}${fileName}`;
         dataURLs.push({ fileType: prefix, url });
 
-        const recentUrl = process.env.NODE_ENV === 'production' ? `${this.baseurl}${recentFileName}?t=${Date.now()}` : `./testdata/${recentFileName}`;
+        // const recentUrl = `${baseUrl}${recentFileName}?t=${Date.now()}`;
+        const recentUrl = `${baseUrl}${recentFileName}`;
         recentDataURLs.push({ fileType: prefix, url: recentUrl });
       }
 
