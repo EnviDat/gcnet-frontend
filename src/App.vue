@@ -1,7 +1,18 @@
 <template>
   <v-app class="application" :style="dynamicBackground()">
 
-      <v-content app >
+    <v-content app >
+      <landing-page v-if="!showOverview"
+                    :currentStation="currentStation" 
+                    :showHomeScreen="showHomeScreen"
+                    v-on:anyClick="catchAnyClick"
+                    v-on:mapViewClick="catchMapViewClick"
+                    v-on:listViewClick="catchListViewClick"
+                    v-on:updateDrawer="catchUpdateDrawer"
+                    />
+
+      <stations-overview-page v-if="showOverview" />
+    </v-content>
 
         <StationsDetailPage :currentStation="currentStation" />
 
@@ -44,9 +55,10 @@
 import TheNavigation from '@/components/TheNavigation';
 import StationsMap from '@/components/StationsMap';
 import StationsList from '@/components/StationsList';
+import LandingPage from '@/components/Pages/LandingPage';
+import StationsOverviewPage from '@/components/Pages/StationsOverviewPage';
+import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 import StationsDetailPage from "./components/Pages/StationsDetailPage";
-//import DetailTemperaturePage from "./components/Pages/DetailTemperaturePage";
-//import LandingPage from '@/components/Pages/LandingPage';
 
 
 export default {
@@ -55,7 +67,8 @@ export default {
     TheNavigation,
     StationsMap,
     StationsList,
-  //  LandingPage,
+    LandingPage,
+    StationsOverviewPage,
     StationsDetailPage,
   },
   beforeMount() {
@@ -184,8 +197,8 @@ export default {
       name: 'App',
       appBGImages: {},
       currentStation: null,
-      showHomeScreen: false,
-      showOverview: true,
+      showHomeScreen: true,
+      showOverview: false,
       version: process.env.VUE_APP_VERSION,
       drawerIsMini: true, // this.$vuetify.breakpoint.smAndDown ? true : false,
       navItems: [
@@ -197,6 +210,13 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+  /* Icons list: https://jossef.github.io/material-design-icons-iconfont/ */
+  $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+
+  @import '~material-design-icons-iconfont/src/material-design-icons.scss';
+</style>
 
 <style scoped>
 

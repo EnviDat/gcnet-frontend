@@ -1,6 +1,6 @@
 <template>
 
-  <v-card >
+  <v-card :id="_uid" :station="stationId" >
     <v-card-title class="display-1">
       <v-layout row justify-space-around>
         <v-flex grow>
@@ -32,38 +32,25 @@
     <v-card-text>
       <v-layout row wrap>
         
-      <v-flex v-if="currentFileLoading && !dataError"
+        <v-flex v-if="!hasData"
+                xs12
+                pb-3 >
+          Loading {{ currentFileLoading }}
+        </v-flex>
+
+        <v-flex v-if="!currentFileLoading && dataError"
               xs12
-              pb-3 >
-        Loading {{ currentFileLoading }}
-      </v-flex>
+              pb-3
+              style="color: red;" >
+          Could not load the chart, an error occured: {{ dataError }}
+        </v-flex>
 
-      <v-flex v-if="!currentFileLoading && dataError"
-            xs12
-            pb-3
-            style="color: red;" >
-        Could not load the chart, an error occured: {{ dataError }}
-      </v-flex>
-
-
-      <!-- <v-flex v-show="hasData"
-              xs12 >
-        {{ loadRecentData ? 'Recent data loaded' : 'All data loaded' }}
-      </v-flex> -->
-
-      <v-flex v-show="hasData"
-              xs12 >
-        <div ref="chartdiv" id="chartdiv"
-              style="height: 350px;" >
-        </div>    
-      </v-flex>
-      
-      <v-flex v-show="hasData"
-              xs12 >
-        <div v-show="hasData" ref="chartdiv" id="wchartdiv"
-              style="height: 350px;" >
-        </div>    
-      </v-flex>
+        <v-flex v-show="hasData"
+                xs12 >
+          <div :id="weatherChartId"
+                style="height: 350px;" >
+          </div>    
+        </v-flex>
 
       </v-layout>
 
@@ -74,106 +61,133 @@
 
 
 <script>
-import axios from 'axios';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as bullets from '@amcharts/amcharts4/plugins/bullets';
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 import BaseIconButton from '@/components/BaseElements/BaseIconButton';
-import {
-  createLineChart,
-} from "@/chartData/charts";
-import {
-    createJSONDataset,
-} from "@/chartData/data_conversion";
-
+import { createLineChart } from "@/chartData/charts";
 
 export default {
   props: {
     station: Object,
+    JSONUrls: {
+      type: Object,
+      default: () =>({
+        dataURLs: [{ fileType: 'temp', url: './testdata/0temp.json' }],
+        recentDataURLs: [{ fileType: 'temp', url: './testdata/0temp_v.json' }],
+      }),
+    },
+    fileValueMapping:{
+      type: Object,
+      default: () => ({
+        temp: ['AirTC1', 'AirTC2'],
+        press: ['press'],
+        wd: ['WD1', 'WD2'],
+        ws: ['WS1', 'WS2'],
+        battvolt: ['battvolt'],
+      }),
+    },
   },
   components: {
     BaseRectangleButton,
     BaseIconButton,
   },
   mounted() {
-    this.createJSONDataset = createJSONDataset;
+    this.urlValueMapping = this.getUrlValueMapping();
 
-    this.enhanceStation(this.station);
+    this.buildGraphs();
 
-    this.loadChart();
+    this.loadJsonCharts();
   },
   beforeDestroy() {
     this.clearChart();
   },
   computed: {
     hasData() {
-      return !this.currentFileLoading && !this.dataError;
+      // return !this.currentFileLoading && !this.dataError;
+      return this.weatherChart && this.weatherChart.isReady();
     },
-    weatherGraphs(){
-      return [{
-        "lineColor": "#F39D01",
-        "bullet": new am4core.Circle(),
-        "bulletRadius": this.seriesSettings.bulletsRadius,
-        "title": "Atmos Pressure",
-        "valueField": "pressure",
-        "hideBulletsCount": 0
-      }, {
-        "lineColor": "#B0DE09",
-        "bullet": new am4core.Rectangle(),
-        "bulletRadius": this.seriesSettings.bulletsRadius * 2,
-        "title": "Net Radiation",
-        "valueField": "net_radiation",
-        "hideBulletsCount": 0
-      }, {
-        "lineColor": "#00F4FF",
-        "bullet": new am4core.Triangle(),
-        "bulletRadius": this.seriesSettings.bulletsRadius * 2,
-        "title": "Air Temperature-TC Air 1",
-        "valueField": "tc_air_1",
-        "hideBulletsCount": 0
-      }, {
-        "lineColor": "#AAAAE5",
-        "bullet": new bullets.Star(),
-        "bulletRadius": this.seriesSettings.bulletsRadius * 2,
-        "title": "Air Temperature-TC Air 2",
-        "valueField": "tc_air_2",
-        "hideBulletsCount": 0
-      }];
+    weatherChartId(){
+      return `${this.stationId}_weather`;
     },
-    windGraphs(){
-      return [{
-        "lineColor": "#73C8A9",
-        "bullet": new am4core.Circle(),
-        "bulletRadius": this.seriesSettings.bulletsRadius,
-        "title": "Wind Speed U1 M [m/s]",
-        "valueField": "wind_speed_u1",
-        "hideBulletsCount": 0
-      }, {
-        "lineColor": "#2E926F",
-        "bullet": new am4core.Rectangle(),
-        "bulletRadius": this.seriesSettings.bulletsRadius * 2,
-        "title": "Wind Speed U2 N [m/s]",
-        "valueField": "wind_speed_u2",
-        "hideBulletsCount": 0
-      }, {
-        "lineColor": "#BD5532",
-        "bullet": new am4core.Triangle(),
-        "bulletRadius": this.seriesSettings.bulletsRadius * 2,
-        "title": "Wind direction 1 O [deg]",
-        "valueField": "wind_dir_u1",
-        "hideBulletsCount": 0
-      }, {
-        "lineColor": "#6D2600",
-        "bullet": new bullets.Star(),
-        "bulletRadius": this.seriesSettings.bulletsRadius * 2,
-        "title": "Wind direction 2 P [deg]",
-        "valueField": "wind_dir_u2",
-        "hideBulletsCount": 0
-      }];
+    windChartId(){
+      return `${this.stationId}_wind`;
+    },
+    stationId(){
+      return `${this._uid}_${this.station.alias}_${this.station.id}`;
     },
   },
   methods: {
+    getUrlValueMapping(){
+      const urlValueMapping = {};
+      const keys = Object.keys(this.fileValueMapping);
+
+      for (let i = 0; i < keys.length; i++) {
+        const prefix = keys[i];
+
+        const url = this.getUrlToPrefix(prefix, true);
+        
+        if (url) {
+          urlValueMapping[url] = this.fileValueMapping[prefix];
+        }
+      }
+
+      return urlValueMapping;
+    },
+    getUrlToPrefix(prefix, loadRecentData){
+      const urlObjs = loadRecentData ? this.JSONUrls.recentDataURLs : this.JSONUrls.dataURLs;
+
+      for (let i = 0; i < urlObjs.length; i++) {
+        const obj = urlObjs[i];
+        
+        if (prefix === obj.fileType) {
+          return obj.url;
+        }
+      }
+
+      return null;
+    },
+    buildGraphs(){
+      const keys = Object.keys(this.urlValueMapping);
+      const graphs = [];
+
+      for (let i = 0; i < keys.length; i++) {
+        const url = keys[i];
+        const dataParameters = this.urlValueMapping[url];
+
+        for (let j = 0; j < dataParameters.length; j++) {
+          const param = dataParameters[j];
+          graphs.push(this.createGraph(param, url, j));
+        }
+      }
+
+      this.graphs = graphs;
+    },
+    createGraph(parameter, url, count){
+      // let lineColor = '#73C8A9';
+
+      // if (count == 1) {
+      //   lineColor = '#B0DE09';
+      // } else if (count == 2) {
+      //   lineColor = '#00F4FF';
+      // } else if (count == 2) {
+      //   lineColor = '#AAAAE5';
+      // }
+      let lineColor = this.colorPalette[this.colorCount];
+      this.colorCount++;
+      
+      return {
+        lineColor,
+        bullet: this.bulletForms[count],
+        bulletRadius: this.seriesSettings.bulletsRadius,
+        title: parameter,
+        valueField: parameter,
+        hideBulletsCount: 20,
+        dataUrl: url,
+        hidden: count > 0 ? true : false,
+      };
+    },
     clearChart(){
       if (this.weatherChart) {
         this.weatherChart.dispose();
@@ -182,202 +196,33 @@ export default {
         this.windChart.dispose();
       }
     },
-    loadChart(){
-      this.clearChart();
-
-      this.loadFileFromBackend(this.station, this.$refs.chartdiv, this.loadRecentData);
-    },
-    loadDataText(){
-      return this.loadRecentData ? this.loadRecentDataText : this.loadAllDataText;
-    },
-    loadChartData(records) {
-      var data = [];
-
-      var record;
-
-      for (var i = 0; i < records.length; i++) {
-
-          record = records[i];
-
-          data.push({
-              station: record.station,
-              date: record.time,
-              sw_down: record.sw_down,
-              sw_up: record.sw_up,
-              net_radiation: record.net_radiation,
-              tc_air_1: record.tc_air_1,
-              tc_air_2: record.tc_air_2,
-              wind_speed_u1: record.wind_speed_u1,
-              wind_speed_u2: record.wind_speed_u2,
-              wind_dir_u1: record.wind_dir_u1,
-              wind_dir_u2: record.wind_dir_u2,
-              pressure: record.pressure,
-          });
-      }
-
-      this.chartData = data;
-    },
-    getJSONFilesurlObjs(station, loadRecentData){
-      const urlObjs = [];
-
-      for (let i = 0; i < this.filePrefixes.length; i++) {
-        const prefix = this.filePrefixes[i];
-        const fileName = `${station.id}${prefix}${loadRecentData ? '_v' : ''}.json`;
-
-        // add the timestamp to prevent server side caching
-        const url = process.env.NODE_ENV === 'production' ? `${this.baseurl}${fileName}?t=${Date.now()}` : `./testdata/${fileName}`;
-        urlObjs.push({ fileType: prefix, recentData: loadRecentData, url });
-      }
-
-      return urlObjs;
-    },
-    // loadJSONFiles(station, urlObjs) {    
-
-    //   for (let i = 0; i < urlObjs.length; i++) {
-    //     const urlObj = urlObjs[i];
-    //     axios.get(urlObj.url)
-    //     .then(response => {
-    //       this.
-    //     }).catch(error => {
-
-    //     }).finally();
-    //   }
-      
-    // },
-    loadFileFromBackend(station, selector, loadRecentData){
-
-      const fileName = loadRecentData ? station.shortFileName : station.fileName;
-      this.currentFileLoading = fileName;
-
-      // add the timestamp to prevent server side caching
-      const url = process.env.NODE_ENV === 'production' ? `${this.baseurl}${fileName}?t=${Date.now()}` : `./testdata/${fileName}`;
-
-      let headers = {
-        // 'Authorization': `Bearer ${token}`,
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'text/csv'
-      }
-
-      const dataCall = axios.create({
-        // baseURL: process.env.VUE_APP_API_URL,
-        headers: headers
-      });
-
-      const that = this;
-      that.dataError = '';
-
-      dataCall.get(url)
-      .then(response => {
-        that.handleResponse(that, station, response.data);
-      })
-      .catch(error => {
-        that.dataError = error;
-      }).finally (() => {
-        that.currentFileLoading = ''
-      });
-    },
-    handleResponse(vueInstance, station, data){
-      if (vueInstance.currentFileLoading === station.fileName) {
-          vueInstance.fullData = data;
-
-          // vueInstance.useShortFile = false;
-          vueInstance.fillChart(vueInstance, vueInstance.fullData);
-      } else if (vueInstance.currentFileLoading === station.shortFileName) {
-          vueInstance.recentData = data;
-
-          // vueInstance.useShortFile = true;
-          vueInstance.fillChart(vueInstance, vueInstance.recentData);
-      } else {
-          // ShowError("Dataset for " + this.currentFileLoading + " is empty ");
-          // console.log("Dataset for " + that.currentFileLoading + " is empty ");
-          vueInstance.dataError = 'Dataset for " + that.currentFileLoading + " is empty ';
-      }
-
-      // vueInstance.currentFileLoading = ''
-    },
-    getFileNameFromURL(url) {
-        var splits = url.split('/');
-        let fileName = splits[splits.length - 1];
-
-        if (fileName.includes('?')){
-            fileName = fileName.split('?')[0];
-        }
-
-        return fileName;
-    },
-    enhanceStation(station){
-      station.fileName = `${station.id}.csv`;
-      station.shortFileName = `${station.id}_v.csv`;
-    },
-    fillChart(vueInstance, data){
-
-        var delimiter = '\\s+';
-        if (vueInstance.station.fileName.includes('.csv')){
-            delimiter = ',';
-        }
-
-        var jsonData = null;
-        // vueInstance.convertFilteToJsonData(data, delimiter, vueInstance.station.name, vueInstance.dateFormat);
-
-        if (data !== undefined && data.length > 0){
-
-            jsonData = vueInstance.createJSONDataset(data, delimiter, vueInstance.station, vueInstance.dateFormat);
-
-            // dataset.data = cleanGOESDataset(roughData);
-        } else {
-            console.log("Not data for station " + vueInstance.station.name);
-            return;
-        }
-
-        if (vueInstance.loadRecentData){
-            vueInstance.recentDataJson = jsonData.records;
-        } else {
-            vueInstance.fullDataJson = jsonData.records;
-        }        
-
-        // console.log("ConvertFilteToJsonData " + useShortFile);
-
-        vueInstance.showChartDataset(vueInstance);
-    },
-    showChartDataset(vueInstance) {
-      const jsonRecords = vueInstance.loadRecentData ? vueInstance.recentDataJson : vueInstance.fullDataJson;
+    loadJsonCharts(){
+      const dateFormatingInfos = {
+        dateFormat: this.dateFormat,
+        inputFormat: 'x',
+      };
 
       try {
-        let chart = createLineChart('chartdiv', vueInstance.dateFormat, jsonRecords, vueInstance.weatherGraphs, vueInstance.groupData);
-
-        // chart.events.on('ready', () => {
-        //   console.log('WeatherChart is ready');
-        // });
-
-
-        this.weatherChart = chart;
+        // if (!this.weatherChart) {
+          this.weatherChart = createLineChart(this.weatherChartId, 'timestamp', null, this.graphs, this.groupData, undefined, undefined, dateFormatingInfos);
+          // this.weatherChart.events.on('ready', () => {
+          //   console.log('WeatherChart is ready');
+          // });
+        // } else {
+        //   this.weatherChart.data = jsonRecords;
+        //   this.weatherChart.invalidateRawData();
+        // }
         
       } catch (error) {
-        vueInstance.dataError = `Error creating the weather chart: ${error}`;
+        this.dataError = `Error creating the weather chart: ${error}`;
       }
 
-      try {
-        let chart = createLineChart('wchartdiv', vueInstance.dateFormat, jsonRecords, vueInstance.windGraphs, vueInstance.groupData);
-
-        // chart.events.on('ready', () => {
-        //   console.log('WindChart is ready');
-        // });
-
-        this.windChart = chart;
-      } catch (error) {
-        vueInstance.dataError = `Error creating the wind chart: ${error}`;
-      }
     },
   },
   data: () => ({
-    fullData: null,
-    fullDataJson: null,
-    recentData: null,
-    recentDataJson: null,
     weatherChart: null,
     windChart: null,
     dateFormat: 'HH:mm DD/MM/YYYY',
-    baseurl: 'https://www.wsl.ch/gcnet/data/',
     currentFileLoading: '',
     dataError: '',
     loadRecentData: true,
@@ -385,13 +230,7 @@ export default {
     loadAllDataText: 'Load all data',
     theme: 'light',
     groupData: true,
-    filePrefixes: ['temp', 'press', 'ws', 'wd', 'battvolt'],
-    valueFieldMapping: {
-      'temp': ['AirTC1', 'AirTC2'],
-      'press': ['press'],
-      'ws': ['WS1', 'WS2'],
-    },    
-    jsonFiles: {},
+    graphs: [],
     seriesSettings: {
       // lineStrokeWidth: 3,
       // lineOpacity: 1,
@@ -405,7 +244,13 @@ export default {
       // bulletsfillOpacity: 1,
       // bulletsStrokeOpacity: 1,
     },    
-
+    urlValueMapping: {},
+    bulletForms: [new am4core.Circle(), new am4core.Rectangle(), new am4core.Triangle() , new bullets.Star()],
+    colorCount: 0,
+    colorPalette: ['#DCECC9', '#B3DDCC', '#8ACDCE',
+                   '#62BED2', '#46AACE', '#3D91BE',
+                   '#3577AE', '#2D5E9E', '#24448E',
+                   '#1C2B7F', '#162065', '#11174B'],
   }),
 };
 </script>

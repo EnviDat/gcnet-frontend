@@ -2,8 +2,11 @@ import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import 'vuetify/src/stylus/app.styl'
 
+// icons are imported in the App.vue via sass/scss
+// Icons list: https://jossef.github.io/material-design-icons-iconfont/
+
 Vue.use(Vuetify, {
-  iconfont: 'md',
+  iconfont: 'mdi',
   theme: {
     primary: '#29B6F6', // light-blue lighten-1
     secondary: '#81D4FA', // light-blue lighten-3 
