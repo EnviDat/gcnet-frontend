@@ -2,14 +2,16 @@
   <v-app class="application" :style="dynamicBackground()">
 
     <v-content app >
-      <landing-page :currentStation="currentStation" 
+      <landing-page v-if="!showOverview"
+                    :currentStation="currentStation" 
                     :showHomeScreen="showHomeScreen"
-                    :showOverview="showOverview"
                     v-on:anyClick="catchAnyClick"
                     v-on:mapViewClick="catchMapViewClick"
                     v-on:listViewClick="catchListViewClick"
                     v-on:updateDrawer="catchUpdateDrawer"
                     />
+
+      <stations-overview-page v-if="showOverview" />
     </v-content>
 
       <the-navigation :mini="drawerIsMini"
@@ -39,6 +41,7 @@ import TheNavigation from '@/components/TheNavigation';
 import StationsMap from '@/components/StationsMap';
 import StationsList from '@/components/StationsList';
 import LandingPage from '@/components/Pages/LandingPage';
+import StationsOverviewPage from '@/components/Pages/StationsOverviewPage';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
@@ -48,6 +51,7 @@ export default {
     StationsMap,
     StationsList,
     LandingPage,
+    StationsOverviewPage,
   },
   beforeMount() {
       const imgs = require.context('./assets/', false, /\.jpg$/);
@@ -175,8 +179,8 @@ export default {
       name: 'App',
       appBGImages: {},
       currentStation: null,
-      showHomeScreen: false,
-      showOverview: true,
+      showHomeScreen: true,
+      showOverview: false,
       version: process.env.VUE_APP_VERSION,
       drawerIsMini: true, // this.$vuetify.breakpoint.smAndDown ? true : false,
       navItems: [

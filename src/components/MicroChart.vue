@@ -209,10 +209,10 @@ export default {
       return this.recentDataAvailable || this.alldataAvailable;
     },
     microChartId(){
-      return `${this.stationId}_micro`;
+      return `${this.stationId}_microChart`;
     },
     stationId(){
-      return `${this._uid}_${this.station.alias}_${this.station.id}`;
+      return `${this._uid}_${this.station.id}_${this.station.alias}`;
     },
     recentIconColor() {
       return this.recentCheckedOnce ? this.recentDataAvailable ? this.$vuetify.theme.success : this.$vuetify.theme.error : 'transparent';
