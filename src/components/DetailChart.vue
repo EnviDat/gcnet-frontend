@@ -11,7 +11,7 @@
 
 <script>
 import axios from 'axios'
-import {createLineChart} from "../chartData/charts";
+import { createLineChart } from "../chartData/charts";
 import * as am4core from "@amcharts/amcharts4/core";
 //import * as bullets from "@amcharts/amcharts4/plugins/bullets";
 
@@ -186,16 +186,20 @@ export default {
       };
     },
     loadChart() {
+      const dateFormatingInfos = {
+        dateFormat: this.dateFormat,
+        inputFormat: 'x',
+      };
+    
        try {
-        let chart = createLineChart(this.chartdivID, this.dateFormat, this.records, this.graphs, false);
 
-        // chart.events.on('ready', () => {
-        //   console.log('WeatherChrt is ready');
-        // });
-
-
-        this.weatherChart = chart;
-
+        if (!this.weatherChart) {
+          this.weatherChart = createLineChart(this.chartdivID, 'timestamp', this.records, this.graphs,
+                                      true, undefined, undefined, dateFormatingInfos);
+        } else {
+          this.weatherChart.data = this.records;
+          this.weatherChart.invalidateRawData();
+        }
       } catch (error) {
         console.log(`Error creating the weather chart: ${error}`);
       }

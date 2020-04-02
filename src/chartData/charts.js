@@ -21,7 +21,7 @@ const defaultSeriesSettings = {
 const defaultOptions = {
   queue: true,
   onlyShowOnViewport: true,
-  minPolylineStep: 20,
+  minPolylineStep: 5,
 }
 
 const defaultFormatingInfos = {
@@ -30,15 +30,16 @@ const defaultFormatingInfos = {
 }
 
 const createLineChart = function createLineChart(selector, dateValueField, chartData, graphs, groupData,
-                                                    chartOptions = defaultOptions, seriesSettings = defaultSeriesSettings,
+                                                    options = defaultOptions, seriesSettings = defaultSeriesSettings,
                                                     dateFormatingInfos = defaultFormatingInfos)
 {
-    am4core.options.queue = chartOptions.queue;
-    am4core.options.onlyShowOnViewport = chartOptions.onlyShowOnViewport;
+    am4core.options.queue = options.queue;
+    am4core.options.onlyShowOnViewport = options.onlyShowOnViewport;
 
     var chart = am4core.create(selector, am4charts.XYChart);
     chart.hiddenState.properties.opacity = 0;
-    chart.options = chartOptions;
+  
+    am4core.options.minPolylineStep = options.minPolylineStep;
 
     if (chartData) {
         // chartData is optional, to be able to give the series directly a datasource
@@ -65,8 +66,6 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
 
     dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
     
-    am4core.options.minPolylineStep = 2;
-
     if (chartData.length > 350){
       dateAxis.baseInterval = {
         "timeUnit": "day",

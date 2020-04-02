@@ -2,8 +2,7 @@
   <v-app class="application" :style="dynamicBackground()">
 
     <v-content app >
-      <landing-page v-if="!showOverview"
-                    :currentStation="currentStation" 
+      <landing-page v-if="!showOverview && !currentStation"
                     :showHomeScreen="showHomeScreen"
                     v-on:anyClick="catchAnyClick"
                     v-on:mapViewClick="catchMapViewClick"
@@ -11,12 +10,11 @@
                     v-on:updateDrawer="catchUpdateDrawer"
                     />
 
+      <stations-detail-page v-if="!showOverview && currentStation" :currentStation="currentStation" />
+
       <stations-overview-page v-if="showOverview" />
+
     </v-content>
-
-        <StationsDetailPage :currentStation="currentStation" />
-
-      </v-content>
 
 <!--    <v-content app >-->
 <!--      <landing-page :currentStation="currentStation" -->
