@@ -1,14 +1,28 @@
 <template>
 
-  <v-card :id="_uid" :station="stationId" style="height: 135px;" >
+  <v-card :id="_uid" :station="stationId" style="max-height: 185px;" >
     <v-card-title >
 
       <v-layout column>
-        <v-flex py-0>
+        <v-flex pt-0>
           <v-layout row justify-space-between>
 
             <v-flex grow style="font-weight: 700;">
               {{ station.name }}
+            </v-flex>
+
+            <v-flex shrink>
+              <base-status-icon icon="access_time"
+                                :color="allIconColor"
+                                :count="!loadRecentData && this.dataLength"
+                                @click="loadRecentData = false; loadChart();" />
+            </v-flex>
+
+            <v-flex shrink>
+              <base-status-icon icon="av_timer"
+                                :color="recentIconColor"
+                                :count="loadRecentData && this.dataLength"
+                                @click="loadRecentData = true; loadChart();"/>
             </v-flex>
 
             <v-flex shrink>
@@ -26,7 +40,7 @@
         </v-flex>
 
         <v-flex v-if="!chartIsLoading && dataLength <= 0"
-              xs12 py-0
+              xs12
               style="color: red;" >
           {{ noDataText }}
         </v-flex>
@@ -50,6 +64,42 @@
           {{ `${chartIsLoading ? 'Loading ' : ''}${loadRecentData ? 'recent data' : 'data'} from ${currentDataUrl}` }}
         </v-flex>
 
+        <v-flex shrink>
+          <v-btn icon small
+                class="ma-0"
+                :color="color"
+                :outline="outlined && !showInfo"
+                style="height: 20px !important; width: 20px !important;"
+                @click="showInfo = !showInfo;">
+            <v-icon small >info</v-icon>
+          </v-btn>          
+          <!-- <base-icon-button materialIconName="info"
+                            :outlined="true"
+                            :isToggled="showInfo"
+                            :iconColor="showInfo ? 'white' : 'primary'"
+                            @clicked="showInfo = !showInfo;"
+                            style="height: 20px !important;" /> -->
+        </v-flex>
+
+        <v-flex v-if="showInfo"
+                xs12 >
+          <v-layout column>
+            <v-flex >
+              <base-status-icon icon="access_time"
+                                :color="allIconColor"
+                                :count="!loadRecentData && this.dataLength"
+                                @click="loadRecentData = false; loadChart();" />
+            </v-flex>
+
+            <v-flex >
+              <base-status-icon icon="av_timer"
+                                :color="recentIconColor"
+                                :count="loadRecentData && this.dataLength"
+                                @click="loadRecentData = true; loadChart();"/>
+            </v-flex>            
+          </v-layout>
+        </v-flex>
+
       </v-layout>
 
     </v-card-title>
@@ -60,6 +110,7 @@
 
 <script>
 import { createMicroLineChart } from "@/chartData/charts";
+import BaseStatusIcon from "@/components/BaseElements/BaseStatusIcon";
 
 
 export default {
@@ -84,6 +135,7 @@ export default {
     },
   },
   components: {
+    BaseStatusIcon,
   },
   mounted() {
     this.loadChart();
@@ -101,6 +153,12 @@ export default {
     },
     stationId(){
       return `${this._uid}_${this.station.alias}_${this.station.id}`;
+    },
+    recentIconColor() {
+      return this.recentDataAvailable ? 'green' : 'red';
+    },
+    allIconColor() {
+      return this.alldataAvailable ? 'green' : 'red';
     },
   },
   methods: {
@@ -201,18 +259,30 @@ export default {
         this.recentDataAvailable = false;
         this.loadRecentData = false;
         this.loadChart();
+      } else {
+        this.alldataAvailable = false;
       }
     },
     seriesDone(doneResponse) {
       this.chartIsLoading = false;
       this.dataLength = doneResponse && doneResponse.data ? doneResponse.data.length : 0;
 
-      if (this.dataLength <= 0 && this.loadRecentData ) {
-        this.recentDataAvailable = false;
-        this.loadRecentData = false;
-        this.loadChart();
+      if (this.dataLength > 0) {
+        if (this.loadRecentData) {
+          this.recentDataAvailable = true;
+        } else {
+          this.alldataAvailable = true;
+        }
+      } else {
+        if (this.loadRecentData) {
+          this.recentDataAvailable = false;
+          this.loadRecentData = false;
+          this.loadChart();
+        } else {
+          this.alldataAvailable = false;
+        }
       }
-    },
+    },    
   },
   data: () => ({
     microChart: null,
@@ -222,10 +292,11 @@ export default {
     dataLength: 0,
     noDataText: 'No data available',
     loadRecentData: true,
-    recentDataAvailable: true,
+    recentDataAvailable: false,
+    alldataAvailable: false,
     chartIsLoading: true,
     currentDataUrl: '',
-    groupData: true,
+    showInfo: false,
     graphs: [],
     seriesSettings: {
       lineStrokeWidth: 3,
