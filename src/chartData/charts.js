@@ -76,7 +76,7 @@ const createLineChart = function createLineChart(selector, dateFormat, chartData
     var title = chart.titles.create();
     title.contentAlign = 'left';
     title.fontSize = 30;
-    title.marginBottom = 30;
+    title.marginBottom = 10;
     title.bold = true;
 
 

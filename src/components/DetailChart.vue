@@ -210,8 +210,8 @@ export default {
 <style>
 
     .chart {
-        margin-bottom: 3em;
-        height: 400px;
+        margin-bottom: 2em;
+        height: 350px;
     }
 
 </style>
