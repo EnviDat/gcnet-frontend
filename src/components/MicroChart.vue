@@ -1,9 +1,9 @@
 <template>
 
-  <v-card :id="_uid" :station="stationId" style="max-height: 185px;" >
-    <v-card-title >
+  <v-card :id="_uid" :station="stationId" min-height="140" >
+    <v-container fluid fill-height pa-3>
 
-      <v-layout column>
+      <v-layout column justify-space-between fill-height>
         <v-flex pt-0>
           <v-layout row justify-space-between>
 
@@ -13,16 +13,12 @@
 
             <v-flex shrink>
               <base-status-icon icon="access_time"
-                                :color="allIconColor"
-                                :count="!loadRecentData && this.dataLength"
-                                @click="loadRecentData = false; loadChart();" />
+                                :color="allIconColor" />
             </v-flex>
 
             <v-flex shrink>
               <base-status-icon icon="av_timer"
-                                :color="recentIconColor"
-                                :count="loadRecentData && this.dataLength"
-                                @click="loadRecentData = true; loadChart();"/>
+                                :color="recentIconColor"/>
             </v-flex>
 
             <v-flex shrink>
@@ -39,19 +35,21 @@
           </div>
         </v-flex>
 
-        <v-flex v-if="!chartIsLoading && dataLength <= 0"
+        <v-flex v-if="!chartIsLoading && !hasData"
               xs12
-              style="color: red;" >
+              class="body-1"
+              :style="`color: ${ $vuetify.theme.error };`" >
           {{ noDataText }}
         </v-flex>
 
         <v-flex v-if="dataError"
                 xs12 py-0
-                style="color: red; font-size: 9px;" >
+                class="smallText"
+                :style="`color: ${ $vuetify.theme.error };`" >
           {{ dataError }}
         </v-flex>
 
-        <v-flex v-show="!chartIsLoading && dataLength > 0"
+        <v-flex v-show="!chartIsLoading && hasData"
                 xs12 py-0 >
           <div :id="microChartId"
                 :style="`width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
@@ -60,49 +58,109 @@
 
         <v-flex v-if="!dataError"
                 xs12 py-0
-                style="font-size: 9px;">
-          {{ `${chartIsLoading ? 'Loading ' : ''}${loadRecentData ? 'recent data' : 'data'} from ${currentDataUrl}` }}
+                class="smallText">
+          {{ `${ chartIsLoading ? 'Loading' : 'Showing'} ${ loadRecentData ? 'recent data' : 'all data'}` }}
         </v-flex>
 
-        <v-flex shrink>
-          <v-btn icon small
-                class="ma-0"
-                :color="color"
-                :outline="outlined && !showInfo"
-                style="height: 20px !important; width: 20px !important;"
-                @click="showInfo = !showInfo;">
-            <v-icon small >info</v-icon>
-          </v-btn>          
-          <!-- <base-icon-button materialIconName="info"
-                            :outlined="true"
-                            :isToggled="showInfo"
-                            :iconColor="showInfo ? 'white' : 'primary'"
-                            @clicked="showInfo = !showInfo;"
-                            style="height: 20px !important;" /> -->
+        <v-flex xs12 pt-2>
+          <v-layout row align-center justify-end >
+            <v-flex shrink
+                    class="smallText">
+              {{ showInfo ? 'Hide infos' : 'More infos' }}
+            </v-flex>
+            <v-flex shrink>
+              <base-status-icon-button :icon="showInfo ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+                                        :color="showInfo ? 'transparent' : 'secondary'"
+                                        @click="showInfo = !showInfo;" />          
+            </v-flex>
+          </v-layout>
         </v-flex>
 
         <v-flex v-if="showInfo"
-                xs12 >
+                xs12>
           <v-layout column>
             <v-flex >
-              <base-status-icon icon="access_time"
-                                :color="allIconColor"
-                                :count="!loadRecentData && this.dataLength"
-                                @click="loadRecentData = false; loadChart();" />
+              <v-divider></v-divider>
             </v-flex>
 
             <v-flex >
-              <base-status-icon icon="av_timer"
-                                :color="recentIconColor"
-                                :count="loadRecentData && this.dataLength"
-                                @click="loadRecentData = true; loadChart();"/>
-            </v-flex>            
+              <v-layout row wrap
+                        justify-space-between align-center>
+                <v-flex grow
+                        class="body-1">
+                  {{ 'All Data' }}
+                </v-flex>
+
+                <v-flex shrink>
+                  <base-status-icon icon="access_time"
+                                    :color="allIconColor" />
+                </v-flex>
+
+                <v-flex shrink
+                        class="smallText">
+                  <div :style="`background-color: ${ $vuetify.theme.secondary };`"
+                        class="py-0 px-1">
+                    {{ allDataLength }}
+                  </div>
+
+                </v-flex>
+
+                <v-flex shrink>
+                  <base-status-icon-button icon="refresh"
+                                            color="secondary"
+                                            @click="loadRecentData = false; loadChart(false);" />
+                </v-flex>
+              </v-layout>
+            </v-flex>
+
+            <v-flex grow
+                    class="smallText">
+              {{ allDataUrl }}
+            </v-flex>
+
+            <v-flex >
+              <v-divider></v-divider>
+            </v-flex>
+
+            <v-flex >
+              <v-layout row justify-space-between align-center>
+                <v-flex grow
+                        class="body-1">
+                  {{ 'Recent Data' }}
+                </v-flex>
+
+                <v-flex shrink>
+                  <base-status-icon icon="av_timer"
+                                    :color="recentIconColor"/>
+                </v-flex>
+
+                <v-flex shrink
+                        class="smallText">
+                  <div :style="`background-color: ${ $vuetify.theme.secondary };`"
+                        class="py-0 px-1">
+                    {{ recentDataLength }}
+                  </div>
+                </v-flex>
+
+                <v-flex shrink>
+                  <base-status-icon-button icon="refresh"
+                                            color="secondary"
+                                            @click="loadRecentData = true; loadChart(false);" />
+                </v-flex>
+              </v-layout>
+            </v-flex>
+      
+            <v-flex grow
+                    class="smallText">
+              {{ recentDataUrl }}
+            </v-flex>
+
           </v-layout>
         </v-flex>
 
       </v-layout>
 
-    </v-card-title>
+    </v-container>
   </v-card>
 
 </template>
@@ -111,6 +169,7 @@
 <script>
 import { createMicroLineChart } from "@/chartData/charts";
 import BaseStatusIcon from "@/components/BaseElements/BaseStatusIcon";
+import BaseStatusIconButton from "@/components/BaseElements/BaseStatusIconButton";
 
 
 export default {
@@ -136,6 +195,7 @@ export default {
   },
   components: {
     BaseStatusIcon,
+    BaseStatusIconButton,
   },
   mounted() {
     this.loadChart();
@@ -145,8 +205,8 @@ export default {
   },
   computed: {
     hasData() {
-      // return !this.currentFileLoading && !this.dataError;
-      return this.microChart && this.microChart.isReady();
+      // return this.recentDataLength > 0 || this.allDataLength > 0;
+      return this.recentDataAvailable || this.alldataAvailable;
     },
     microChartId(){
       return `${this.stationId}_micro`;
@@ -155,14 +215,15 @@ export default {
       return `${this._uid}_${this.station.alias}_${this.station.id}`;
     },
     recentIconColor() {
-      return this.recentDataAvailable ? 'green' : 'red';
+      return this.recentCheckedOnce ? this.recentDataAvailable ? this.$vuetify.theme.success : this.$vuetify.theme.error : 'transparent';
     },
     allIconColor() {
-      return this.alldataAvailable ? 'green' : 'red';
+      return this.allCheckedOnce ? this.alldataAvailable ? this.$vuetify.theme.success : this.$vuetify.theme.error : 'transparent';
     },
   },
   methods: {
-    loadChart(){
+    loadChart(fallback = true){
+      this.fallback = fallback;
       this.chartIsLoading = true;
 
       this.urlValueMapping = this.getUrlValueMapping(this.loadRecentData);
@@ -229,8 +290,15 @@ export default {
     },
     loadJsonCharts(){
       this.chartIsLoading = true;
-      this.currentDataUrl = this.graphs[0].dataUrl;
-      this.dataLength = 0;
+      const currentDataUrl = this.graphs[0].dataUrl;
+
+      if (this.loadRecentData) {
+        this.recentDataUrl = currentDataUrl;
+        this.recentDataLength = 0;
+      } else {
+        this.allDataUrl = currentDataUrl;
+        this.allDataLength = 0;
+      }
 
       const dateFormatingInfos = {
         dateFormat: this.dateFormat,
@@ -242,8 +310,11 @@ export default {
           this.microChart = createMicroLineChart(this.microChartId, 'timestamp', [this.graphs[0]], this.seriesSettings,
                                                   dateFormatingInfos, this.seriesDone, this.seriesError);
         } else {
-          const source = this.microChart.series.values[0].dataSource;
-          source.url = this.currentDataUrl;
+          const series = this.microChart.series.values[0];
+          series.data = [];
+          // this.microChart.invalidateData();          
+          const source = series.dataSource;
+          source.url = currentDataUrl;
           source.load();
         }
         
@@ -255,29 +326,39 @@ export default {
       this.chartIsLoading = false;
       this.dataError = error.message;
 
+      this.loadRecentData ? this.recentCheckedOnce = true : this.allCheckedOnce = true;
+
       if (this.loadRecentData ) {
         this.recentDataAvailable = false;
-        this.loadRecentData = false;
-        this.loadChart();
+        if (this.fallback){
+          this.loadRecentData = false;
+          this.loadChart();
+        }
       } else {
         this.alldataAvailable = false;
       }
     },
     seriesDone(doneResponse) {
       this.chartIsLoading = false;
-      this.dataLength = doneResponse && doneResponse.data ? doneResponse.data.length : 0;
+      const dataLength = doneResponse && doneResponse.data ? doneResponse.data.length : 0;
+      
+      this.loadRecentData ? this.recentCheckedOnce = true : this.allCheckedOnce = true;
 
-      if (this.dataLength > 0) {
+      if (dataLength > 0) {
         if (this.loadRecentData) {
           this.recentDataAvailable = true;
+          this.recentDataLength = dataLength;
         } else {
           this.alldataAvailable = true;
+          this.allDataLength = dataLength;
         }
       } else {
         if (this.loadRecentData) {
           this.recentDataAvailable = false;
-          this.loadRecentData = false;
-          this.loadChart();
+          if (this.fallback){
+            this.loadRecentData = false;
+            this.loadChart();
+          }
         } else {
           this.alldataAvailable = false;
         }
@@ -289,13 +370,17 @@ export default {
     chartHeight: '50px',
     dateFormat: 'HH:mm DD/MM/YYYY',
     dataError: '',
-    dataLength: 0,
     noDataText: 'No data available',
     loadRecentData: true,
+    recentCheckedOnce: false,
     recentDataAvailable: false,
+    recentDataLength: 0,
+    recentDataUrl: '',
+    allCheckedOnce: false,
     alldataAvailable: false,
+    allDataLength: 0,
+    allDataUrl: '',
     chartIsLoading: true,
-    currentDataUrl: '',
     showInfo: false,
     graphs: [],
     seriesSettings: {
@@ -308,5 +393,8 @@ export default {
 </script>
 
 <style scoped>
-
+ .smallText {
+   font-size: 9px;
+   word-break: break-all;
+ }
 </style>
