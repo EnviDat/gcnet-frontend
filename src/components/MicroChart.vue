@@ -212,7 +212,7 @@ export default {
       return `${this.stationId}_microChart`;
     },
     stationId(){
-      return `${this._uid}_${this.station.id}_${this.station.alias}`;
+      return `${this._uid}_${this.station.id}_${this.station.alias ? this.station.alias : this.station.name}`;
     },
     recentIconColor() {
       return this.recentCheckedOnce ? this.recentDataAvailable ? this.$vuetify.theme.success : this.$vuetify.theme.error : 'transparent';
@@ -312,7 +312,6 @@ export default {
         } else {
           const series = this.microChart.series.values[0];
           series.data = [];
-          // this.microChart.invalidateData();          
           const source = series.dataSource;
           source.url = currentDataUrl;
           source.load();
