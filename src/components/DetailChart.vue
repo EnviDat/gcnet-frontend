@@ -2,8 +2,7 @@
 
   <v-card>
 
-     <div :id="chartdivID"
-              style="height: 350px;" >
+     <div class='chart' :id="chartdivID">
     </div>
 
   </v-card>
@@ -72,7 +71,6 @@ export default {
       .then(response => {
         this.records = response.data;
         this.loadChart();
-      //  this.loadChartDivs();
       })
       .catch(error => {
         console.log('There was an error:' + error.response.statusText + ' url: ' + error.request.responseURL);
@@ -209,3 +207,11 @@ export default {
 }
 </script>
 
+<style>
+
+    .chart {
+        margin-bottom: 3em;
+        height: 400px;
+    }
+
+</style>

@@ -27,9 +27,9 @@
 </template>
 
 <script>
-//import Chart from '@/components/Chart.vue';
+
 import DetailChart from "../DetailChart";
-//import DetailChartTest from "../DetailChartTest";
+
 
 export default {
   props: {

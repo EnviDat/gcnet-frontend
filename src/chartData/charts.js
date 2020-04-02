@@ -59,15 +59,66 @@ const createLineChart = function createLineChart(selector, dateFormat, chartData
     }
 
     chart.legend = new am4charts.Legend();
-    chart.legend.parent = chart.plotContainer;
+    // chart.legend.parent = chart.plotContainer;
     chart.legend.zIndex = 100;
-    chart.legend.position = 'absolute';
-    chart.legend.dy = -30;
-    chart.paddingTop = 30;
+    // chart.legend.position = 'absolute';
+    // chart.legend.dy = -30;
+    // chart.paddingTop = 30;
+
+    // Set legend location
+    chart.legend.position = 'bottom';
+    chart.legend.contentAlign = 'left';
 
     chart.cursor = new am4charts.XYCursor();
     chart.responsive.enabled = true;
-  
+
+    // Create and format chart title
+    var title = chart.titles.create();
+    title.contentAlign = 'left';
+    title.fontSize = 30;
+    title.marginBottom = 30;
+    title.bold = true;
+
+
+    // Dynamically assign chart title
+    switch (graphs[0].valueField) {
+        case 'AirTC1':
+        case 'AirTC2':
+            title.text = 'Air temperatures';
+            break;
+        case 'RH1':
+        case 'RH2':
+            title.text = 'Relative humidity';
+            break;
+        case 'NetRad':
+        case 'SWin':
+        case 'SWout':
+            title.text = 'Radiation';
+            break;
+        case 'Sheight1':
+        case 'Sheight2':
+            title.text = 'Snow heights';
+            break;
+        case 'WS1':
+        case 'WS2':
+            title.text = 'Wind speed';
+            break;
+        case 'WD1':
+        case 'WD2':
+            title.text = 'Wind direction';
+            break;
+        case 'press':
+            title.text = 'Air pressure';
+            break;
+        case 'Battvolt':
+            title.text = 'Battery voltage';
+            break;
+        default:
+            // Assign default chart text to first valueField for each graph
+            title.text = graphs[0].valueField;
+    }
+
+
     const scrollbarX = new am4charts.XYChartScrollbar();
 
     // addGraphToChart(chart, graphs[0], dateAxis, 0, scrollbarX, seriesSettings);
@@ -94,7 +145,7 @@ function addGraphToChart(chart, graph, dateAxis, count, scrollbarX, seriesSettin
     // valueAxis.title.text = graph.title;
     valueAxis.renderer.opposite = count % 2 == 0;
     valueAxis.renderer.minGridDistance = 30;
-    
+
     // valueAxis.renderer.labels.template.stroke = am4core.color(graph.lineColor);
     valueAxis.renderer.labels.template.fill = am4core.color(graph.lineColor);
     valueAxis.renderer.minWidth = 30;
@@ -103,13 +154,19 @@ function addGraphToChart(chart, graph, dateAxis, count, scrollbarX, seriesSettin
     valueAxis.extraMin = 0.1;
     valueAxis.extraMax = 0.1;
 
+    // Assign title to valueAxis
+    // TODO Dynamically assign title to valueAis
+    valueAxis.title.text = '°C';
+
+
+
     let series = new am4charts.LineSeries();
     series.name = graph.title;
     series.tooltipText = "{name}: [bold] {valueY}";
     series.yAxis = valueAxis;
     series.xAxis = dateAxis;
   
-    // "timestamp" refeers to the json element "timestamp" from the data_conversion.js
+    // "timestamp" refers to the json element "timestamp" from the data_conversion.js
     series.dataFields.dateX = "timestamp";
     series.dataFields.valueY = graph.valueField;
     series.minBulletDistance = graph.hideBulletsCount;
