@@ -195,6 +195,7 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
   am4core.options.queue = defaultOptions.queue;
 
   var chart = am4core.create(selector, am4charts.XYChart);
+  chart.id = selector;
 
   var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
   dateAxis.startLocation = 0.5;
@@ -205,33 +206,35 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
     chart.dateFormatter.inputDateFormat = dateFormatingInfos.inputFormat;
   }
 
-  let graph = graphs[0];
-  
-  let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-  
-  var series = chart.series.push(new am4charts.LineSeries());
+  for (let i = 0; i < graphs.length; i++) {
+    const graph = graphs[i];
+    
+    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    
+    var series = chart.series.push(new am4charts.LineSeries());
 
-  if (graph.dataUrl) {
-    series.dataSource.url = graph.dataUrl;
+    if (graph.dataUrl) {
+      series.dataSource.url = graph.dataUrl;
 
-    series.dataSource.events.on('parseerror', errorCallback);
-    series.dataSource.events.on('error', errorCallback);
-    series.dataSource.events.on('done', doneCallback);
+      series.dataSource.events.on('parseerror', errorCallback);
+      series.dataSource.events.on('error', errorCallback);
+      series.dataSource.events.on('done', doneCallback);
 
-    series.dataSource.reloadFrequency = seriesSettings.reloadFrequency;
-    series.dataSource.updateCurrentData = true;
-  }  
+      series.dataSource.reloadFrequency = seriesSettings.reloadFrequency;
+      series.dataSource.updateCurrentData = true;
+    }  
 
-  series.tooltipText = `[bold]{${graph.valueField}}`;
-  series.tooltip.fill = am4core.color(graph.lineColor);
+    series.tooltipText = `[bold]{${graph.valueField}}`;
+    series.tooltip.fill = am4core.color(graph.lineColor);
 
-  series.yAxis = valueAxis;
-  series.xAxis = dateAxis;
-  series.dataFields.dateX = dateValueField;
-  series.dataFields.valueY = graph.valueField;
+    series.yAxis = valueAxis;
+    series.xAxis = dateAxis;
+    series.dataFields.dateX = dateValueField;
+    series.dataFields.valueY = graph.valueField;
 
-  series.stroke = am4core.color(graph.lineColor);
-  series.strokeWidth = seriesSettings.lineStrokeWidth;  
+    series.stroke = am4core.color(graph.lineColor);
+    series.strokeWidth = seriesSettings.lineStrokeWidth;  
+  }
 
   chart.maskBullets = true;
 
@@ -240,7 +243,6 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
   
   return chart;
 }
-
 
 
 export {
