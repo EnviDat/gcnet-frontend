@@ -39,6 +39,7 @@ import TheNavigation from '@/components/TheNavigation';
 import StationsMap from '@/components/StationsMap';
 import StationsList from '@/components/StationsList';
 import LandingPage from '@/components/Pages/LandingPage';
+import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
   name: 'App',
@@ -187,6 +188,13 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+  /* Icons list: https://jossef.github.io/material-design-icons-iconfont/ */
+  $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+
+  @import '~material-design-icons-iconfont/src/material-design-icons.scss';
+</style>
 
 <style scoped>
 
