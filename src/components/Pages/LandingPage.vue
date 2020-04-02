@@ -12,8 +12,8 @@
         <v-progress-circular
           indeterminate
           color="primary"
-          
           />
+
       </v-flex>
 
       <v-flex xs12
@@ -31,10 +31,6 @@
 
       <v-flex xs12 md8 offset-md2
               v-show="showHomeScreen" >
-
-              <!-- :class="{ 'px-5': $vuetify.breakpoint.mdAndUp,
-                        'px-1': $vuetify.breakpoint.smAndDown,
-                      }" -->
 
         <v-flex>
           <title-view :title="homeInfos.title"
@@ -64,7 +60,7 @@
 
         <v-flex xs12
                 pt-3>
-          <v-layout row wrap>
+          <v-layout row wrap >
             <v-flex>
               <base-rectangle-button :buttonText="MapSelectionText"
                                       materialIconName="map"
@@ -97,20 +93,28 @@
                                     />
             </v-flex>
 
+            <v-flex>
+              <base-rectangle-button :buttonText="showOverviewText"
+                                      materialIconName="dashboard"
+                                      iconColor="white"
+                                      v-on:clicked="catchOverviewClick"
+                                    />
+            </v-flex>
+
           </v-layout>
         </v-flex>
       </v-flex>
 
-      <!-- <v-flex xs12 md8 offset-md2
+      <v-flex xs12 mx-5
               v-if="!showHomeScreen && showOverview" >
 
           <v-layout column >
             <v-flex py-3 >
-              <chart :station="$store.getters.stations[0]" />
+              <chart :station="$store.getters.stations[0]" :delay="0" />
             </v-flex>
           </v-layout>
 
-      </v-flex> -->
+      </v-flex>
 
             <!-- <v-flex py-3
                     v-for="station in $store.getters.stations"
@@ -130,6 +134,7 @@
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton.vue';
 // import ControlPanelView from '@/components/ControlPanelView.vue';
 import TitleView from '@/components/TitleView.vue';
+import Chart from '@/components/Chart.vue';
 import homeInfos from '@/homeInfos';
 // import mapHTML from '@/map_html.html';
 // import StationsMap from '@/components/StationsMap';
@@ -144,6 +149,7 @@ export default {
     BaseRectangleButton,
     // ControlPanelView,
     TitleView,
+    Chart,
     // StationsMap,
   },
   data: () => ({
@@ -155,6 +161,7 @@ export default {
     dataRequestText: 'Request GC-Net Data',
     showMoreInfos: false,
     showMoreInfosText: 'More Information',
+    showOverviewText: 'Show Stations Overview',
     currentStationName: '',
     stationOverviewUrl: 'https://www.wsl.ch/gcnet/stations.html',
     // mapHTML,
@@ -168,7 +175,7 @@ export default {
     showOverview: function updateStationOverview(){
       if (this.showOverview) {
         this.currentStation = null;
-        this.loadStation(this.stationOverviewUrl);
+        // this.loadStation(this.stationOverviewUrl);
       }
     },
   },
@@ -191,6 +198,9 @@ export default {
     catchListViewClick() {
       this.$emit('listViewClick');
     },
+    catchOverviewClick() {
+      this.$emit('overviewClick');
+    },
     iframeWithSource(src){
         return `<iframe style="height: 100%; width: 100%;"
                 id="station_iframe"
@@ -209,20 +219,6 @@ export default {
       this.$refs.iframe_parent.innerHTML = null;
       this.$refs.iframe_parent.innerHTML = this.iframeWithSource(url);
     },
-    iframeScreenHeight() {
-      return window.innerHeight - 150;
-    },
-    // randomImg(name) {
-    //   const keys = Object.keys(this.cardImgs);
-    //   let rnd = 0;
-
-    //   if (keys.length > 0) {
-    //     // rnd = this.randomIntFromInterval(0, keys.length - 1);
-    //     rnd = this.randomIntFromSeed(0, keys.length - 1)
-    //   }
-
-    //   return this.cardImgs[keys[rnd]];
-    // },
   },
 
 };

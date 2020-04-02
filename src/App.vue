@@ -2,14 +2,16 @@
   <v-app class="application" :style="dynamicBackground()">
 
     <v-content app >
-      <landing-page :currentStation="currentStation" 
+      <landing-page v-if="!showOverview"
+                    :currentStation="currentStation" 
                     :showHomeScreen="showHomeScreen"
-                    :showOverview="showOverview"
                     v-on:anyClick="catchAnyClick"
                     v-on:mapViewClick="catchMapViewClick"
                     v-on:listViewClick="catchListViewClick"
                     v-on:updateDrawer="catchUpdateDrawer"
                     />
+
+      <stations-overview-page v-if="showOverview" />
     </v-content>
 
       <the-navigation :mini="drawerIsMini"
@@ -39,6 +41,8 @@ import TheNavigation from '@/components/TheNavigation';
 import StationsMap from '@/components/StationsMap';
 import StationsList from '@/components/StationsList';
 import LandingPage from '@/components/Pages/LandingPage';
+import StationsOverviewPage from '@/components/Pages/StationsOverviewPage';
+import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 
 export default {
   name: 'App',
@@ -47,6 +51,7 @@ export default {
     StationsMap,
     StationsList,
     LandingPage,
+    StationsOverviewPage,
   },
   beforeMount() {
       const imgs = require.context('./assets/', false, /\.jpg$/);
@@ -62,6 +67,7 @@ export default {
   methods: {
     catchHomeClick() {
       this.showHomeScreen = true;
+      this.showOverview = false;
     },
     catchAnyClick(){
 
@@ -103,6 +109,10 @@ export default {
       }
       this.navItems[1].active = true;
     },
+    catchOverviewClick() {
+      this.showHomeScreen = false;
+      this.showOverview = true;
+    },    
     mapStationClick(stationUrl){
       this.showHomeScreen = false;
       this.showOverview = false;
@@ -182,6 +192,13 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+  /* Icons list: https://jossef.github.io/material-design-icons-iconfont/ */
+  $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+
+  @import '~material-design-icons-iconfont/src/material-design-icons.scss';
+</style>
 
 <style scoped>
 

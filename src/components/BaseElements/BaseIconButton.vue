@@ -4,7 +4,7 @@
       :style="isSmall ? 'height: 28px;' : 'height: 36px;'"
   >
     <v-tooltip v-bind="{ top: !toolTipBottom, bottom: toolTipBottom }" 
-                :disabled="$vuetify.breakpoint.xsOnly"
+                :disabled="!toolTipText || $vuetify.breakpoint.xsOnly"
                 >
 
       <v-btn :icon="!isElevated"
