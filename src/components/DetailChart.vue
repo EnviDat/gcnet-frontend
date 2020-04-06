@@ -29,7 +29,7 @@ export default {
       'temp': ['AirTC1', 'AirTC2'],
       'press': ['press'],
       'ws': ['WS1', 'WS2'],
-      'battvolt': ['Battvolt'],
+      'battvolt': ['BattVolt'],
       'rad': ['NetRad', 'SWin', 'SWout'],
       'rh': ['RH1', 'RH2'],
       'sheight': ['Sheight1', 'Sheight2'],
@@ -182,7 +182,7 @@ export default {
         "bulletRadius": this.seriesSettings.bulletsRadius,
         "title": titleString,
         "valueField": parameter,
-        "hideBulletsCount": 10
+        "hideBulletsCount": 10,
       };
     },
     loadChart() {
@@ -215,7 +215,7 @@ export default {
 
     .chart {
         margin-bottom: 2em;
-        height: 350px;
+        height: 400px;
     }
 
 </style>

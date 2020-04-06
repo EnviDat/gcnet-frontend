@@ -64,8 +64,11 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
       chart.dateFormatter.inputDateFormat = dateFormatingInfos.inputFormat;
     }
 
-    dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]"); 
-    
+    dateAxis.periodChangeDateFormats.setKey("month", "[bold]yyyy[/]");
+
+    // Display month and date
+     dateAxis.periodChangeDateFormats.setKey("hour", "[bold]MMM dd[/]");
+
     if (chartData.length > 350){
       dateAxis.baseInterval = {
         "timeUnit": "day",
@@ -105,33 +108,41 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
         case 'AirTC1':
         case 'AirTC2':
             title.text = 'Air temperatures';
+            chart.numberFormatter.numberFormat = "##  °C"
             break;
         case 'RH1':
         case 'RH2':
             title.text = 'Relative humidity';
+            chart.numberFormatter.numberFormat = "##  %"
             break;
         case 'NetRad':
         case 'SWin':
         case 'SWout':
             title.text = 'Radiation';
+            chart.numberFormatter.numberFormat = "###  W/m²"
             break;
         case 'Sheight1':
         case 'Sheight2':
             title.text = 'Snow heights';
+            chart.numberFormatter.numberFormat = "#.#  m"
             break;
         case 'WS1':
         case 'WS2':
             title.text = 'Wind speed';
+            chart.numberFormatter.numberFormat = "###  m/s"
             break;
         case 'WD1':
         case 'WD2':
             title.text = 'Wind direction';
+            chart.numberFormatter.numberFormat = "###  °"
             break;
         case 'press':
             title.text = 'Air pressure';
+            chart.numberFormatter.numberFormat = "###  mbar"
             break;
         case 'Battvolt':
             title.text = 'Battery voltage';
+            chart.numberFormatter.numberFormat = "## V"
             break;
         default:
             // Assign default chart text to first valueField for each graph
@@ -155,6 +166,8 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     chart.scrollbarX = scrollbarX;
     chart.scrollbarX.parent = chart.bottomAxesContainer;
 
+
+
     return chart;
 }
 
@@ -162,6 +175,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
 function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings) {
 
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
     // valueAxis.title.text = graph.title;
     valueAxis.renderer.opposite = count % 2 == 0;
     valueAxis.renderer.minGridDistance = 30;
@@ -173,12 +187,6 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
 
     valueAxis.extraMin = 0.1;
     valueAxis.extraMax = 0.1;
-
-    // Assign title to valueAxis
-    // TODO Dynamically assign title to valueAis
-    valueAxis.title.text = '°C';
-
-
 
     let series = new am4charts.LineSeries();
     series.name = graph.title;
@@ -199,7 +207,13 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
         series.dataSource.updateCurrentData = true;
     }
 
-    series.tooltipText = "{name}: [bold] {valueY}";
+    // series.tooltipText = "{name}: [bold] {valueY}";
+    // TODO fix this
+    series.tooltipText = "{dateX}\n{name}: [bold] {valueY}";
+
+    // Assign tooltip to series color
+    series.tooltip.getFillFromObject = false;
+    series.tooltip.background.fill = am4core.color(graph.lineColor);
 
     series.yAxis = valueAxis;
     series.xAxis = dateAxis;

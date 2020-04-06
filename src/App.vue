@@ -213,7 +213,7 @@ export default {
   /* Icons list: https://jossef.github.io/material-design-icons-iconfont/ */
   $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
 
-  @import '~material-design-icons-iconfont/src/material-design-icons.scss';
+  //@import '~material-design-icons-iconfont/src/material-design-icons.scss';
 </style>
 
 <style scoped>

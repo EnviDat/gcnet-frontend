@@ -11,10 +11,12 @@
 
           <v-layout column >
 
+<!--            <v-flex  v-for="fileObject in generateFileObjects" :key="fileObject.fileName">-->
+<!--                <DetailChart :url="baseStationURL + fileObject" :fileObject="fileObject" :chartdivID="fileObject"/>-->
+<!--            </v-flex>-->
+
             <v-flex  v-for="file in generateFileList" :key="file">
-
-              <DetailChart :url="baseStationURL + file" :chartdivID="file"/>
-
+              <DetailChart :url="baseStationURL + file" :chartdivID="file" />
             </v-flex>
 
           </v-layout>
@@ -43,13 +45,17 @@ export default {
     // baseStationURL: 'https://www.wsl.ch/gcnet/data/',
     baseStationURL: './testdata/',
     loadingStation: false,
-    // fileNames: ['battvolt.json', 'battvolt_v.json', 'press.json', 'press_v.json', 'rad.json', 'rad_v.json', 'rh.json', 'rh_v.json', 'sheight.json', 'sheight_v.json',
-    // 'stemp.json', 'stemp_v.json', 'temp.json', 'temp_v.json', 'wd.json', 'wd_v.json', 'ws.json', 'ws_v.json']
-    fileNames: ['temp_v.json', 'rh_v.json', 'rad_v.json', 'sheight_v.json', 'ws_v.json', 'wd_v.json', 'press_v.json',
-       'battvolt_v.json']
+    // fileNames: ['temp.json', 'temp_v.json',  'rh.json', 'rh_v.json', 'rad.json', 'rad_v.json',  'sheight.json', 'sheight_v.json',
+    //     'ws.json', 'ws_v.json', 'wd.json', 'wd_v.json', 'press.json', 'press_v.json', 'battvolt.json', 'battvolt_v.json', ]
+    // fileNames: ['temp_v.json', 'rh_v.json', 'rad_v.json', 'sheight_v.json', 'ws_v.json', 'wd_v.json', 'press_v.json',
+    //     'battvolt_v.json']
     //fileNames: ['temp_v.json', 'press_v.json']
-    //fileNames: ['temp_v.json']
+   fileNames: ['temp.json', 'temp_v.json']
    // fileNames: ['press_v.json', 'rad_v.json']
+//     fileObjects: [
+//         { fileName: 'temp_v.json', chartTitle: 'Air temp blala', furtherInfo: 'asdlkfasdöl'},
+//         { fileName: 'press_v.json', chartTitle: 'Air Pressure blah'},
+// ],
   }),
   watch: {
     // currentStation: function updateStation() {
@@ -61,21 +67,39 @@ export default {
   computed: {
     // loadStation() {
     // },
-    generateFileList() {
-      let fileList = []
 
-      if (!this.currentStation){
-        // handle empty case, just return the empty list
-        return fileList;
-      }
+      generateFileList() {
+          let fileList = []
 
-      for (let i = 0; i < this.fileNames.length; i++) {
-        fileList.push(this.currentStation.id + this.fileNames[i])
-      }
+          if (!this.currentStation){
+            // handle empty case, just return the empty list
+            return fileList;
+          }
 
-      return fileList
-    }
-  },
+          for (let i = 0; i < this.fileNames.length; i++) {
+            fileList.push(this.currentStation.id + this.fileNames[i])
+          }
+
+          return fileList
+        }
+      },
+
+
+  //   generateFileObjects() {
+  //     let fileObjectList = {}
+  //
+  //     if (!this.currentStation){
+  //       // handle empty case, just return the empty object
+  //       return fileObjectList;
+  //     }
+  //
+  //     for (let i = 0; i < this.fileObjects.length; i++) {
+  //       fileObjectList.push({fileName: this.currentStation.id + this.fileObjects[i].fileName})
+  //     }
+  //
+  //     return fileObjectList
+  //   }
+  // },
 
 };
 </script>
