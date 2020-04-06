@@ -45,12 +45,12 @@ export default {
     // baseStationURL: 'https://www.wsl.ch/gcnet/data/',
     baseStationURL: './testdata/',
     loadingStation: false,
-    // fileNames: ['temp.json', 'temp_v.json',  'rh.json', 'rh_v.json', 'rad.json', 'rad_v.json',  'sheight.json', 'sheight_v.json',
-    //     'ws.json', 'ws_v.json', 'wd.json', 'wd_v.json', 'press.json', 'press_v.json', 'battvolt.json', 'battvolt_v.json', ]
+    fileNames: ['temp.json', 'temp_v.json',  'rh.json', 'rh_v.json', 'rad.json', 'rad_v.json',  'sheight.json', 'sheight_v.json',
+        'ws.json', 'ws_v.json', 'wd.json', 'wd_v.json', 'press.json', 'press_v.json', 'battvolt.json', 'battvolt_v.json', ]
     // fileNames: ['temp_v.json', 'rh_v.json', 'rad_v.json', 'sheight_v.json', 'ws_v.json', 'wd_v.json', 'press_v.json',
     //     'battvolt_v.json']
     //fileNames: ['temp_v.json', 'press_v.json']
-   fileNames: ['temp.json', 'temp_v.json']
+   //fileNames: ['temp.json', 'temp_v.json']
    // fileNames: ['press_v.json', 'rad_v.json']
 //     fileObjects: [
 //         { fileName: 'temp_v.json', chartTitle: 'Air temp blala', furtherInfo: 'asdlkfasdöl'},
