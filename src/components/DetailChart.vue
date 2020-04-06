@@ -19,11 +19,13 @@ export default {
   props: {
     url: String,
     chartdivID: String,
+    fileObject: Object,
   },
   data()  {
     return {
       graphs: [],
-      dateFormat: 'HH:mm DD/MM/YYYY',
+      // dateFormat: 'HH:mm DD/MM/YYYY',
+      dateFormat: 'MMM DD, YYYY HH:mm',
       records: [],
       valueFieldMapping: {
       'temp': ['AirTC1', 'AirTC2'],
@@ -34,8 +36,6 @@ export default {
       'rh': ['RH1', 'RH2'],
       'sheight': ['Sheight1', 'Sheight2'],
       'wd': ['WD1', 'WD2'],
-
-
     },
       seriesSettings: {
       // lineStrokeWidth: 3,
@@ -97,6 +97,16 @@ export default {
         "hideBulletsCount": 0
       }];
     },
+    formatDate() {
+     // dateFormat: 'MMM DD, YYYY HH:mm',
+      let dayOfYear = [];
+      for (let i = 5; i <= 6; i++) {
+          dayOfYear.push(this.dateFormat[i]);
+      }
+      dayOfYear.join();
+
+      return "test";
+    },
   },
 
 
@@ -107,7 +117,7 @@ export default {
       let color = '#73C8A9';
 
       // Assign default titleString to data parameter (i.e. legend)
-      let titleString = parameter;
+     let titleString = parameter;
 
       // Match lineColor for series to original GC-Net website chart colors and legend strings by evaluating parameter
       switch (parameter) {
@@ -129,7 +139,7 @@ export default {
              break;
          case 'NetRad':
              color = '#1C5197';
-             titleString = 'Net radiation';
+            titleString = 'Net radiation';
              break;
          case 'SWin':
              color = '#E79F32';
@@ -195,7 +205,8 @@ export default {
 
         if (!this.weatherChart) {
           this.weatherChart = createLineChart(this.chartdivID, 'timestamp', this.records, this.graphs,
-                                      true, undefined, undefined, dateFormatingInfos);
+                                      true, undefined, undefined, dateFormatingInfos,
+                                        this.fileObject.chartTitle, this.fileObject.numberFormat);
         } else {
           this.weatherChart.data = this.records;
           this.weatherChart.invalidateRawData();

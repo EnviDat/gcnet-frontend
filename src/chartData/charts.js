@@ -31,7 +31,8 @@ const defaultFormatingInfos = {
 
 const createLineChart = function createLineChart(selector, dateValueField, chartData, graphs, groupData,
                                                     options = defaultOptions, seriesSettings = defaultSeriesSettings,
-                                                    dateFormatingInfos = defaultFormatingInfos)
+                                                    dateFormatingInfos = defaultFormatingInfos,
+                                                 chartTitle, chartNumberFormat)
 {
     am4core.options.queue = options.queue;
     am4core.options.onlyShowOnViewport = options.onlyShowOnViewport;
@@ -103,53 +104,11 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     title.marginBottom = 10;
     title.bold = true;
 
+    // Assign chart title to fileObject.chartTitle prop in DetailChart.vue
+    title.text = chartTitle;
 
-    // Dynamically assign chart title
-    switch (graphs[0].valueField) {
-        case 'AirTC1':
-        case 'AirTC2':
-            title.text = 'Air temperatures';
-            chart.numberFormatter.numberFormat = "##  °C"
-            break;
-        case 'RH1':
-        case 'RH2':
-            title.text = 'Relative humidity';
-            chart.numberFormatter.numberFormat = "##  %"
-            break;
-        case 'NetRad':
-        case 'SWin':
-        case 'SWout':
-            title.text = 'Radiation';
-            chart.numberFormatter.numberFormat = "###  W/m²"
-            break;
-        case 'Sheight1':
-        case 'Sheight2':
-            title.text = 'Snow heights';
-            chart.numberFormatter.numberFormat = "#.#  m"
-            break;
-        case 'WS1':
-        case 'WS2':
-            title.text = 'Wind speed';
-            chart.numberFormatter.numberFormat = "###  m/s"
-            break;
-        case 'WD1':
-        case 'WD2':
-            title.text = 'Wind direction';
-            chart.numberFormatter.numberFormat = "###  °"
-            break;
-        case 'press':
-            title.text = 'Air pressure';
-            chart.numberFormatter.numberFormat = "###  mbar"
-            break;
-        case 'Battvolt':
-            title.text = 'Battery voltage';
-            chart.numberFormatter.numberFormat = "## V"
-            break;
-        default:
-            // Assign default chart text to first valueField for each graph
-            title.text = graphs[0].valueField;
-    }
-
+    // Assign chart numberFormatter to fileObject.numberFormat prop in DetailChart.vue
+    chart.numberFormatter.numberFormat = chartNumberFormat;
 
     const scrollbarX = new am4charts.XYChartScrollbar();
 
@@ -208,9 +167,6 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
         series.dataSource.updateCurrentData = true;
     }
 
-    // TODO fix this
-    series.tooltipText = "{dateX}\n{name}: [bold] {valueY}";
-
     // Assign tooltip to series color
     series.tooltip.getFillFromObject = false;
     series.tooltip.background.fill = am4core.color(graph.lineColor);
@@ -221,6 +177,10 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
     series.dataFields.dateX = dateValueField;
     series.dataFields.valueY = graph.valueField;
     series.minBulletDistance = graph.hideBulletsCount;
+
+    // TODO fix this
+    // Assign tooltipText
+    series.tooltipText = "{dateX}\n{name}: [bold] {valueY}";
 
     series.autoGapCount = seriesSettings.lineAutoGap;
     series.connect = seriesSettings.lineConncet;
@@ -273,7 +233,7 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
   dateAxis.startLocation = 0.5;
   dateAxis.endLocation = 0.7;
 
-  chart.dateFormatter.dateFormat = dateFormatingInfos.dateFormat;
+   chart.dateFormatter.dateFormat = dateFormatingInfos.dateFormat;
   if (dateFormatingInfos.inputFormat) {
     chart.dateFormatter.inputDateFormat = dateFormatingInfos.inputFormat;
   }
@@ -282,7 +242,7 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
     const graph = graphs[i];
     
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    
+
     var series = chart.series.push(new am4charts.LineSeries());
 
     if (graph.dataUrl) {
