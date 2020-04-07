@@ -25,6 +25,7 @@ export default {
     return {
       graphs: [],
       dateFormat: 'MMM dd, YYYY HH:mm',
+      dateFormatNoTime: 'MMM dd, YYYY',
       records: [],
       valueFieldMapping: {
       'temp': ['AirTC1', 'AirTC2'],
@@ -95,16 +96,6 @@ export default {
         "valueField": "AirT2",
         "hideBulletsCount": 0
       }];
-    },
-    formatDate() {
-     // dateFormat: 'MMM DD, YYYY HH:mm',
-      let dayOfYear = [];
-      for (let i = 5; i <= 6; i++) {
-          dayOfYear.push(this.dateFormat[i]);
-      }
-      dayOfYear.join();
-
-      return "test";
     },
   },
 
@@ -197,6 +188,7 @@ export default {
     loadChart() {
       const dateFormatingInfos = {
         dateFormat: this.dateFormat,
+        dateFormatNoTime: this.dateFormatNoTime,
         inputFormat: 'x',
       };
     
@@ -205,7 +197,8 @@ export default {
         if (!this.weatherChart) {
           this.weatherChart = createLineChart(this.chartdivID, 'timestamp', this.records, this.graphs,
                                       true, undefined, undefined, dateFormatingInfos,
-                                        this.fileObject.chartTitle, this.fileObject.numberFormat);
+                                       this.fileObject.chartTitle, this.fileObject.numberFormat,
+                                       this.fileObject.dateFormatTime);
         } else {
           this.weatherChart.data = this.records;
           this.weatherChart.invalidateRawData();

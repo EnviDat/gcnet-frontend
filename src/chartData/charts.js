@@ -32,7 +32,7 @@ const defaultFormatingInfos = {
 const createLineChart = function createLineChart(selector, dateValueField, chartData, graphs, groupData,
                                                     options = defaultOptions, seriesSettings = defaultSeriesSettings,
                                                     dateFormatingInfos = defaultFormatingInfos,
-                                                 chartTitle, chartNumberFormat)
+                                                 chartTitle, chartNumberFormat, dateFormatTime)
 {
     am4core.options.queue = options.queue;
     am4core.options.onlyShowOnViewport = options.onlyShowOnViewport;
@@ -61,7 +61,14 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     // dateAxis.renderer.labels.template.horizontalCenter = "right";
     dateAxis.renderer.grid.template.strokeDasharray = "4";
 
-    chart.dateFormatter.dateFormat = dateFormatingInfos.dateFormat;
+    // If dateFormatTime in fileObject is false format date without time, else format date with time
+    if (dateFormatTime === false) {
+        chart.dateFormatter.dateFormat = dateFormatingInfos.dateFormatNoTime;
+    }
+    else {
+        chart.dateFormatter.dateFormat = dateFormatingInfos.dateFormat;
+    }
+
     if (dateFormatingInfos.inputFormat) {
       chart.dateFormatter.inputDateFormat = dateFormatingInfos.inputFormat;
     }
@@ -217,14 +224,8 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
     // Temporarily hide series preview
     scrollbarX.scrollbarChart.seriesContainer.hide();
 
-    // // Test
-    // for (let k=0; k < count; k++) {
-    //     scrollbarX.scrollbarChart.xAxes.values[k].renderer.labels.template.inside = false;
-    //     scrollbarX.scrollbarChart.xAxes.values[k].renderer.labels.template.dy = -50;
-    // }
 
     if (count <= 0 && scrollbarX) {
-    //  if (count <= 0) {
       // scrollbarX.series.push(series);
       scrollbarX.scrollbarChart.xAxes.values[count].renderer.labels.template.inside = false;
       scrollbarX.scrollbarChart.xAxes.values[count].renderer.labels.template.dy = -50;
@@ -264,7 +265,7 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
   dateAxis.startLocation = 0.5;
   dateAxis.endLocation = 0.7;
 
-   chart.dateFormatter.dateFormat = dateFormatingInfos.dateFormat;
+  chart.dateFormatter.dateFormat = dateFormatingInfos.dateFormat;
   if (dateFormatingInfos.inputFormat) {
     chart.dateFormatter.inputDateFormat = dateFormatingInfos.inputFormat;
   }
