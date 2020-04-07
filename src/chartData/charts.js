@@ -126,7 +126,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     }
 
     chart.maskBullets = true;
-    
+
     chart.scrollbarX = scrollbarX;
     chart.scrollbarX.parent = chart.bottomAxesContainer;
 
@@ -213,8 +213,20 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
   
     chart.series.push(series);
 
+    // TODO series preview needs to display in scrollbarX
+    scrollbarX.series.push(series);
+    // Temporarily hide series preview
+    scrollbarX.scrollbarChart.seriesContainer.hide();
+
+    // // Test
+    // for (let k=0; k < count; k++) {
+    //     scrollbarX.scrollbarChart.xAxes.values[k].renderer.labels.template.inside = false;
+    //     scrollbarX.scrollbarChart.xAxes.values[k].renderer.labels.template.dy = -50;
+    // }
+
     if (count <= 0 && scrollbarX) {
-      scrollbarX.series.push(series);
+    //  if (count <= 0) {
+      // scrollbarX.series.push(series);
       scrollbarX.scrollbarChart.xAxes.values[count].renderer.labels.template.inside = false;
       scrollbarX.scrollbarChart.xAxes.values[count].renderer.labels.template.dy = -50;
 

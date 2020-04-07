@@ -24,8 +24,7 @@ export default {
   data()  {
     return {
       graphs: [],
-      // dateFormat: 'HH:mm DD/MM/YYYY',
-      dateFormat: 'MMM DD, YYYY HH:mm',
+      dateFormat: 'MMM dd, YYYY HH:mm',
       records: [],
       valueFieldMapping: {
       'temp': ['AirTC1', 'AirTC2'],
