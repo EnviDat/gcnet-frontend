@@ -183,7 +183,6 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
     series.dataFields.valueY = graph.valueField;
     series.minBulletDistance = graph.hideBulletsCount;
 
-    // TODO fix this
     // Assign tooltipText
     series.tooltipText = "{dateX}\n{name}: [bold] {valueY}";
 
