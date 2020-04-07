@@ -53,14 +53,32 @@ export default {
     //fileNames: ['temp_v.json', 'press_v.json']
   // fileNames: ['temp.json', 'temp_v.json']
    // fileNames: ['press_v.json', 'rad_v.json']
-    fileObjects: [
+//     fileObjects: [
+//         { fileName: 'temp_v.json', chartTitle: 'Air temperatures', numberFormat: '##  °C'},
+//         { fileName: 'rh_v.json', chartTitle: 'Relative humidity', numberFormat: '##  %'},
+//         { fileName: 'rad_v.json', chartTitle: 'Radiation', numberFormat: '###  W/m²'},
+//         { fileName: 'sheight_v.json', chartTitle: 'Snow heights', numberFormat: '#.#  m'},
+//         { fileName: 'ws_v.json', chartTitle: 'Wind speed', numberFormat: '###  m/s'},
+//         { fileName: 'wd_v.json', chartTitle: 'Wind direction', numberFormat: '###  °'},
+//         { fileName: 'press_v.json', chartTitle: 'Air pressure', numberFormat: '###  mbar'},
+//         { fileName: 'battvolt_v.json', chartTitle: 'Battery voltage', numberFormat: '## V'},
+// ],
+      fileObjects: [
+        { fileName: 'temp.json', chartTitle: 'Air temperatures', numberFormat: '##  °C'},
         { fileName: 'temp_v.json', chartTitle: 'Air temperatures', numberFormat: '##  °C'},
+        { fileName: 'rh.json', chartTitle: 'Relative humidity', numberFormat: '##  %'},
         { fileName: 'rh_v.json', chartTitle: 'Relative humidity', numberFormat: '##  %'},
+        { fileName: 'rad.json', chartTitle: 'Radiation', numberFormat: '###  W/m²'},
         { fileName: 'rad_v.json', chartTitle: 'Radiation', numberFormat: '###  W/m²'},
+        { fileName: 'sheight.json', chartTitle: 'Snow heights', numberFormat: '#.#  m'},
         { fileName: 'sheight_v.json', chartTitle: 'Snow heights', numberFormat: '#.#  m'},
+        { fileName: 'ws.json', chartTitle: 'Wind speed', numberFormat: '###  m/s'},
         { fileName: 'ws_v.json', chartTitle: 'Wind speed', numberFormat: '###  m/s'},
+        { fileName: 'wd.json', chartTitle: 'Wind direction', numberFormat: '###  °'},
         { fileName: 'wd_v.json', chartTitle: 'Wind direction', numberFormat: '###  °'},
+        { fileName: 'press.json', chartTitle: 'Air pressure', numberFormat: '###  mbar'},
         { fileName: 'press_v.json', chartTitle: 'Air pressure', numberFormat: '###  mbar'},
+        { fileName: 'battvolt.json', chartTitle: 'Battery voltage', numberFormat: '## V'},
         { fileName: 'battvolt_v.json', chartTitle: 'Battery voltage', numberFormat: '## V'},
 ],
   }),

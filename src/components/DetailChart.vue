@@ -122,11 +122,11 @@ export default {
       // Match lineColor for series to original GC-Net website chart colors and legend strings by evaluating parameter
       switch (parameter) {
          case 'AirTC1':
-             color = '#0EAACD';
+             color = '#1DAFD7';
              titleString = 'Thermocouple 1';
              break;
          case 'AirTC2':
-             color = '#D26200';
+             color = '#393DA3';
              titleString = 'Thermocouple 2';
              break;
          case 'RH1':

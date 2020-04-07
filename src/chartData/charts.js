@@ -112,13 +112,17 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
 
     const scrollbarX = new am4charts.XYChartScrollbar();
 
+    // Create new valueAxisY here so that only one valueAxis is created per chart
+    const valueAxisY = chart.yAxes.push(new am4charts.ValueAxis());
+
     // addGraphToChart(chart, graphs[0], dateAxis, dateValueField, 0, scrollbarX, seriesSettings);
     // addGraphToChart(chart, graphs[1], dateAxis, dateValueField, 1, scrollbarX, seriesSettings);
 
     for (let i = 0; i < graphs.length; i++) {
       const graph = graphs[i];
         
-        chart = addGraphToChart(chart, graph, dateAxis, dateValueField, i, scrollbarX, seriesSettings);
+        // chart = addGraphToChart(chart, graph, dateAxis, dateValueField, i, scrollbarX, seriesSettings);
+        chart = addGraphToChart(chart, graph, dateAxis, dateValueField, i, scrollbarX, seriesSettings, valueAxisY);
     }
 
     chart.maskBullets = true;
@@ -126,27 +130,28 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     chart.scrollbarX = scrollbarX;
     chart.scrollbarX.parent = chart.bottomAxesContainer;
 
-
+    // Assign chart valueAxis to valueAxisY
+    chart.valueAxis = valueAxisY;
 
     return chart;
 }
 
 
-function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings) {
+// function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings) {
+function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings, valueAxisY) {
 
-    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    // let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
-    // valueAxis.title.text = graph.title;
-    valueAxis.renderer.opposite = count % 2 == 0;
-    valueAxis.renderer.minGridDistance = 30;
-
-    // valueAxis.renderer.labels.template.stroke = am4core.color(graph.lineColor);
-    valueAxis.renderer.labels.template.fill = am4core.color(graph.lineColor);
-    valueAxis.renderer.minWidth = 30;
-    // valueAxis.renderer.grid.template.stroke = am4core.color(graph.lineColor);
-
-    valueAxis.extraMin = 0.1;
-    valueAxis.extraMax = 0.1;
+    // valueAxis.renderer.opposite = count % 2 == 0;
+    // valueAxis.renderer.minGridDistance = 30;
+    //
+    // // valueAxis.renderer.labels.template.stroke = am4core.color(graph.lineColor);
+    // valueAxis.renderer.labels.template.fill = am4core.color(graph.lineColor);
+    // valueAxis.renderer.minWidth = 30;
+    // // valueAxis.renderer.grid.template.stroke = am4core.color(graph.lineColor);
+    //
+    // valueAxis.extraMin = 0.1;
+    // valueAxis.extraMax = 0.1;
 
     let series = new am4charts.LineSeries();
     series.name = graph.title;
@@ -171,7 +176,7 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
     series.tooltip.getFillFromObject = false;
     series.tooltip.background.fill = am4core.color(graph.lineColor);
 
-    series.yAxis = valueAxis;
+    // series.yAxis = valueAxis;
     series.xAxis = dateAxis;
   
     series.dataFields.dateX = dateValueField;
@@ -212,10 +217,25 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
       scrollbarX.series.push(series);
       scrollbarX.scrollbarChart.xAxes.values[count].renderer.labels.template.inside = false;
       scrollbarX.scrollbarChart.xAxes.values[count].renderer.labels.template.dy = -50;
+
+      // Commented out line below so that yAxis values display left of chart
+      //valueAxisY.renderer.opposite = count % 2 == 0;
+
+      valueAxisY.renderer.minGridDistance = 30;
+      // valueAxis.renderer.labels.template.stroke = am4core.color(graph.lineColor);
+      valueAxisY.renderer.labels.template.fill = am4core.color(graph.lineColor);
+      valueAxisY.renderer.minWidth = 30;
+      // valueAxis.renderer.grid.template.stroke = am4core.color(graph.lineColor);
+      valueAxisY.extraMin = 0.1;
+      valueAxisY.extraMax = 0.1;
     }
-  
+
+    // Assign series yAxis to valueAxisY
+    series.yAxis = valueAxisY;
+
     return chart;
 }
+
 
 const createMicroLineChart = function createMicroLineChart(selector, dateValueField, graphs,
                                                             seriesSettings = defaultSeriesSettings,
