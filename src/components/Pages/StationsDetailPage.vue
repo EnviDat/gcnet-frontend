@@ -1,19 +1,21 @@
 <template>
   <v-container fluid
                 fill-height
-                :class="$vuetify.breakpoint.smAndDown ? 'px-3 py-1' : 'px-2 py-1'" >
+                :class="$vuetify.breakpoint.mdAndDown ? 'px-1 py-1' : 'px-4 py-4'" >
 
 
     <v-layout row wrap >
 
-      <v-flex xs12 mx-5>
-
+          <v-flex>
+<!--      <v-flex xs12 mx-4>-->
+<!--         <v-flex mx-xs-1 mx-sm-1 mx-md-1 mx-lg-4 mx-xl-4  >-->
 
           <v-layout column >
 
             <v-flex  v-for="fileObject in generateFileList" :key="fileObject.fileName">
                 <DetailChart :url="baseStationURL + fileObject.fileName" :fileObject="fileObject"
-                             :chartdivID="fileObject.fileName" />
+                             :chartdivID="fileObject.fileName"
+                             :class="$vuetify.breakpoint.mdAndDown ? 'mb-1' : 'mb-4'"/>
             </v-flex>
 
 <!--            <v-flex  v-for="file in generateFileList" :key="file">-->
@@ -66,20 +68,20 @@ export default {
       fileObjects: [
         { fileName: 'temp.json', chartTitle: 'Air temperatures', numberFormat: '##  °C', dateFormatTime: false},
         { fileName: 'temp_v.json', chartTitle: 'Air temperatures', numberFormat: '##  °C', dateFormatTime: true},
-        { fileName: 'rh.json', chartTitle: 'Relative humidity', numberFormat: '##  %', dateFormatTime: false},
-        { fileName: 'rh_v.json', chartTitle: 'Relative humidity', numberFormat: '##  %', dateFormatTime: true},
-        { fileName: 'rad.json', chartTitle: 'Radiation', numberFormat: '###  W/m²', dateFormatTime: false},
-        { fileName: 'rad_v.json', chartTitle: 'Radiation', numberFormat: '###  W/m²', dateFormatTime: true},
-        { fileName: 'sheight.json', chartTitle: 'Snow heights', numberFormat: '#.#  m', dateFormatTime: false},
-        { fileName: 'sheight_v.json', chartTitle: 'Snow heights', numberFormat: '#.#  m', dateFormatTime: true},
-        { fileName: 'ws.json', chartTitle: 'Wind speed', numberFormat: '###  m/s', dateFormatTime: false},
-        { fileName: 'ws_v.json', chartTitle: 'Wind speed', numberFormat: '###  m/s', dateFormatTime: true},
-        { fileName: 'wd.json', chartTitle: 'Wind direction', numberFormat: '###  °', dateFormatTime: false},
-        { fileName: 'wd_v.json', chartTitle: 'Wind direction', numberFormat: '###  °', dateFormatTime: true},
-        { fileName: 'press.json', chartTitle: 'Air pressure', numberFormat: '###  mbar', dateFormatTime: false},
-        { fileName: 'press_v.json', chartTitle: 'Air pressure', numberFormat: '###  mbar', dateFormatTime: true},
-        { fileName: 'battvolt.json', chartTitle: 'Battery voltage', numberFormat: '## V', dateFormatTime: false},
-        { fileName: 'battvolt_v.json', chartTitle: 'Battery voltage', numberFormat: '## V', dateFormatTime: true},
+        // { fileName: 'rh.json', chartTitle: 'Relative humidity', numberFormat: '##  %', dateFormatTime: false},
+        // { fileName: 'rh_v.json', chartTitle: 'Relative humidity', numberFormat: '##  %', dateFormatTime: true},
+        // { fileName: 'rad.json', chartTitle: 'Radiation', numberFormat: '###  W/m²', dateFormatTime: false},
+        // { fileName: 'rad_v.json', chartTitle: 'Radiation', numberFormat: '###  W/m²', dateFormatTime: true},
+        // { fileName: 'sheight.json', chartTitle: 'Snow heights', numberFormat: '#.#  m', dateFormatTime: false},
+        // { fileName: 'sheight_v.json', chartTitle: 'Snow heights', numberFormat: '#.#  m', dateFormatTime: true},
+        // { fileName: 'ws.json', chartTitle: 'Wind speed', numberFormat: '###  m/s', dateFormatTime: false},
+        // { fileName: 'ws_v.json', chartTitle: 'Wind speed', numberFormat: '###  m/s', dateFormatTime: true},
+        // { fileName: 'wd.json', chartTitle: 'Wind direction', numberFormat: '###  °', dateFormatTime: false},
+        // { fileName: 'wd_v.json', chartTitle: 'Wind direction', numberFormat: '###  °', dateFormatTime: true},
+        // { fileName: 'press.json', chartTitle: 'Air pressure', numberFormat: '###  mbar', dateFormatTime: false},
+        // { fileName: 'press_v.json', chartTitle: 'Air pressure', numberFormat: '###  mbar', dateFormatTime: true},
+        // { fileName: 'battvolt.json', chartTitle: 'Battery voltage', numberFormat: '## V', dateFormatTime: false},
+        // { fileName: 'battvolt_v.json', chartTitle: 'Battery voltage', numberFormat: '## V', dateFormatTime: true},
 ],
   }),
   watch: {

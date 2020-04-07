@@ -2,7 +2,7 @@
 
   <v-card>
 
-     <div class='chart' :id="chartdivID">
+     <div class='chart' :id="chartdivID" >
     </div>
 
   </v-card>
@@ -27,6 +27,7 @@ export default {
       dateFormat: 'MMM dd, YYYY HH:mm UTC',
       dateFormatNoTime: 'MMM dd, YYYY',
       records: [],
+      breakpoint: {},
       valueFieldMapping: {
       'temp': ['AirTC1', 'AirTC2'],
       'press': ['press'],
@@ -52,7 +53,14 @@ export default {
     },
     }
   },
-  mounted() {
+  beforeMount() {
+
+  },
+    mounted() {
+     //console.log(JSON.stringify(this.$vuetify.breakpoint));
+     this.breakpoint = JSON.stringify(this.$vuetify.breakpoint);
+     console.log(this.breakpoint);
+
       const keys = Object.keys(this.valueFieldMapping);
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
@@ -216,9 +224,40 @@ export default {
 
 <style>
 
-    .chart {
-        margin-bottom: 2em;
-        height: 450px;
+    /**************  Responsive Web Design ****************/
+
+    /*  Small to large handset */
+    @media screen and (min-width: 480px) {
+        .chart {
+          height: 300px;
+        }
     }
+
+    /* Small to medium tablet */
+    @media screen and (min-width: 700px) {
+        .chart {
+          height: 450px;
+        }
+    }
+
+    /* Large tablet to laptop */
+     @media screen and (min-width: 960px) {
+         .chart {
+            height: 450px;
+        }
+    }
+
+     /* Desktop */
+     @media screen and (min-width: 1264px) {
+        .chart {
+          height: 450px;
+        }
+    }
+
+
+    /*.chart {*/
+    /*    margin-bottom: 2em;*/
+    /*    height: 450px;*/
+    /*}*/
 
 </style>
