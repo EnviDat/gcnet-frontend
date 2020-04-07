@@ -235,7 +235,10 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
 
       valueAxisY.renderer.minGridDistance = 30;
       // valueAxis.renderer.labels.template.stroke = am4core.color(graph.lineColor);
-      valueAxisY.renderer.labels.template.fill = am4core.color(graph.lineColor);
+
+     // valueAxisY.renderer.labels.template.fill = am4core.color(graph.lineColor);
+     // Assign valueAxis color to black
+     valueAxisY.renderer.labels.template.fill = am4core.color('#313131');
       valueAxisY.renderer.minWidth = 30;
       // valueAxis.renderer.grid.template.stroke = am4core.color(graph.lineColor);
       valueAxisY.extraMin = 0.1;
