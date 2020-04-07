@@ -24,7 +24,7 @@ export default {
   data()  {
     return {
       graphs: [],
-      dateFormat: 'MMM dd, YYYY HH:mm',
+      dateFormat: 'MMM dd, YYYY HH:mm UTC',
       dateFormatNoTime: 'MMM dd, YYYY',
       records: [],
       valueFieldMapping: {
