@@ -27,7 +27,7 @@ export default {
       dateFormat: 'MMM dd, YYYY HH:mm UTC',
       dateFormatNoTime: 'MMM dd, YYYY',
       records: [],
-      breakpoint: {},
+      breakpoint: [],
       valueFieldMapping: {
       'temp': ['AirTC1', 'AirTC2'],
       'press': ['press'],
@@ -53,13 +53,13 @@ export default {
     },
     }
   },
-  beforeMount() {
-
-  },
     mounted() {
      //console.log(JSON.stringify(this.$vuetify.breakpoint));
-     this.breakpoint = JSON.stringify(this.$vuetify.breakpoint);
+     //this.breakpoint = JSON.stringify(this.$vuetify.breakpoint);
+     this.breakpoint.push(JSON.stringify(this.$vuetify.breakpoint));
      console.log(this.breakpoint);
+     const breakpointName = this.breakpoint[0].name;
+     console.log(breakpointName);
 
       const keys = Object.keys(this.valueFieldMapping);
       for (let i = 0; i < keys.length; i++) {
