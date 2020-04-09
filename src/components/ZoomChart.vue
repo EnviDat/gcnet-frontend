@@ -10,14 +10,16 @@
 </template>
 
 <script>
+
 import axios from 'axios'
 import { createLineChart } from "../chartData/charts";
 import * as am4core from "@amcharts/amcharts4/core";
-//import * as bullets from "@amcharts/amcharts4/plugins/bullets";
+
 
 export default {
   props: {
-    url: String,
+    url1: String,
+    url2: String,
     chartdivID: String,
     fileObject: Object,
   },
@@ -38,6 +40,8 @@ export default {
       'sheight': ['Sheight1', 'Sheight2'],
       'wd': ['WD1', 'WD2'],
     },
+      // TODO dynamically change currentURL based on time period selected in chart
+      currentURL: 'url2',
       seriesSettings: {
       // lineStrokeWidth: 3,
       // lineOpacity: 1,
@@ -57,47 +61,55 @@ export default {
       const keys = Object.keys(this.valueFieldMapping);
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
-        if (this.url.includes(key)) {
-          const dataParameters = this.valueFieldMapping[key];
-          for (let j = 0; j < dataParameters.length; j++) {
-            const param = dataParameters[j];
-            this.graphs.push(this.buildGraph(param));
+        // if (this.url1.includes(key)) {
+
+          // Check if currentURL is assigned to 'url1'
+          if (this.url1.includes(key) && this.currentURL === 'url1') {
+              const dataParameters = this.valueFieldMapping[key];
+                  for (let j = 0; j < dataParameters.length; j++) {
+                    const param = dataParameters[j];
+                    this.graphs.push(this.buildGraph(param));
+                  }
+              axios
+                  .get(this.url1)
+                  .then(response => {
+                    this.records = response.data;
+                    this.loadChart();
+                  })
+                  .catch(error => {
+                    console.log('There was an error:' + error.response.statusText + ' url1: ' + error.request.responseURL);
+                  })
           }
-        }
+
+           // Check if currentURL is assigned to 'url2'
+          else if (this.url2.includes(key) && this.currentURL === 'url2') {
+              const dataParameters = this.valueFieldMapping[key];
+                  for (let j = 0; j < dataParameters.length; j++) {
+                    const param = dataParameters[j];
+                    this.graphs.push(this.buildGraph(param));
+                  }
+              axios
+                  .get(this.url2)
+                  .then(response => {
+                    this.records = response.data;
+                    this.loadChart();
+                  })
+                  .catch(error => {
+                    console.log('There was an error:' + error.response.statusText + ' url2: ' + error.request.responseURL);
+                  })
+          }
 
       }
 
-    axios
-      .get(this.url)
-      .then(response => {
-        this.records = response.data;
-        this.loadChart();
-      })
-      .catch(error => {
-        console.log('There was an error:' + error.response.statusText + ' url: ' + error.request.responseURL);
-      })
-  },
-  computed: {
-    // windChartId(){
-    //   return `${this.stationId}_wind`;
-    // },
-    weatherGraphs() {
-      return [{
-        "lineColor": "#F39D01",
-        "bullet": new am4core.Circle(),
-        "bulletRadius": this.seriesSettings.bulletsRadius,
-        "title": "Air Temperature 1",
-        "valueField": "AirT1",
-        "hideBulletsCount": 0
-      }, {
-        "lineColor": "#B0DE09",
-        "bullet": new am4core.Rectangle(),
-        "bulletRadius": this.seriesSettings.bulletsRadius * 2,
-        "title": "Air Temperature 2",
-        "valueField": "AirT2",
-        "hideBulletsCount": 0
-      }];
-    },
+    // axios
+    //   .get(this.url1)
+    //   .then(response => {
+    //     this.records = response.data;
+    //     this.loadChart();
+    //   })
+    //   .catch(error => {
+    //     console.log('There was an error:' + error.response.statusText + ' url1: ' + error.request.responseURL);
+    //   })
   },
 
 
@@ -192,7 +204,7 @@ export default {
         dateFormatNoTime: this.dateFormatNoTime,
         inputFormat: 'x',
       };
-    
+
        try {
 
         if (!this.weatherChart) {
@@ -247,10 +259,5 @@ export default {
         }
     }
 
-
-    /*.chart {*/
-    /*    margin-bottom: 2em;*/
-    /*    height: 450px;*/
-    /*}*/
 
 </style>
