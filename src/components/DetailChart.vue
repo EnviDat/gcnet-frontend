@@ -190,7 +190,7 @@ export default {
         "bulletRadius": this.seriesSettings.bulletsRadius,
         "title": titleString,
         "valueField": parameter,
-        "hideBulletsCount": 10,
+        "hideBulletsCount": 30,
       };
     },
     loadChart() {
