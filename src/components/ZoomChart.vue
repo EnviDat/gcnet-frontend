@@ -103,17 +103,6 @@ export default {
        //     })
        // }
 
-        axios
-           .get(this.url1)
-           .then(response => {
-               this.records = response.data;
-               this.loadChart();
-           })
-           .catch(error => {
-               console.log('There was an error:' + error.response.statusText + ' url1: ' + error.request.responseURL);
-           })
-
-
        // for (let i = 0; i < keys.length; i++) {
        //     const key = keys[i];
        //     if (this.url2.includes(key)) {
@@ -135,6 +124,15 @@ export default {
                console.log('There was an error:' + error.response.statusText + ' url2: ' + error.request.responseURL);
            })
 
+         axios
+           .get(this.url1)
+           .then(response => {
+               this.records = response.data;
+               this.loadChart();
+           })
+           .catch(error => {
+               console.log('There was an error:' + error.response.statusText + ' url1: ' + error.request.responseURL);
+           })
 
        //   axios
        //     .get(this.url2)
@@ -360,7 +358,7 @@ export default {
                                        this.fileObject.chartTitle, this.fileObject.numberFormat,
                                        this.fileObject.dateFormatTime, this.records2);
         } else {
-              this.weatherChart.data = this.records;
+              this.weatherChart.data = this.records2;
               this.weatherChart.invalidateRawData();
           // // Test
           // // if (this.currentURL === 'url1')  {

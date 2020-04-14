@@ -112,14 +112,10 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
        maxZoomed = ev.target.maxZoomed;
        console.log("Start:   " + minZoomed + "   End: " + maxZoomed);
 
-       console.log("First timestamp: " + chartData[0].timestamp + "   Last timestamp: " + chartData[chartData.length - 1].timestamp);
-      // console.log("First timestamp RECORDS 2: " + chartData2[0].timestamp + "   Last timestamp RECORDS 2: " + chartData2[chartData2.length - 1].timestamp);
-      //console.log(chartData2[0].timestamp);
-       console.log(dateFormatTime);
-       console.log(chartData2);
-
-
-
+       // console.log("First timestamp: " + chartData[0].timestamp + "   Last timestamp: " + chartData[chartData.length - 1].timestamp);
+       // console.log("First timestamp RECORDS 2: " + chartData2[0].timestamp + "   Last timestamp RECORDS 2: " + chartData2[chartData2.length - 1].timestamp);
+       //  console.log("Records 1 length: " + chartData.length);
+       console.log("Records 2 length: " + chartData2.length);
 
       // var start = new Date(ev.target.minZoomed);
       // var end = new Date(ev.target.maxZoomed);

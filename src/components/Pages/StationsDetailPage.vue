@@ -58,9 +58,9 @@ export default {
     fileObjects: [
         // { fileName1: 'temp.json', fileName2: 'temp_v.json', chartTitle: 'Air temperatures', numberFormat: '##  °C', dateFormatTime: false, dataParameter: 'temp'},
 
-       { fileName1: 'temp.json', fileName2: 'temp_v.json', chartTitle: 'Air temperatures', numberFormat: '##  °C', dateFormatTime: false, dataParameter: 'temp'},
+       { fileName1: 'temp.json', fileName2: 'temp_v.json', chartTitle: 'Air temperatures', numberFormat: '##  °C', dateFormatTime: true, dataParameter: 'temp'},
      //  { fileName: 'temp_v.json', chartTitle: 'Air temperatures', numberFormat: '##  °C', dateFormatTime: true, dataParameter: 'temp'},
-     //   { fileName1: 'rh.json', fileName2: 'rh_v.json', chartTitle: 'Relative humidity', numberFormat: '##  %', dateFormatTime: false, dataParameter: 'rh'},
+       { fileName1: 'rh.json', fileName2: 'rh_v.json', chartTitle: 'Relative humidity', numberFormat: '##  %', dateFormatTime: true, dataParameter: 'rh'},
       //  { fileName: 'rh_v.json', chartTitle: 'Relative humidity', numberFormat: '##  %', dateFormatTime: true, dataParameter: 'rh'},
         // { fileName: 'rad.json', chartTitle: 'Radiation', numberFormat: '###  W/m²', dateFormatTime: false},
         // { fileName: 'rad_v.json', chartTitle: 'Radiation', numberFormat: '###  W/m²', dateFormatTime: true},
