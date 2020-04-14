@@ -84,7 +84,7 @@ export default {
     axios
       .get(this.url2)
       .then(response => {
-       // this.records = response.data;
+     //   this.records = response.data;
         this.recordsObject.set2 = response.data;
         this.loadChart();
       })
@@ -165,15 +165,6 @@ export default {
 
 
   methods: {
-     //  changeDataset(event) {
-     //      //console.log(event.target.value);
-     //      this.selectedDataset = event.target.value;
-     //      console.log(this.selectedDataset);
-     // //     this.currentDataset = event.target.value;
-     // //      return event.target.value;
-     //      return this.selectedDataset;
-     //  },
-
 
     changeDataset(event) {
           this.selectedDataset = event.target.value;

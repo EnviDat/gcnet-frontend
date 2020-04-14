@@ -53,6 +53,8 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
      //   chart.data = chartDataObject.set1;
     }
 
+    //chart.dataSource.reloadFrequency = 1000;
+
     //console.log(chart.data);
 
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
