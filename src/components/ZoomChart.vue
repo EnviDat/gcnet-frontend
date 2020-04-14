@@ -2,7 +2,13 @@
 
   <v-card>
 
-     <div class='chart' :id="chartdivID" >
+      <select @change="changeDataset($event)" v-model="selectedDataset">
+          <option value="" selected disabled>Choose Dataset</option>
+          <option value="set1">Historical Data</option>
+          <option value="set2">Recent Days</option>
+      </select>
+
+      <div class='chart' :id="chartdivID" >
     </div>
 
   </v-card>
@@ -29,6 +35,11 @@ export default {
       dateFormat: 'MMM dd, YYYY HH:mm UTC',
       dateFormatNoTime: 'MMM dd, YYYY',
       records: [],
+      // Test
+      recordsObject: {
+          'set1': [],
+          'set2': [],
+      },
       breakpoint: [],
       valueFieldMapping: {
       'temp': ['AirTC1', 'AirTC2'],
@@ -40,8 +51,7 @@ export default {
       'sheight': ['Sheight1', 'Sheight2'],
       'wd': ['WD1', 'WD2'],
     },
-      // TODO dynamically change currentURL based on time period selected in chart
-      currentURL: 'url2',
+      selectedDataset: '',
       seriesSettings: {
       // lineStrokeWidth: 3,
       // lineOpacity: 1,
@@ -57,63 +67,121 @@ export default {
     },
     }
   },
-    mounted() {
+
+   mounted() {
       const keys = Object.keys(this.valueFieldMapping);
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
-        // if (this.url1.includes(key)) {
-
-          // Check if currentURL is assigned to 'url1'
-          if (this.url1.includes(key) && this.currentURL === 'url1') {
-              const dataParameters = this.valueFieldMapping[key];
-                  for (let j = 0; j < dataParameters.length; j++) {
-                    const param = dataParameters[j];
-                    this.graphs.push(this.buildGraph(param));
-                  }
-              axios
-                  .get(this.url1)
-                  .then(response => {
-                    this.records = response.data;
-                    this.loadChart();
-                  })
-                  .catch(error => {
-                    console.log('There was an error:' + error.response.statusText + ' url1: ' + error.request.responseURL);
-                  })
+        if (this.url1.includes(key)) {
+          const dataParameters = this.valueFieldMapping[key];
+          for (let j = 0; j < dataParameters.length; j++) {
+            const param = dataParameters[j];
+            this.graphs.push(this.buildGraph(param));
           }
-
-           // Check if currentURL is assigned to 'url2'
-          else if (this.url2.includes(key) && this.currentURL === 'url2') {
-              const dataParameters = this.valueFieldMapping[key];
-                  for (let j = 0; j < dataParameters.length; j++) {
-                    const param = dataParameters[j];
-                    this.graphs.push(this.buildGraph(param));
-                  }
-              axios
-                  .get(this.url2)
-                  .then(response => {
-                    this.records = response.data;
-                    this.loadChart();
-                  })
-                  .catch(error => {
-                    console.log('There was an error:' + error.response.statusText + ' url2: ' + error.request.responseURL);
-                  })
-          }
-
+        }
       }
 
-    // axios
-    //   .get(this.url1)
-    //   .then(response => {
-    //     this.records = response.data;
-    //     this.loadChart();
-    //   })
-    //   .catch(error => {
-    //     console.log('There was an error:' + error.response.statusText + ' url1: ' + error.request.responseURL);
-    //   })
+    axios
+      .get(this.url2)
+      .then(response => {
+       // this.records = response.data;
+        this.recordsObject.set2 = response.data;
+        this.loadChart();
+      })
+      .catch(error => {
+        console.log('There was an error:' + error.response.statusText + ' url2: ' + error.request.responseURL);
+      })
+
+
+     axios
+       .get(this.url1)
+      .then(response => {
+     //   this.records = response.data;
+        this.recordsObject.set1 = response.data;
+        this.loadChart();
+      })
+      .catch(error => {
+        console.log('There was an error:' + error.response.statusText + ' url1: ' + error.request.responseURL);
+      })
   },
+    // mounted() {
+    //   const keys = Object.keys(this.valueFieldMapping);
+    //   for (let i = 0; i < keys.length; i++) {
+    //     const key = keys[i];
+    //   //   // if (this.url1.includes(key)) {
+    //   //
+    //   //     // Check if currentURL is assigned to 'url1'
+    //   //     if (this.url1.includes(key) && this.currentURL === 'url1') {
+    //   //         const dataParameters = this.valueFieldMapping[key];
+    //   //             for (let j = 0; j < dataParameters.length; j++) {
+    //   //               const param = dataParameters[j];
+    //   //               this.graphs.push(this.buildGraph(param));
+    //   //             }
+    //   //         axios
+    //   //             .get(this.url1)
+    //   //             .then(response => {
+    //   //               this.records = response.data;
+    //   //               this.loadChart();
+    //   //             })
+    //   //             .catch(error => {
+    //   //               console.log('There was an error:' + error.response.statusText + ' url1: ' + error.request.responseURL);
+    //   //             })
+    //   //     }
+    //   //
+    //   //      // Check if currentURL is assigned to 'url2'
+    //   //     else if (this.url2.includes(key) && this.currentURL === 'url2') {
+    //   //         const dataParameters = this.valueFieldMapping[key];
+    //   //             for (let j = 0; j < dataParameters.length; j++) {
+    //   //               const param = dataParameters[j];
+    //   //               this.graphs.push(this.buildGraph(param));
+    //   //             }
+    //   //         axios
+    //   //             .get(this.url2)
+    //   //             .then(response => {
+    //   //               this.records = response.data;
+    //   //              // console.log(this.records[0].timestamp);
+    //   //               this.loadChart();
+    //   //             })
+    //   //             .catch(error => {
+    //   //               console.log('There was an error:' + error.response.statusText + ' url2: ' + error.request.responseURL);
+    //   //             })
+    //   //     }
+    //   //
+    //   // }
+    //
+    // // axios
+    // //   .get(this.url1)
+    // //   .then(response => {
+    // //     this.records = response.data;
+    // //     this.loadChart();
+    // //   })
+    // //   .catch(error => {
+    // //     console.log('There was an error:' + error.response.statusText + ' url1: ' + error.request.responseURL);
+    // //   })
+    //
+    //   }
+    //
+    // },
 
 
   methods: {
+     //  changeDataset(event) {
+     //      //console.log(event.target.value);
+     //      this.selectedDataset = event.target.value;
+     //      console.log(this.selectedDataset);
+     // //     this.currentDataset = event.target.value;
+     // //      return event.target.value;
+     //      return this.selectedDataset;
+     //  },
+
+
+    changeDataset(event) {
+          this.selectedDataset = event.target.value;
+          console.log(this.selectedDataset);
+          this.loadChart();
+          return this.selectedDataset;
+      },
+
     buildGraph(parameter){
 
       // Assign default lineColor
@@ -211,9 +279,16 @@ export default {
           this.weatherChart = createLineChart(this.chartdivID, 'timestamp', this.records, this.graphs,
                                       true, undefined, undefined, dateFormatingInfos,
                                        this.fileObject.chartTitle, this.fileObject.numberFormat,
-                                       this.fileObject.dateFormatTime);
+                                       this.fileObject.dateFormatTime, this.recordsObject);
         } else {
-          this.weatherChart.data = this.records;
+          // Test
+          // if (this.currentURL === 'url1')  {
+          if (this.selectedDataset === 'set2')  {
+              this.weatherChart.data = this.recordsObject.set2;
+          }
+          else {
+              this.weatherChart.data = this.recordsObject.set1;
+          }
           this.weatherChart.invalidateRawData();
         }
       } catch (error) {

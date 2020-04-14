@@ -32,7 +32,7 @@ const defaultFormatingInfos = {
 const createLineChart = function createLineChart(selector, dateValueField, chartData, graphs, groupData,
                                                     options = defaultOptions, seriesSettings = defaultSeriesSettings,
                                                     dateFormatingInfos = defaultFormatingInfos,
-                                                 chartTitle, chartNumberFormat, dateFormatTime)
+                                                 chartTitle, chartNumberFormat, dateFormatTime, chartDataObject)
 {
     am4core.options.queue = options.queue;
     am4core.options.onlyShowOnViewport = options.onlyShowOnViewport;
@@ -42,10 +42,18 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
   
     am4core.options.minPolylineStep = options.minPolylineStep;
 
-    if (chartData) {
-        // chartData is optional, to be able to give the series directly a datasource
-        chart.data = chartData;
+    // Test
+    // if (chartData) {
+    //     // chartData is optional, to be able to give the series directly a datasource
+    //     chart.data = chartData;
+    // }
+
+    // Test
+    if (chartDataObject) {
+     //   chart.data = chartDataObject.set1;
     }
+
+    //console.log(chart.data);
 
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.dataFields.category = dateValueField;
@@ -139,6 +147,10 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
 
     // Assign chart valueAxis to valueAxisY
     chart.valueAxis = valueAxisY;
+
+  //  console.log(chart.zoomOutButton);
+
+
 
     return chart;
 }
