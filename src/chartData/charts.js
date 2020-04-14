@@ -32,26 +32,27 @@ const defaultFormatingInfos = {
 const createLineChart = function createLineChart(selector, dateValueField, chartData, graphs, groupData,
                                                     options = defaultOptions, seriesSettings = defaultSeriesSettings,
                                                     dateFormatingInfos = defaultFormatingInfos,
-                                                 chartTitle, chartNumberFormat, dateFormatTime, chartDataObject)
+                                                 chartTitle, chartNumberFormat, dateFormatTime, chartData2)
 {
     am4core.options.queue = options.queue;
     am4core.options.onlyShowOnViewport = options.onlyShowOnViewport;
 
     var chart = am4core.create(selector, am4charts.XYChart);
+
     chart.hiddenState.properties.opacity = 0;
   
     am4core.options.minPolylineStep = options.minPolylineStep;
 
-    // Test
-    // if (chartData) {
-    //     // chartData is optional, to be able to give the series directly a datasource
-    //     chart.data = chartData;
-    // }
-
-    // Test
-    if (chartDataObject) {
-     //   chart.data = chartDataObject.set1;
+    //Test
+    if (chartData) {
+        // chartData is optional, to be able to give the series directly a datasource
+        chart.data = chartData;
     }
+
+    // // Test
+    // if (chartDataObject) {
+    //  //   chart.data = chartDataObject.set1;
+    // }
 
     //chart.dataSource.reloadFrequency = 1000;
 
@@ -98,6 +99,31 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
         "timeUnit": "hour",
         "count": 1,
       }
+    }
+
+    // Event handler for changed dateAxis range
+    dateAxis.events.on("startchanged", dateAxisChanged);
+    dateAxis.events.on("endchanged", dateAxisChanged);
+    let minZoomed;
+    let maxZoomed;
+    function dateAxisChanged(ev) {
+    //   console.log("Start: " + ev.target.minZoomed + "   End: " + ev.target.maxZoomed);
+       minZoomed = ev.target.minZoomed;
+       maxZoomed = ev.target.maxZoomed;
+       console.log("Start:   " + minZoomed + "   End: " + maxZoomed);
+
+       console.log("First timestamp: " + chartData[0].timestamp + "   Last timestamp: " + chartData[chartData.length - 1].timestamp);
+      // console.log("First timestamp RECORDS 2: " + chartData2[0].timestamp + "   Last timestamp RECORDS 2: " + chartData2[chartData2.length - 1].timestamp);
+      //console.log(chartData2[0].timestamp);
+       console.log(dateFormatTime);
+       console.log(chartData2);
+
+
+
+
+      // var start = new Date(ev.target.minZoomed);
+      // var end = new Date(ev.target.maxZoomed);
+      // console.log("New range: " + start + " -- " + end);
     }
 
     chart.legend = new am4charts.Legend();

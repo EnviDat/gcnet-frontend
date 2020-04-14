@@ -10,15 +10,17 @@
 
           <v-layout column >
 
-<!--            <v-flex  v-for="fileObject in generateFileList" :key="fileObject.fileName">-->
-<!--              <ZoomChart :url1="baseStationURL + fileObject.fileName1" :fileObject="fileObject"-->
-<!--                :chartdivID="fileObject.fileName"-->
+            <v-flex  v-for="fileObject in generateFileList" :key="fileObject.fileName1">
+              <ZoomChart :url1="baseStationURL + fileObject.fileName1"
+                         :url2="baseStationURL + fileObject.fileName2" :fileObject="fileObject"
+                :chartdivID="fileObject.fileName1" :chartdivID2="fileObject.fileName2"
+                         :class="$vuetify.breakpoint.mdAndDown ? 'mb-1' : 'mb-4'"/>
 
-                 <v-flex  v-for="fileObject in generateFileList" :key="fileObject.dataParameter">
-                   <ZoomChart :url1="baseStationURL + fileObject.fileName1"
-                              :url2="baseStationURL + fileObject.fileName2" :fileObject="fileObject"
-                                :chartdivID="fileObject.dataParameter"
-                             :class="$vuetify.breakpoint.mdAndDown ? 'mb-1' : 'mb-4'"/>
+
+                <!--                 <v-flex  v-for="fileObject in generateFileList" :key="fileObject.dataParameter">-->
+<!--                   <ZoomChart :url1="baseStationURL + fileObject.fileName1"-->
+<!--                              :url2="baseStationURL + fileObject.fileName2" :fileObject="fileObject"-->
+<!--                                :chartdivID="fileObject.dataParameter"-->
 
 <!--                <DetailChart :url="baseStationURL + fileObject.fileName" :fileObject="fileObject"-->
 <!--                             :chartdivID="fileObject.fileName"-->
@@ -54,9 +56,11 @@ export default {
     baseStationURL: './testdata/',
     loadingStation: false,
     fileObjects: [
-        { fileName1: 'temp.json', fileName2: 'temp_v.json', chartTitle: 'Air temperatures', numberFormat: '##  °C', dateFormatTime: true, dataParameter: 'temp'},
-       // { fileName: 'temp_v.json', chartTitle: 'Air temperatures', numberFormat: '##  °C', dateFormatTime: true, dataParameter: 'temp'},
-        { fileName1: 'rh.json', fileName2: 'rh_v.json', chartTitle: 'Relative humidity', numberFormat: '##  %', dateFormatTime: true, dataParameter: 'rh'},
+        // { fileName1: 'temp.json', fileName2: 'temp_v.json', chartTitle: 'Air temperatures', numberFormat: '##  °C', dateFormatTime: false, dataParameter: 'temp'},
+
+       { fileName1: 'temp.json', fileName2: 'temp_v.json', chartTitle: 'Air temperatures', numberFormat: '##  °C', dateFormatTime: false, dataParameter: 'temp'},
+     //  { fileName: 'temp_v.json', chartTitle: 'Air temperatures', numberFormat: '##  °C', dateFormatTime: true, dataParameter: 'temp'},
+     //   { fileName1: 'rh.json', fileName2: 'rh_v.json', chartTitle: 'Relative humidity', numberFormat: '##  %', dateFormatTime: false, dataParameter: 'rh'},
       //  { fileName: 'rh_v.json', chartTitle: 'Relative humidity', numberFormat: '##  %', dateFormatTime: true, dataParameter: 'rh'},
         // { fileName: 'rad.json', chartTitle: 'Radiation', numberFormat: '###  W/m²', dateFormatTime: false},
         // { fileName: 'rad_v.json', chartTitle: 'Radiation', numberFormat: '###  W/m²', dateFormatTime: true},
@@ -84,7 +88,7 @@ export default {
 
           for (let i = 0; i < this.fileObjects.length; i++) {
               let fileObjectTemplate = {
-                  // fileName: this.currentStation.id + this.fileObjects[i].fileName,
+              //    fileName: this.currentStation.id + this.fileObjects[i].fileName,
                   fileName1: this.currentStation.id + this.fileObjects[i].fileName1,
                   fileName2: this.currentStation.id + this.fileObjects[i].fileName2,
                   chartTitle: this.fileObjects[i].chartTitle,
