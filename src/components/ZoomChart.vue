@@ -52,6 +52,7 @@ export default {
       'wd': ['WD1', 'WD2'],
     },
       selectedDataset: '',
+
       seriesSettings: {
       // lineStrokeWidth: 3,
       // lineOpacity: 1,
@@ -276,9 +277,11 @@ export default {
           // if (this.currentURL === 'url1')  {
           if (this.selectedDataset === 'set2')  {
               this.weatherChart.data = this.recordsObject.set2;
+             // this.weatherChart.invalidateRawData();
           }
           else {
               this.weatherChart.data = this.recordsObject.set1;
+           //   this.weatherChart.invalidateRawData();
           }
           this.weatherChart.invalidateRawData();
         }
