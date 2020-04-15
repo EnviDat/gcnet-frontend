@@ -1,7 +1,9 @@
 <template>
 
+  <v-fade-transition>
   <v-card :id="_uid"
-          :station="stationId" >
+          :station="stationId"
+          v-show="visible" >
     <v-container fluid fill-height pa-3>
 
       <v-layout column justify-space-between fill-height>
@@ -86,7 +88,7 @@
                 <v-flex shrink
                         px-0
                         class="smallText">
-                  Station Detail
+                  Station Details
                 </v-flex>
 
                 <v-flex shrink>
@@ -185,6 +187,7 @@
 
     </v-container>
   </v-card>
+  </v-fade-transition>
 
 </template>
 
@@ -215,13 +218,26 @@ export default {
         battvolt: ['battvolt'],
       }),
     },
+    delay: {
+      type: Number,
+      default: 500,
+    }
   },
   components: {
     BaseStatusIcon,
     BaseStatusIconButton,
   },
   mounted() {
-    this.loadChart();
+    var that = this;
+
+    window.setTimeout(function() {
+      that.visible = true;
+      // console.log("visible " + that.station.name + ' ' + that.visible);
+      that.loadChart();
+      
+    }, that.delay);
+    // console.log("visible " + that.station.name + ' ' + that.visible);
+
   },
   beforeDestroy() {
     this.clearChart();
@@ -309,19 +325,15 @@ export default {
     clearChart(){
       if (this.microChart) {
         this.microChart.dispose();
+        this.microChart = null;
       }
     },
     loadJsonCharts(){
       this.chartIsLoading = true;
       const currentDataUrl = this.graphs[0].dataUrl;
 
-      if (this.loadRecentData) {
-        this.recentDataUrl = currentDataUrl;
-        this.recentDataLength = 0;
-      } else {
-        this.allDataUrl = currentDataUrl;
-        this.allDataLength = 0;
-      }
+      this.loadRecentData ? this.recentDataUrl = currentDataUrl : this.allDataUrl = currentDataUrl;
+      this.loadRecentData ? this.recentDataLength = 0 : this.allDataLength = 0;
 
       const dateFormatingInfos = {
         dateFormat: this.dateFormat,
@@ -413,6 +425,7 @@ export default {
       lineColor: '#8ACDCE',
     },    
     urlValueMapping: {},
+    visible: false,
   }),
 };
 </script>

@@ -12,14 +12,19 @@
       </v-flex>
 
       <!-- <v-flex xs2>
-        <micro-chart :station="stations[9]" :JSONUrls="getJSONUrls(stations[9])" :fileValueMapping="fileValueMapping"
+        <micro-chart :station="stations[9]"
+                      :JSONUrls="getJSONUrls(stations[9])"
+                      :fileValueMapping="fileValueMapping"
                       @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
       </v-flex> -->
 
-      <v-flex v-for="station in stations"
+      <v-flex v-for="(station, index) in stations"
               :key="`${station.id}_${station.alias}`"
               xs2>
-        <micro-chart :station="station" :JSONUrls="getJSONUrls(station)" :fileValueMapping="fileValueMapping"
+        <micro-chart :station="station"
+                      :JSONUrls="getJSONUrls(station)"
+                      :fileValueMapping="fileValueMapping"
+                      :delay="index * 300"
                       @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
       </v-flex>
 

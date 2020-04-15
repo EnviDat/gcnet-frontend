@@ -192,12 +192,17 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
   
   am4core.useTheme(microchart);
 
-  am4core.options.queue = defaultOptions.queue;
+  am4core.options.queue = true;
+  am4core.options.minPolylineStep = 1;
 
   var chart = am4core.create(selector, am4charts.XYChart);
   chart.id = selector;
 
   var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+  dateAxis.baseInterval = {
+    "timeUnit": "hour",
+    "count": 1,
+  }
   dateAxis.startLocation = 0.5;
   dateAxis.endLocation = 0.7;
 
@@ -224,8 +229,10 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
       series.dataSource.updateCurrentData = true;
     }  
 
-    series.tooltipText = `[bold]{${graph.valueField}}`;
+    series.tooltipText = `[bold]{valueY}\n[/]{dateX.formatDate('dd-MM-yyyy HH:mm')}`;
     series.tooltip.fill = am4core.color(graph.lineColor);
+    series.autoGapCount = seriesSettings.lineAutoGap;
+    series.connect = seriesSettings.lineConncet;
 
     series.yAxis = valueAxis;
     series.xAxis = dateAxis;
