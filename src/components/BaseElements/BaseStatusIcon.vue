@@ -21,7 +21,6 @@
       color: String,
     },
     data: () => ({
-      hoverBadge: false,
     }),
     computed: {
     },

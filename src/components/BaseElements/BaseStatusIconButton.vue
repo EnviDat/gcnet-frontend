@@ -19,10 +19,11 @@
     </v-flex>
 
     <v-flex py-0 px-1 >
-      <v-btn icon small
+      <v-btn icon small ripple
             class="ma-0"
             :color="color"
-            style="height: 20px !important; width: 20px !important;"
+            :outline="outline"
+            :style="`height: 20px !important; width: 20px !important;`"
             @click="$emit('click')">
         <v-icon class="black--text" small >{{ icon }}</v-icon>
       </v-btn>
@@ -39,6 +40,7 @@
       icon: String,
       count: Number,
       color: String,
+      outline: Boolean,
     },
     data: () => ({
       hoverBadge: false,

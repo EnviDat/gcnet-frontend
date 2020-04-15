@@ -72,7 +72,8 @@
               <v-layout row>
                 <v-flex shrink>
                   <base-status-icon-button :icon="showInfo ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-                                            :color="showInfo ? 'transparent' : 'secondary'"
+                                            color="primary"
+                                            :outline="true"
                                             @click="showInfo = !showInfo;" />          
                 </v-flex>
                 <!-- <v-flex shrink
