@@ -111,7 +111,7 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
 
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     // valueAxis.title.text = graph.title;
-    valueAxis.renderer.opposite = count % 2 == 0;
+    valueAxis.renderer.opposite = count % 2 === 0;
     valueAxis.renderer.minGridDistance = 30;
     
     // valueAxis.renderer.labels.template.stroke = am4core.color(graph.lineColor);
@@ -178,8 +178,9 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
 
     if (count <= 0 && scrollbarX) {
       scrollbarX.series.push(series);
-      scrollbarX.scrollbarChart.xAxes.values[count].renderer.labels.template.inside = false;
-      scrollbarX.scrollbarChart.xAxes.values[count].renderer.labels.template.dy = -50;
+      const value = scrollbarX.scrollbarChart.xAxes.values[count]
+      value.renderer.labels.template.inside = false;
+      value.renderer.labels.template.dy = -50;
     }
   
     return chart;
@@ -231,7 +232,7 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
       series.dataSource.updateCurrentData = true;
     }  
 
-    series.tooltipText = `[bold]{valueY}\n[/]{dateX.formatDate('dd-MM-yyyy HH:mm')}`;
+    series.tooltipText = "[bold]{valueY}\n[/]{dateX.formatDate('dd-MM-yyyy HH:mm')}";
     series.tooltip.fill = am4core.color(graph.lineColor);
     series.autoGapCount = seriesSettings.lineAutoGap;
     series.connect = seriesSettings.lineConncet;
@@ -257,4 +258,4 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
 export {
   createLineChart,
   createMicroLineChart,
-}
+};

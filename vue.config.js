@@ -67,6 +67,6 @@ module.exports = {
       .test(/map_html\.html$/)
       .use('html-loader')
         .loader('html-loader')
-        .end()
+        .end();
   },
 };

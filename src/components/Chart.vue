@@ -167,11 +167,11 @@ export default {
     createGraph(parameter, url, count){
       // let lineColor = '#73C8A9';
 
-      // if (count == 1) {
+      // if (count === 1) {
       //   lineColor = '#B0DE09';
-      // } else if (count == 2) {
+      // } else if (count === 2) {
       //   lineColor = '#00F4FF';
-      // } else if (count == 2) {
+      // } else if (count === 2) {
       //   lineColor = '#AAAAE5';
       // }
       let lineColor = this.colorPalette[this.colorCount];

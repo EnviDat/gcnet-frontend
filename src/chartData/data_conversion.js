@@ -103,7 +103,7 @@ function cleanParameter(dataparameter){
         return invalidMarkerValue;
     }
 
-    if (dataparameter.lastIndexOf('.') == dataparameter.length - 1) {
+    if (dataparameter.lastIndexOf('.') === dataparameter.length - 1) {
         dataparameter = dataparameter.substring(0, dataparameter.length - 2);
     }    
 
