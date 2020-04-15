@@ -262,6 +262,8 @@ export default {
   },
   methods: {
     loadChart(fallback = true){
+      this.clearChart();
+
       this.fallback = fallback;
       this.chartIsLoading = true;
 
@@ -269,7 +271,11 @@ export default {
 
       this.buildGraphs();
 
-      this.loadJsonCharts();
+      // clear and then new loading on the next tick is needed for the disposing to finish
+      const that = this;
+      this.$nextTick( () => {
+        that.loadJsonCharts();
+      });
     },
     getUrlValueMapping(loadRecentData){
       const urlValueMapping = {};
@@ -324,6 +330,7 @@ export default {
     },
     clearChart(){
       if (this.microChart) {
+        // console.log( this.microChartId + ' cleared id ' + this.microChart.id);
         this.microChart.dispose();
         this.microChart = null;
       }
@@ -341,16 +348,20 @@ export default {
       };
 
       try {
-        if (!this.microChart) {
-          this.microChart = createMicroLineChart(this.microChartId, 'timestamp', [this.graphs[0]], this.seriesSettings,
+        this.microChart = createMicroLineChart(this.microChartId, 'timestamp', this.graphs, this.seriesSettings,
                                                   dateFormatingInfos, this.seriesDone, this.seriesError);
-        } else {
-          const series = this.microChart.series.values[0];
-          series.data = [];
-          const source = series.dataSource;
-          source.url = currentDataUrl;
-          source.load();
-        }
+        // if (!this.microChart) {
+        //   this.microChart = createMicroLineChart(this.microChartId, 'timestamp', [this.graphs[0]], this.seriesSettings,
+        //                                             dateFormatingInfos, this.seriesDone, this.seriesError);
+        // } else {
+        //   // this.clearChart();
+        //   const series = this.microChart.series.values[0];
+        //   series.data = [];
+        //   const source = series.dataSource;
+        //   source.dispose();
+        //   source.url = currentDataUrl;
+        //   source.load();
+        // }
         
       } catch (error) {
         this.dataError = `Error creating chart: ${error}`;
@@ -367,9 +378,12 @@ export default {
         if (this.fallback){
           this.loadRecentData = false;
           this.loadChart();
+        // } else {
+          // this.clearChart();
         }
       } else {
         this.alldataAvailable = false;
+        this.clearChart();
       }
     },
     seriesDone(doneResponse) {
@@ -392,12 +406,16 @@ export default {
           if (this.fallback){
             this.loadRecentData = false;
             this.loadChart();
+          // } else {
+            // this.clearChart();
           }
         } else {
           this.alldataAvailable = false;
+          this.clearChart();
         }
       }
     },
+
     catchDetailClick(stationId){
       this.$emit('detailClick', stationId);
     },

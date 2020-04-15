@@ -197,12 +197,14 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
 
   var chart = am4core.create(selector, am4charts.XYChart);
   chart.id = selector;
+  chart._uid = selector;
 
   var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
   dateAxis.baseInterval = {
     "timeUnit": "hour",
     "count": 1,
-  }
+  };
+
   dateAxis.startLocation = 0.5;
   dateAxis.endLocation = 0.7;
 
