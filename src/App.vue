@@ -2,16 +2,16 @@
   <v-app class="application" :style="dynamicBackground()">
 
     <v-content app >
+      <stations-overview-page v-if="showOverview"
+                              @detailClick="listStationClick" />
+
       <landing-page v-if="!showOverview"
                     :currentStation="currentStation" 
                     :showHomeScreen="showHomeScreen"
                     v-on:anyClick="catchAnyClick"
                     v-on:mapViewClick="catchMapViewClick"
                     v-on:listViewClick="catchListViewClick"
-                    v-on:updateDrawer="catchUpdateDrawer"
-                    />
-
-      <stations-overview-page v-if="showOverview" />
+                    v-on:updateDrawer="catchUpdateDrawer" />
     </v-content>
 
       <the-navigation :mini="drawerIsMini"
@@ -116,21 +116,27 @@ export default {
     mapStationClick(stationUrl){
       this.showHomeScreen = false;
       this.showOverview = false;
-      // console.log('clicked on ' + stationUrl);
 
       const splits = stationUrl.split('/');
       if (splits.length > 0) {
         const stationName = splits[splits.length - 1];
-
-        this.currentStation = this.getStation(stationName);
+        this.changeCurrentStation(stationName);
       }
-
+    },
+    changeCurrentStation(newStation){
+      this.currentStation = null;
+      // console.log('currentStation ' + this.currentStation);
+      this.$nextTick(() => {
+        this.currentStation = this.getStation(newStation);
+        // console.log('changed current station to ' + this.currentStation.name);
+      });
+      // console.log('currentStation after ' + this.currentStation);
     },
     listStationClick(stationName) {
       this.showHomeScreen = false;
       this.showOverview = false;
 
-      this.currentStation = this.getStation(stationName);
+      this.changeCurrentStation(stationName);
     },
     getStation(stationName) {
       const stations = this.$store.getters.stations;
@@ -140,7 +146,7 @@ export default {
       for(let key of keys) {
         let val = stations[key];
 
-        if (val.name === stationName || val.alias === stationName){
+        if (val.name === stationName || val.alias === stationName || val.id === stationName){
           station = val;
           break;
         }
@@ -149,7 +155,6 @@ export default {
       return station;
     },
     dynamicBackground() {
-      // const imageKey = this.$store.getters.appBGImage;
       const bgImg = this.randomImg(this.appBGImages);
       let bgStyle = '';
 

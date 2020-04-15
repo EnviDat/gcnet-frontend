@@ -1,6 +1,7 @@
 <template>
 
-  <v-card :id="_uid" :station="stationId" min-height="140" >
+  <v-card :id="_uid"
+          :station="stationId" >
     <v-container fluid fill-height pa-3>
 
       <v-layout column justify-space-between fill-height>
@@ -36,14 +37,14 @@
         </v-flex>
 
         <v-flex v-if="!chartIsLoading && !hasData"
-              xs12
+              xs12 pt-2 pb-1
               class="body-1"
               :style="`color: ${ $vuetify.theme.error };`" >
           {{ noDataText }}
         </v-flex>
 
         <v-flex v-if="dataError"
-                xs12 py-0
+                xs12
                 class="smallText"
                 :style="`color: ${ $vuetify.theme.error };`" >
           {{ dataError }}
@@ -62,16 +63,38 @@
           {{ `${ chartIsLoading ? 'Loading' : 'Showing'} ${ loadRecentData ? 'recent data' : 'all data'}` }}
         </v-flex>
 
-        <v-flex xs12 pt-2>
-          <v-layout row align-center justify-end >
-            <v-flex shrink
-                    class="smallText">
-              {{ showInfo ? 'Hide infos' : 'More infos' }}
-            </v-flex>
+        <v-flex xs12 
+                :class="dataError ? 'pt-3': 'pt-2'">
+          <v-layout row align-center justify-space-between >
             <v-flex shrink>
-              <base-status-icon-button :icon="showInfo ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-                                        :color="showInfo ? 'transparent' : 'secondary'"
-                                        @click="showInfo = !showInfo;" />          
+              <v-layout row>
+                <v-flex shrink>
+                  <base-status-icon-button :icon="showInfo ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+                                            :color="showInfo ? 'transparent' : 'secondary'"
+                                            @click="showInfo = !showInfo;" />          
+                </v-flex>
+                <!-- <v-flex shrink
+                        px-0
+                        class="smallText">
+                  {{ showInfo ? 'Hide infos' : 'More infos' }}
+                </v-flex> -->
+              </v-layout>
+            </v-flex>
+
+            <v-flex shrink>
+              <v-layout row>
+                <v-flex shrink
+                        px-0
+                        class="smallText">
+                  Station Detail
+                </v-flex>
+
+                <v-flex shrink>
+                  <base-status-icon-button icon="search"
+                                            color="secondary"
+                                            @click="catchDetailClick(station.id)" />
+                </v-flex>
+              </v-layout>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -362,7 +385,10 @@ export default {
           this.alldataAvailable = false;
         }
       }
-    },    
+    },
+    catchDetailClick(stationId){
+      this.$emit('detailClick', stationId);
+    },
   },
   data: () => ({
     microChart: null,

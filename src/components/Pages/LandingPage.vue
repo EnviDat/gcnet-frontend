@@ -7,26 +7,16 @@
     <v-layout row wrap >
   
       <v-flex xs12 offset-xs6
-          v-if="loadingStation"
-      >
+          v-if="loadingStation" >
         <v-progress-circular
           indeterminate
-          color="primary"
-          />
+          color="primary" />
 
       </v-flex>
 
       <v-flex xs12
               ref="iframe_parent"
-              v-show="!loadingStation && !showHomeScreen"
-                >
-
-        <!-- <iframe :style="`height: 100%; width: 100%;`"
-                id="station_iframe"
-                ref="station_iframe"
-                src=""
-                frameborder="0" >
-        </iframe> -->
+              v-show="!loadingStation && !showHomeScreen" >
       </v-flex>
 
       <v-flex xs12 md8 offset-md2
@@ -104,53 +94,23 @@
           </v-layout>
         </v-flex>
       </v-flex>
-
-      <v-flex xs12 mx-5
-              v-if="!showHomeScreen && showOverview" >
-
-          <v-layout column >
-            <v-flex py-3 >
-              <chart :station="$store.getters.stations[0]" :delay="0" />
-            </v-flex>
-          </v-layout>
-
-      </v-flex>
-
-            <!-- <v-flex py-3
-                    v-for="station in $store.getters.stations"
-                    :key="station.id">
-
-              <chart :station="station" />
-
-            </v-flex> -->
-
     </v-layout>
   </v-container>
 </template>
 
 <script>
-// import vuex from 'vuex';
-// import { mapGetters } from 'vuex';
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton.vue';
-// import ControlPanelView from '@/components/ControlPanelView.vue';
 import TitleView from '@/components/TitleView.vue';
-import Chart from '@/components/Chart.vue';
 import homeInfos from '@/homeInfos';
-// import mapHTML from '@/map_html.html';
-// import StationsMap from '@/components/StationsMap';
 
 export default {
   props: {
     currentStation: Object,
     showHomeScreen: Boolean,
-    showOverview: Boolean,
   },
   components: {
     BaseRectangleButton,
-    // ControlPanelView,
     TitleView,
-    Chart,
-    // StationsMap,
   },
   data: () => ({
     baseStationURL: 'https://www.wsl.ch/gcnet/cms/stations/',
@@ -164,18 +124,11 @@ export default {
     showOverviewText: 'Show Stations Overview',
     currentStationName: '',
     stationOverviewUrl: 'https://www.wsl.ch/gcnet/stations.html',
-    // mapHTML,
   }),
   watch: {
     currentStation: function updateStation() {
       if (this.currentStation) {
         this.loadStation(this.baseStationURL + this.currentStation.alias);
-      }
-    },
-    showOverview: function updateStationOverview(){
-      if (this.showOverview) {
-        this.currentStation = null;
-        // this.loadStation(this.stationOverviewUrl);
       }
     },
   },

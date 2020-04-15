@@ -2,7 +2,7 @@
   <v-container fluid
                 fill-height
                 grid-list-md
-                :class="$vuetify.breakpoint.smAndDown ? 'px-3 py-1' : 'px-2 py-1'"
+                pa-2
                 @click="anyClick">  
 
     <v-layout row wrap >
@@ -12,13 +12,15 @@
       </v-flex>
 
       <!-- <v-flex xs2>
-        <micro-chart :station="stations[9]" :JSONUrls="getJSONUrls(stations[9])" :fileValueMapping="fileValueMapping" />
+        <micro-chart :station="stations[9]" :JSONUrls="getJSONUrls(stations[9])" :fileValueMapping="fileValueMapping"
+                      @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
       </v-flex> -->
 
       <v-flex v-for="station in stations"
               :key="`${station.id}_${station.alias}`"
               xs2>
-        <micro-chart :station="station" :JSONUrls="getJSONUrls(station)" :fileValueMapping="fileValueMapping" />
+        <micro-chart :station="station" :JSONUrls="getJSONUrls(station)" :fileValueMapping="fileValueMapping"
+                      @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
       </v-flex>
 
     </v-layout>
