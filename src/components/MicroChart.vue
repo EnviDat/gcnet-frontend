@@ -308,6 +308,7 @@ export default {
       return null;
     },
     buildGraphs(){
+      this.colorCount = 0;
       const keys = Object.keys(this.urlValueMapping);
       const graphs = [];
 
@@ -318,8 +319,11 @@ export default {
         for (let j = 0; j < dataParameters.length; j++) {
           const param = dataParameters[j];
 
+          let lineColor = this.colorPalette[this.colorCount];
+          this.colorCount++;
+
           graphs.push({
-            lineColor: this.seriesSettings.lineColor,
+            lineColor: lineColor,
             title: param,
             valueField: param,
             dataUrl: url,
@@ -445,6 +449,15 @@ export default {
     },    
     urlValueMapping: {},
     visible: false,
+    colorCount: 0,
+    colorPalette: ['#8ACDCE', 
+                   '#3D91BE', 
+                   '#24448E', 
+                   '#11174B'],
+    // colorPalette: ['#DCECC9', '#B3DDCC', '#8ACDCE',
+    //                '#62BED2', '#46AACE', '#3D91BE',
+    //                '#3577AE', '#2D5E9E', '#24448E',
+    //                '#1C2B7F', '#162065', '#11174B'],
   }),
 };
 </script>
