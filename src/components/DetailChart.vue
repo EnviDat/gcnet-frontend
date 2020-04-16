@@ -27,17 +27,97 @@ export default {
       dateFormat: 'MMM dd, YYYY HH:mm UTC',
       dateFormatNoTime: 'MMM dd, YYYY',
       records: [],
-      breakpoint: [],
-      valueFieldMapping: {
-      'temp': ['AirTC1', 'AirTC2'],
-      'press': ['press'],
-      'ws': ['WS1', 'WS2'],
-      'battvolt': ['BattVolt'],
-      'rad': ['NetRad', 'SWin', 'SWout'],
-      'rh': ['RH1', 'RH2'],
-      'sheight': ['Sheight1', 'Sheight2'],
-      'wd': ['WD1', 'WD2'],
-    },
+    valueFieldMapping: {
+    'temp': [
+      {
+          parameter: 'AirTC1',
+           color: '#D26200',
+           titleString: 'Thermocouple 1',
+      },
+      {
+           parameter: 'AirTC1',
+           color: '#0EAACD',
+           titleString: 'Thermocouple 2',
+      },
+    ],
+    'rh': [
+        {   parameter: 'RH1',
+            color: '#1DAFD7',
+            titleString: 'Relative humidity 1',
+        },
+        {
+            parameter: 'RH2',
+            color: '#393DA3',
+            titleString: 'Relative humidity 2',
+        },
+    ],
+    'rad': [
+        {
+            parameter: 'NetRad',
+            color: '#1C5197',
+            titleString: 'Net radiation',
+        },
+        {
+            parameter: 'SWin',
+            color: '#E79F32',
+            titleString: 'Short-wave incoming',
+        },
+        {
+            parameter: 'SWout',
+            color: '#9A6008',
+            titleString: 'Short-wave outgoing',
+        }
+    ],
+    'sheight': [
+        {
+            parameter: 'Sheight1',
+            color: '#679DE2',
+            titleString: 'Snow height 1',
+        },
+        {
+            parameter: 'Sheight2',
+            color: '#3375CD',
+            titleString: 'Snow height 2',
+        }
+    ],
+    'ws': [
+       {   parameter: 'WS1',
+           color: '#046401',
+           titleString: 'Wind-speed 1',
+       },
+       {
+           parameter: 'WS2',
+           color: '#5ED352',
+           titleString: 'Wind-speed 2',
+       }
+    ],
+    'wd': [
+        {
+            parameter: 'WD1',
+            color: '#046401',
+            titleString: 'Wind-direction 1',
+        },
+        {
+            parameter: 'WD2',
+            color: '#2FCE32',
+            titleString: 'Wind-direction 2',
+        }
+    ],
+    'press': [
+        {
+            parameter: 'press',
+            color: '#FF01FF',
+            titleString: 'Atmospheric pressure',
+        }
+    ],
+    'battvolt': [
+       {
+           parameter: 'BattVolt',
+           color: '#27AE61',
+           titleString: 'Battery voltage',
+       }
+    ],
+  },
       seriesSettings: {
       // lineStrokeWidth: 3,
       // lineOpacity: 1,
@@ -54,24 +134,16 @@ export default {
     }
   },
     mounted() {
-     //console.log(JSON.stringify(this.$vuetify.breakpoint));
-     //this.breakpoint = JSON.stringify(this.$vuetify.breakpoint);
-     this.breakpoint.push(JSON.stringify(this.$vuetify.breakpoint));
-     console.log(this.breakpoint);
-     const breakpointName = this.breakpoint[0].name;
-     console.log(breakpointName);
-
       const keys = Object.keys(this.valueFieldMapping);
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
         if (this.url.includes(key)) {
-          const dataParameters = this.valueFieldMapping[key];
-          for (let j = 0; j < dataParameters.length; j++) {
-            const param = dataParameters[j];
-            this.graphs.push(this.buildGraph(param));
+           const graphInfo = this.valueFieldMapping[key];
+           for (let j = 0; j < graphInfo.length; j++) {
+                const infoObj = graphInfo[j];
+                this.graphs.push(this.buildGraph(infoObj));
           }
         }
-
       }
 
     axios
@@ -109,87 +181,13 @@ export default {
 
 
   methods: {
-    buildGraph(parameter){
-
-      // Assign default lineColor
-      let color = '#73C8A9';
-
-      // Assign default titleString to data parameter (i.e. legend)
-     let titleString = parameter;
-
-      // Match lineColor for series to original GC-Net website chart colors and legend strings by evaluating parameter
-      switch (parameter) {
-         case 'AirTC1':
-             color = '#1DAFD7';
-             titleString = 'Thermocouple 1';
-             break;
-         case 'AirTC2':
-             color = '#393DA3';
-             titleString = 'Thermocouple 2';
-             break;
-         case 'RH1':
-             color = '#1DAFD7';
-             titleString = 'Relative humidity 1';
-             break;
-         case 'RH2':
-             color = '#393DA3';
-             titleString = 'Relative humidity 2';
-             break;
-         case 'NetRad':
-             color = '#1C5197';
-            titleString = 'Net radiation';
-             break;
-         case 'SWin':
-             color = '#E79F32';
-             titleString = 'Short-wave incoming';
-             break;
-         case 'SWout':
-             color = '#9A6008';
-             titleString = 'Short-wave outgoing';
-             break;
-         case 'Sheight1':
-             color = '#679DE2';
-             titleString = 'Snow height 1';
-             break;
-         case 'Sheight2':
-             color = '#3375CD';
-             titleString = 'Snow height 2';
-             break;
-         case 'WS1':
-             color = '#046401';
-             titleString = 'Wind-speed 1';
-             break;
-         case 'WS2':
-             color = '#5ED352';
-             titleString = 'Wind-speed 2';
-             break;
-         case 'WD1':
-             color = '#046401';
-             titleString = 'Wind-direction 1';
-             break;
-         case 'WD2':
-             color = '#2FCE32';
-             titleString = 'Wind-direction 2';
-             break;
-         case 'press':
-             color = '#FF01FF';
-             titleString = 'Atmospheric pressure';
-             break;
-         case 'Battvolt':
-             color = '#27AE61';
-             titleString = 'Battery voltage';
-             break;
-         default:
-             color = '#73C8A9';
-             titleString = parameter;
-      }
-
+    buildGraph(infoObj){
       return {
-        "lineColor": color,
+        "lineColor": infoObj.color,
         "bullet": new am4core.Circle(),
         "bulletRadius": this.seriesSettings.bulletsRadius,
-        "title": titleString,
-        "valueField": parameter,
+        "title": infoObj.titleString,
+        "valueField": infoObj.parameter,
         "hideBulletsCount": 30,
       };
     },
