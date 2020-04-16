@@ -11,8 +11,22 @@
                     v-on:anyClick="catchAnyClick"
                     v-on:mapViewClick="catchMapViewClick"
                     v-on:listViewClick="catchListViewClick"
-                    v-on:updateDrawer="catchUpdateDrawer" />
+                    v-on:updateDrawer="catchUpdateDrawer"
+                    />
+
+      <stations-detail-page v-if="!showOverview && currentStation" :currentStation="currentStation" />
     </v-content>
+
+<!--    <v-content app >-->
+<!--      <landing-page :currentStation="currentStation" -->
+<!--                    :showHomeScreen="showHomeScreen"-->
+<!--                    :showOverview="showOverview"-->
+<!--                    v-on:anyClick="catchAnyClick"-->
+<!--                    v-on:mapViewClick="catchMapViewClick"-->
+<!--                    v-on:listViewClick="catchListViewClick"-->
+<!--                    v-on:updateDrawer="catchUpdateDrawer"-->
+<!--                    />-->
+<!--    </v-content>-->
 
       <the-navigation :mini="drawerIsMini"
                       :navItems="navItems"
@@ -43,6 +57,8 @@ import StationsList from '@/components/StationsList';
 import LandingPage from '@/components/Pages/LandingPage';
 import StationsOverviewPage from '@/components/Pages/StationsOverviewPage';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
+import StationsDetailPage from "./components/Pages/StationsDetailPage";
+
 
 export default {
   name: 'App',
@@ -52,6 +68,7 @@ export default {
     StationsList,
     LandingPage,
     StationsOverviewPage,
+    StationsDetailPage,
   },
   beforeMount() {
       const imgs = require.context('./assets/', false, /\.jpg$/);
@@ -202,7 +219,7 @@ export default {
   /* Icons list: https://jossef.github.io/material-design-icons-iconfont/ */
   $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
 
-  @import '~material-design-icons-iconfont/src/material-design-icons.scss';
+  //@import '~material-design-icons-iconfont/src/material-design-icons.scss';
 </style>
 
 <style scoped>

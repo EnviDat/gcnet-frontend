@@ -23,7 +23,7 @@
 
         <v-flex xs9 md7 mx-1 mt-1>
             <div class="title"
-                :class="{ 'compactTitle' : this.$vuetify.breakpoint.smAndDown }"
+                :class="{ 'compactTitle' : this.$vuetify.breakpoint.mdAndDown }"
             >
               {{ title }}
             </div>

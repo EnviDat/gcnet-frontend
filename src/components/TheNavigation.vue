@@ -12,7 +12,7 @@
         <v-list-tile avatar :class="$vuetify.breakpoint.mdAndUp ? '' : 'px-0'"
                       @click.stop="catchHomeClick"
         >
-          <v-list-tile-avatar :class="$vuetify.breakpoint.mdAndUp ? '' : 'px-0'" > 
+          <v-list-tile-avatar :class="$vuetify.breakpoint.mdAndUp ? '' : 'px-0'" >
             <img :src="gcNetlogo">
           </v-list-tile-avatar>
 
@@ -123,14 +123,15 @@ export default {
       // Domi: new width for Stations in single line
       const wideOpenStation = 300;
       const wideClosed = 240;
-      const smallOpen = 250;
+      // const smallOpen = 250;
+      const smallOpen = 150;
       const smallClosed = 50;
 
       if (this.navItems && this.navItems.length > 0){
         open = this.navItems[0].active || this.navItems[1].active;
       }
 
-      if (this.$vuetify.breakpoint.mdAndUp){
+      if (this.$vuetify.breakpoint.lgAndUp){
         if (this.navItems[1].active){
           return open ? wideOpenStation : wideClosed;
         }

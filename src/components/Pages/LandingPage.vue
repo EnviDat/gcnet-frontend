@@ -2,7 +2,7 @@
   <v-container fluid
                 fill-height
                 :class="$vuetify.breakpoint.smAndDown ? 'px-3 py-1' : 'px-2 py-1'"
-                @click="anyClick">  
+                @click="anyClick">
 
     <v-layout row wrap >
   
