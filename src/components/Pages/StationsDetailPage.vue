@@ -9,9 +9,12 @@
       <v-flex>
         <v-layout column >
 
-          <v-flex  v-for="fileObject in generateFileList" :key="fileObject.fileName">
-              <DetailChart :url="baseStationURL + fileObject.fileName" :fileObject="fileObject"
+          <v-flex  v-for="(fileObject, index) in generateFileList" :key="fileObject.fileName">
+              <DetailChart :url="baseUrl + fileObject.fileName"
+                          :stationName="currentStation.name"
+                          :fileObject="fileObject"
                           :chartId="chartId(fileObject.fileName)"
+                          :delay="index * 500"
                           :class="$vuetify.breakpoint.mdAndDown ? 'mb-1' : 'mb-4'"/>
           </v-flex>
         </v-layout>
@@ -24,9 +27,8 @@
 </template>
 
 <script>
-
 import DetailChart from "../DetailChart";
-
+import * as am4core from "@amcharts/amcharts4/core";
 
 export default {
   props: {
@@ -36,9 +38,13 @@ export default {
     DetailChart,
    // DetailChartTest
   },
+  beforeDestroy(){
+    am4core.unuseAllThemes();
+    am4core.disposeAllCharts();
+  },
   data: () => ({
-    // baseStationURL: 'https://www.wsl.ch/gcnet/data/',
-    baseStationURL: './testdata/',
+    baseStationURL: 'https://www.wsl.ch/gcnet/data/',
+    baseStationURLTestdata: './testdata/',
     loadingStation: false,
     fileObjects: [
       { fileName: 'temp.json', chartTitle: 'Air Temperatures Historical Data', numberFormat: '##  °C', dateFormatTime: false },
@@ -60,6 +66,9 @@ export default {
     ],
   }),
   computed: {
+    baseUrl(){
+      return process.env.NODE_ENV === 'production' ? this.baseStationURL : this.baseStationURLTestdata;
+    },
     generateFileList() {
       let fileList = [];
 

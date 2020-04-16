@@ -5,14 +5,14 @@
       <stations-overview-page v-if="showOverview"
                               @detailClick="listStationClick" />
 
-      <landing-page v-if="!showOverview"
+      <!-- <landing-page v-if="!showOverview"
                     :currentStation="currentStation" 
                     :showHomeScreen="showHomeScreen"
                     v-on:anyClick="catchAnyClick"
                     v-on:mapViewClick="catchMapViewClick"
                     v-on:listViewClick="catchListViewClick"
                     v-on:updateDrawer="catchUpdateDrawer"
-                    />
+                    /> -->
 
       <stations-detail-page v-if="!showOverview && currentStation" :currentStation="currentStation" />
     </v-content>
@@ -54,7 +54,7 @@
 import TheNavigation from '@/components/TheNavigation';
 import StationsMap from '@/components/StationsMap';
 import StationsList from '@/components/StationsList';
-import LandingPage from '@/components/Pages/LandingPage';
+// import LandingPage from '@/components/Pages/LandingPage';
 import StationsOverviewPage from '@/components/Pages/StationsOverviewPage';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 import StationsDetailPage from "./components/Pages/StationsDetailPage";
@@ -66,7 +66,7 @@ export default {
     TheNavigation,
     StationsMap,
     StationsList,
-    LandingPage,
+    // LandingPage,
     StationsOverviewPage,
     StationsDetailPage,
   },

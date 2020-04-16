@@ -24,7 +24,7 @@
         <micro-chart :station="station"
                       :JSONUrls="getJSONUrls(station)"
                       :fileValueMapping="fileValueMapping"
-                      :delay="index * 300"
+                      :delay="index * 500"
                       @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
       </v-flex>
 
@@ -33,8 +33,8 @@
 </template>
 
 <script>
-// import Chart from '@/components/Chart.vue';
 import MicroChart from '@/components/MicroChart.vue';
+import * as am4core from "@amcharts/amcharts4/core";
 
 export default {
   props: {
@@ -56,6 +56,10 @@ export default {
     stations(){
       return this.$store.getters.stations;
     }
+  },
+  beforeDestroy(){
+    am4core.unuseAllThemes();
+    am4core.disposeAllCharts();
   },
   methods: {
     loadStation() {

@@ -1,6 +1,7 @@
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import microchart from '@amcharts/amcharts4/themes/microchart';
+import amchartsDefaultTheme from '@amcharts/amcharts4/themes/amcharts';
 
 
 const defaultSeriesSettings = {
@@ -30,18 +31,27 @@ const defaultFormatingInfos = {
 }
 
 const createLineChart = function createLineChart(selector, dateValueField, chartData, graphs, groupData,
-                                                    options = defaultOptions, seriesSettings = defaultSeriesSettings,
-                                                    dateFormatingInfos = defaultFormatingInfos,
-                                                 chartTitle, chartNumberFormat, dateFormatTime)
+                                                  options = defaultOptions, seriesSettings = defaultSeriesSettings,
+                                                  dateFormatingInfos = defaultFormatingInfos,
+                                                  chartTitle, chartNumberFormat, dateFormatTime,
+                                                  doneCallback, errorCallback)
 {
+    am4core.useTheme(amchartsDefaultTheme);
     am4core.options.queue = options.queue;
     am4core.options.onlyShowOnViewport = options.onlyShowOnViewport;
-
-    var chart = am4core.create(selector, am4charts.XYChart);
-    chart.hiddenState.properties.opacity = 0;
-  
     am4core.options.minPolylineStep = options.minPolylineStep;
 
+    var chart = am4core.create(selector, am4charts.XYChart);
+    chart.id = selector;
+    chart._uid = selector;
+    chart.padding(0, 0, 0, 0);
+
+    // chart.events.on('parseerror', errorCallback);
+    chart.events.on('error', errorCallback);
+    chart.events.on('dataitemsvalidated', doneCallback);
+  
+    // chart.hiddenState.properties.opacity = 0;
+  
     if (chartData) {
         // chartData is optional, to be able to give the series directly a datasource
         chart.data = chartData;
@@ -59,7 +69,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     // dateAxis.renderer.labels.template.rotation = -45;
     // dateAxis.renderer.labels.template.verticalCenter = "middle";
     // dateAxis.renderer.labels.template.horizontalCenter = "right";
-    dateAxis.renderer.grid.template.strokeDasharray = "4";
+    dateAxis.renderer.grid.template.strokeDasharray = "6";
 
     // If dateFormatTime in fileObject is false format date without time, else format date with time
     if (dateFormatTime === false) {
@@ -95,50 +105,60 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     chart.legend.zIndex = 100;
     // chart.legend.position = 'absolute';
     // chart.legend.dy = -30;
-    // chart.paddingTop = 30;
+    chart.paddingTop = 0;
 
     // Set legend location
-    chart.legend.position = 'bottom';
-    chart.legend.contentAlign = 'left';
+    chart.legend.position = 'top';
+    chart.legend.contentAlign = 'center';
 
     chart.cursor = new am4charts.XYCursor();
     chart.responsive.enabled = true;
 
-    // Create and format chart title
-    var title = chart.titles.create();
-    title.contentAlign = 'left';
-    title.fontSize = 30;
-    title.marginBottom = 10;
-    title.bold = true;
+    if (chartTitle) {
+      // Create and format chart title
+      var title = chart.titles.create();
+      title.contentAlign = 'left';
+      title.fontSize = 30;
+      title.marginBottom = 10;
+      title.bold = true;
 
-    // Assign chart title to fileObject.chartTitle prop in DetailChart.vue
-    title.text = chartTitle;
+      // Assign chart title to fileObject.chartTitle prop in DetailChart.vue
+      title.text = chartTitle;
+    }
 
     // Assign chart numberFormatter to fileObject.numberFormat prop in DetailChart.vue
     chart.numberFormatter.numberFormat = chartNumberFormat;
 
-    const scrollbarX = new am4charts.XYChartScrollbar();
-
     // Create new valueAxisY here so that only one valueAxis is created per chart
     const valueAxisY = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxisY.renderer.minGridDistance = 30;
 
-    // addGraphToChart(chart, graphs[0], dateAxis, dateValueField, 0, scrollbarX, seriesSettings);
-    // addGraphToChart(chart, graphs[1], dateAxis, dateValueField, 1, scrollbarX, seriesSettings);
+    // Assign valueAxis color to black
+    valueAxisY.renderer.labels.template.fill = am4core.color('#313131');
+    valueAxisY.renderer.minWidth = 30;
 
+    valueAxisY.extraMin = 0.1;
+    valueAxisY.extraMax = 0.1;
+
+    const scrollbarX = new am4charts.XYChartScrollbar();
+  
     for (let i = 0; i < graphs.length; i++) {
       const graph = graphs[i];
         
-        // chart = addGraphToChart(chart, graph, dateAxis, dateValueField, i, scrollbarX, seriesSettings);
-        chart = addGraphToChart(chart, graph, dateAxis, dateValueField, i, scrollbarX, seriesSettings, valueAxisY);
+      chart = addGraphToChart(chart, graph, dateAxis, dateValueField, i, scrollbarX, seriesSettings, valueAxisY);
+
+      if (i <= 0) {
+        scrollbarX.scrollbarChart.xAxes.values[i].renderer.labels.template.inside = false;
+        scrollbarX.scrollbarChart.xAxes.values[i].renderer.labels.template.dy = -50;
+      }
     }
 
     chart.maskBullets = true;
 
+    scrollbarX.contentHeight = 40;
+    scrollbarX.height = 40;
     chart.scrollbarX = scrollbarX;
     chart.scrollbarX.parent = chart.bottomAxesContainer;
-
-    // Assign chart valueAxis to valueAxisY
-    chart.valueAxis = valueAxisY;
 
     return chart;
 }
@@ -224,27 +244,6 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
     // Temporarily hide series preview
     scrollbarX.scrollbarChart.seriesContainer.hide();
 
-
-    if (count <= 0 && scrollbarX) {
-      // scrollbarX.series.push(series);
-      scrollbarX.scrollbarChart.xAxes.values[count].renderer.labels.template.inside = false;
-      scrollbarX.scrollbarChart.xAxes.values[count].renderer.labels.template.dy = -50;
-
-      // Commented out line below so that yAxis values display left of chart
-      //valueAxisY.renderer.opposite = count % 2 == 0;
-
-      valueAxisY.renderer.minGridDistance = 30;
-      // valueAxis.renderer.labels.template.stroke = am4core.color(graph.lineColor);
-
-     // valueAxisY.renderer.labels.template.fill = am4core.color(graph.lineColor);
-     // Assign valueAxis color to black
-     valueAxisY.renderer.labels.template.fill = am4core.color('#313131');
-      valueAxisY.renderer.minWidth = 30;
-      // valueAxis.renderer.grid.template.stroke = am4core.color(graph.lineColor);
-      valueAxisY.extraMin = 0.1;
-      valueAxisY.extraMax = 0.1;
-    }
-
     // Assign series yAxis to valueAxisY
     series.yAxis = valueAxisY;
 
@@ -260,7 +259,7 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
   am4core.useTheme(microchart);
 
   am4core.options.queue = true;
-  am4core.options.minPolylineStep = 1;
+  am4core.options.minPolylineStep = 2;
 
   var chart = am4core.create(selector, am4charts.XYChart);
   chart.id = selector;

@@ -1,8 +1,7 @@
 <template>
 
   <v-fade-transition>
-  <v-card :id="_uid"
-          :station="stationId"
+  <v-card :id="stationId"
           v-show="visible" >
     <v-container fluid fill-height pa-3>
 
@@ -222,7 +221,7 @@ export default {
     delay: {
       type: Number,
       default: 500,
-    }
+    },
   },
   components: {
     BaseStatusIcon,
@@ -252,7 +251,7 @@ export default {
       return `${this.stationId}_microChart`;
     },
     stationId(){
-      return `${this._uid}_${this.station.id}_${this.station.alias ? this.station.alias : this.station.name}`;
+      return `${this.station.id}_${this.station.alias ? this.station.alias : this.station.name}`;
     },
     recentIconColor() {
       return this.recentCheckedOnce ? this.recentDataAvailable ? this.$vuetify.theme.success : this.$vuetify.theme.error : 'transparent';
@@ -420,7 +419,6 @@ export default {
         }
       }
     },
-
     catchDetailClick(stationId){
       this.$emit('detailClick', stationId);
     },

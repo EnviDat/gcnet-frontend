@@ -1,11 +1,57 @@
 <template>
 
-  <v-card>
+  <v-fade-transition>
+    <v-card >
+      <v-container>
+        <v-layout column>
 
-     <div class='chart' :id="chartId" >
-    </div>
+          <v-flex pb-3>
+            <v-layout row wrap justify-space-between>
+              <v-flex shrink display-1>
+                {{ this.fileObject.chartTitle }}
+              </v-flex>
+              <v-flex shrink class="title">
+                {{ stationName }}
+              </v-flex>
+            </v-layout>            
+          </v-flex>
 
-  </v-card>
+          <v-flex v-if="chartIsLoading"
+                  class="chart"
+                  py-0 >
+            <v-layout row wrap fill-height justify-center align-center>
+              <v-flex shrink>
+                <v-progress-circular :size="50"
+                                      color="primary"
+                                      indeterminate />
+                
+              </v-flex>
+            </v-layout>
+          </v-flex>
+
+          <v-flex v-if="!chartIsLoading && !hasData"
+                pt-2 pb-1
+                class="display-1"
+                :style="`color: ${ $vuetify.theme.error };`" >
+            {{ noDataText }}
+          </v-flex>
+
+          <v-flex v-if="dataError"
+                  class="display-1"
+                  :style="`color: ${ $vuetify.theme.error };`" >
+            {{ dataError }}
+          </v-flex>
+
+          <v-flex v-show="!chartIsLoading && hasData" >
+            <div class='chart' :id="chartId" >
+            </div>            
+          </v-flex>
+
+        </v-layout>
+      </v-container>
+
+    </v-card>
+  </v-fade-transition>
 
 </template>
 
@@ -18,38 +64,53 @@ import * as am4core from "@amcharts/amcharts4/core";
 export default {
   props: {
     url: String,
+    stationName: String,
     chartId: String,
     fileObject: Object,
+    delay: {
+      type: Number,
+      default: 500,
+    },
   },
   mounted() {
-    const keys = Object.keys(this.valueFieldMapping);
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      if (this.url.includes(key)) {
-          const graphInfo = this.valueFieldMapping[key];
-          for (let j = 0; j < graphInfo.length; j++) {
-              const infoObj = graphInfo[j];
-              this.graphs.push(this.buildGraph(infoObj));
-        }
-      }
-    }
+    var that = this;
 
-    axios
-    .get(this.url)
-    .then(response => {
-      this.records = response.data;
-      this.loadChart();
-    })
-    .catch(error => {
-      console.log('There was an error:' + error.response.statusText + ' url: ' + error.request.responseURL);
-    })
+    window.setTimeout(function() {
+      that.visible = true;
+      // console.log("delayed visible " + that.chartId + ' ' + that.visible);
+      that.loadChart();
+      
+    }, that.delay);
+    // console.log("visible " + that.chartId + ' ' + that.visible);
   },
   beforeDestroy() {
     this.clearChart();
   },
   computed: {
+    hasData() {
+      return this.dataAvailable;
+    },
   },
   methods: {
+    buildGraphs(){
+      const graphs = [];
+      const keys = Object.keys(this.valueFieldMapping);
+
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+
+        if (this.url.includes(key)) {
+          const graphInfo = this.valueFieldMapping[key];
+
+          for (let j = 0; j < graphInfo.length; j++) {
+            const infoObj = graphInfo[j];
+            graphs.push(this.buildGraph(infoObj));
+          }
+        }
+      }
+
+      this.graphs = graphs;
+    },
     buildGraph(infoObj){
       return {
         "lineColor": infoObj.color,
@@ -57,10 +118,36 @@ export default {
         "bulletRadius": this.seriesSettings.bulletsRadius,
         "title": infoObj.titleString,
         "valueField": infoObj.parameter,
-        "hideBulletsCount": 30,
+        "hideBulletsCount": 10,
       };
     },
     loadChart() {
+      this.clearChart();
+      this.chartIsLoading = true;
+      this.dataAvailable = false;
+      this.dataLength = 0;
+      this.dataError = '';
+
+      this.buildGraphs();
+
+      // clear and then new loading on the next tick is needed for the disposing to finish
+      const that = this;
+      this.$nextTick( () => {
+        that.loadJsonFiles();
+      });
+    },
+    loadJsonFiles(){
+      axios
+      .get(this.url)
+      .then(response => {
+        // this.records = response.data;
+        this.createChart(response.data);
+      })
+      .catch(error => {
+        console.log('There was an error:' + error.response.statusText + ' url: ' + error.request.responseURL);
+      })
+    },
+    createChart(records){
       const dateFormatingInfos = {
         dateFormat: this.dateFormat,
         dateFormatNoTime: this.dateFormatNoTime,
@@ -69,22 +156,44 @@ export default {
     
        try {
 
-        if (!this.detailChart) {
-          this.detailChart = createLineChart(this.chartId, 'timestamp', this.records, this.graphs,
+        // if (!this.detailChart) {
+          this.detailChart = createLineChart(this.chartId, 'timestamp', records, this.graphs,
                                       !this.chartId.includes('_v'), undefined, undefined, dateFormatingInfos,
-                                       this.fileObject.chartTitle, this.fileObject.numberFormat,
-                                       this.fileObject.dateFormatTime);
-        } else {
-          this.detailChart.data = this.records;
-          this.detailChart.invalidateRawData();
-        }
+                                       undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
+                                       this.chartDone, this.chartError);
+        // } else {
+        //   this.detailChart.data = this.records;
+        //   this.detailChart.invalidateRawData();
+        // }
+
       } catch (error) {
         console.log(`Error creating the weather chart: ${error}`);
       }
     },
+    chartError(error) {
+      this.chartIsLoading = false;
+      this.dataError = error.message;
+
+      this.dataAvailable = false;
+      this.dataLength = 0;
+      this.clearChart();
+    },
+    chartDone(doneResponse) {
+      this.chartIsLoading = false;
+      const dataLength = doneResponse && doneResponse.target.data ? doneResponse.target.data.length : 0;
+      
+      this.dataAvailable = dataLength > 0;
+      this.dataLength = dataLength;
+      this.dataError = '';
+
+      if (!this.dataAvailable){
+        this.clearChart();
+      }
+    },
     clearChart(){
-      if (this.microChart) {
-        this.microChart.dispose();
+      if (this.detailChart) {
+        this.detailChart.dispose();
+        this.detailChart = null;
       }
     },
   },
@@ -93,8 +202,13 @@ export default {
       graphs: [],
       dateFormat: 'MMM dd, YYYY HH:mm UTC',
       dateFormatNoTime: 'MMM dd, YYYY',
-      records: [],
       detailChart: null,
+      visible: false,
+      chartIsLoading: true,
+      dataLength: 0,
+      dataAvailable: false,
+      dataError: '',
+      noDataText: 'No data available',
       valueFieldMapping: {
         'temp': [
           {
