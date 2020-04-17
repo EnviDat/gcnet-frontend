@@ -37,19 +37,22 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
                                                   doneCallback, errorCallback)
 {
     am4core.useTheme(amchartsDefaultTheme);
-    am4core.options.queue = options.queue;
+    // am4core.options.queue = options.queue;
     am4core.options.onlyShowOnViewport = options.onlyShowOnViewport;
     am4core.options.minPolylineStep = options.minPolylineStep;
 
-    var chart = am4core.create(selector, am4charts.XYChart);
-    chart.id = selector;
-    chart._uid = selector;
+    let chart = am4core.create(selector, am4charts.XYChart);
+    // chart.id = selector;
+    // chart._uid = selector;
     chart.padding(0, 0, 0, 0);
 
-    // chart.events.on('parseerror', errorCallback);
     chart.events.on('error', errorCallback);
-    chart.events.on('dataitemsvalidated', doneCallback);
+    chart.events.on('ready', doneCallback);
   
+    // chart.events.on('beforedisposed', () => {
+    //   console.log(chart._uid + ' going to dispose');
+    // });
+
     // chart.hiddenState.properties.opacity = 0;
   
     if (chartData) {
@@ -187,13 +190,13 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
     if (graph.dataUrl) {
         series.dataSource.url = graph.dataUrl;
 
-        series.dataSource.events.on('error', (err) => {
-            console.log(`${graph.title} got an error: ${err}`);
-        });
+        // series.dataSource.events.on('error', (err) => {
+        //     console.log(`${graph.title} got an error: ${err}`);
+        // });
 
-        series.dataSource.events.on('done', () => {
-            console.log(`${graph.title} finished loading`);
-        });
+        // series.dataSource.events.on('done', () => {
+        //     console.log(`${graph.title} finished loading`);
+        // });
 
         series.dataSource.reloadFrequency = seriesSettings.reloadFrequency;
         series.dataSource.updateCurrentData = true;
@@ -258,14 +261,17 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
   
   am4core.useTheme(microchart);
 
-  am4core.options.queue = true;
+  // am4core.options.queue = true;
   am4core.options.minPolylineStep = 2;
 
-  var chart = am4core.create(selector, am4charts.XYChart);
-  chart.id = selector;
-  chart._uid = selector;
+  let chart = am4core.create(selector, am4charts.XYChart);
+  // chart.id = selector;
+  // chart._uid = selector;
 
-  var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+  // chart.events.on('beforedisposed', () => {
+  //   console.log(chart.id + ' going to dispose');
+  // });
+
   dateAxis.baseInterval = {
     "timeUnit": "hour",
     "count": 1,

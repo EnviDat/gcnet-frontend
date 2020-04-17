@@ -1,7 +1,7 @@
 <template>
 
   <v-card >
-    <v-container>
+    <v-container fluid pa-3>
       <v-layout column>
 
         <v-flex pb-3>
@@ -80,8 +80,9 @@ export default {
     //   that.visible = true;
     //   // console.log("delayed visible " + that.chartId + ' ' + that.visible);
     //   that.loadChart();
+    //   that = null;
       
-    // }, that.delay);
+    // }, this.delay);
     // // console.log("visible " + that.chartId + ' ' + that.visible);
   },
   beforeDestroy() {
@@ -90,6 +91,13 @@ export default {
   computed: {
     hasData() {
       return this.dataAvailable;
+    },
+  },
+  watch: {
+    records() {
+      if (this.records && this.records.length > 0){
+        this.createChart();
+      }
     },
   },
   methods: {
@@ -132,24 +140,23 @@ export default {
       this.buildGraphs();
 
       // clear and then new loading on the next tick is needed for the disposing to finish
-      const that = this;
-      this.$nextTick( () => {
-        that.loadJsonFiles();
-      });
+      // this.$nextTick( () => {
+        this.loadJsonFiles();
+      // });
     },
     loadJsonFiles(){
       axios
       .get(this.url)
       .then(response => {
-        // this.records = response.data;
-        this.createChart(response.data);
+        // createChart() gets called due to the watch on the records
+        this.records = response.data;
       })
       .catch(error => {
         this.chartIsLoading = false;
         this.dataError = `Error creating chart: ${error}`;
       })
     },
-    createChart(records){
+    createChart(){
       const dateFormatingInfos = {
         dateFormat: this.dateFormat,
         dateFormatNoTime: this.dateFormatNoTime,
@@ -157,7 +164,7 @@ export default {
       };
     
        try {
-          this.detailChart = createLineChart(this.chartId, 'timestamp', records, this.graphs,
+          this.detailChart = createLineChart(this.chartId, 'timestamp', this.records, this.graphs,
                                       !this.chartId.includes('_v'), undefined, undefined, dateFormatingInfos,
                                        undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
                                        this.chartDone, this.chartError);
@@ -204,9 +211,11 @@ export default {
         // console.log('dispose via DetailChart');
         this.detailChart.dispose();
         // console.log('delete via DetailChart');
-        this.detailChart = null;
+        // this.detailChart = null;
         // delete this.detailChart;
       }
+
+      this.records = [];
     },
   },
   data()  {
@@ -223,6 +232,7 @@ export default {
       ISObserver: null,
       intersected: false,
       noDataText: 'No data available',
+      records: [],
       valueFieldMapping: {
         'temp': [
           {

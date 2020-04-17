@@ -29,8 +29,10 @@
 <script>
 import DetailChart from "../DetailChart";
 import * as am4core from "@amcharts/amcharts4/core";
+am4core.options.queue = true;
 
 export default {
+  name: 'StationDetailPage',
   props: {
     currentStation: Object,
   },
@@ -40,7 +42,8 @@ export default {
   },
   beforeDestroy(){
     am4core.unuseAllThemes();
-    am4core.disposeAllCharts();
+    // console.log('disposeAllCharts via DetailPage');
+    // am4core.disposeAllCharts();
   },
   data: () => ({
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',

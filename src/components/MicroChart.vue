@@ -1,7 +1,8 @@
 <template>
 
-  <v-fade-transition>
+  <!-- <v-fade-transition> -->
   <v-card :id="stationId"
+          ref="main_container"
           v-show="visible" >
     <v-container fluid fill-height pa-3>
 
@@ -35,7 +36,7 @@
         </v-flex>
 
         <v-flex v-if="!chartIsLoading && !hasData"
-              xs12 pt-2 pb-1
+              xs12 py-1
               class="body-1"
               :style="`color: ${ $vuetify.theme.error };`" >
           {{ noDataText }}
@@ -62,7 +63,7 @@
         </v-flex>
 
         <v-flex xs12 
-                :class="dataError ? 'pt-3': 'pt-2'">
+                pt-2>
           <v-layout row align-center justify-space-between >
             <v-flex shrink>
               <v-layout row>
@@ -179,7 +180,7 @@
 
     </v-container>
   </v-card>
-  </v-fade-transition>
+  <!-- </v-fade-transition> -->
 
 </template>
 
@@ -221,14 +222,16 @@ export default {
     BaseStatusIconButton,
   },
   mounted() {
-    var that = this;
+    let that = this;
 
-    window.setTimeout(function() {
+    setTimeout(() => {
       that.visible = true;
       // console.log("visible " + that.station.name + ' ' + that.visible);
-      that.loadChart();
-      
-    }, that.delay);
+      if (that.$refs && that.$refs.main_container){
+        that.loadChart();
+      }
+      that = null;
+    }, this.delay);
     // console.log("visible " + that.station.name + ' ' + that.visible);
 
   },
@@ -265,10 +268,9 @@ export default {
       this.buildGraphs();
 
       // clear and then new loading on the next tick is needed for the disposing to finish
-      const that = this;
-      this.$nextTick( () => {
-        that.loadJsonCharts();
-      });
+      // this.$nextTick( () => {
+        this.loadJsonCharts();
+      // });
     },
     getUrlValueMapping(loadRecentData){
       const urlValueMapping = {};
@@ -330,7 +332,7 @@ export default {
         // console.log('dispose via MicroChart');
         this.microChart.dispose();
         // console.log('delete via MicroChart');
-        this.microChart = null;
+        // this.microChart = null;
         // delete this.microChart;
       }
     },
@@ -377,7 +379,10 @@ export default {
 
         if (this.fallback){
           this.loadRecentData = false;
-          this.loadChart();
+
+          this.$nextTick( () => {
+            this.loadChart();
+          });
         }
       } else {
         this.alldataAvailable = false;
@@ -404,7 +409,10 @@ export default {
 
           if (this.fallback){
             this.loadRecentData = false;
-            this.loadChart();
+            
+            this.$nextTick( () => {
+              this.loadChart();
+            });
           }
         } else {
           this.alldataAvailable = false;

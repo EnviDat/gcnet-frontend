@@ -7,25 +7,27 @@
 
     <v-layout row wrap >
 
-      <v-flex xs12 class="title">
-        {{ 'GC-Net Stations Overview' }}
-      </v-flex>
+      <v-flex xs12 >
+        <v-layout row wrap>
 
-      <!-- <v-flex xs2>
-        <micro-chart :station="stations[9]"
-                      :JSONUrls="getJSONUrls(stations[9])"
-                      :fileValueMapping="fileValueMapping"
-                      @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
-      </v-flex> -->
+          <!-- <v-flex xs2>
+            <micro-chart :station="stations[0]"
+                          :JSONUrls="getJSONUrls(stations[0])"
+                          :fileValueMapping="fileValueMapping"
+                          @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
+          </v-flex> -->
 
-      <v-flex v-for="(station, index) in stations"
-              :key="`${station.id}_${station.alias}`"
-              xs2>
-        <micro-chart :station="station"
-                      :JSONUrls="getJSONUrls(station)"
-                      :fileValueMapping="fileValueMapping"
-                      :delay="index * 500"
-                      @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
+          <v-flex v-for="(station, index) in stations"
+                  :key="`${station.id}_${station.alias}`"
+                  xs2>
+            <micro-chart :station="station"
+                          :JSONUrls="getJSONUrls(station)"
+                          :fileValueMapping="fileValueMapping"
+                          :delay="index * 500"
+                          @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
+          </v-flex>
+          
+        </v-layout>
       </v-flex>
 
     </v-layout>
@@ -35,18 +37,20 @@
 <script>
 import MicroChart from '@/components/MicroChart.vue';
 import * as am4core from "@amcharts/amcharts4/core";
+am4core.options.queue = true;
 
 export default {
+  name: 'StationOverviewPage',
   props: {
   },
   components: {
-    // Chart,
     MicroChart,
   },
   data: () => ({
+    showMoreInfos: false,
+    showMoreInfosText: 'More Information',
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',
     baseStationURLTestdata: './testdata/',
-    loadingStation: false,
     fileValueMapping: {
       // only use one single file and parameter for the microCharts
       'temp': ['AirT1'],
@@ -58,11 +62,13 @@ export default {
     }
   },
   beforeDestroy(){
-    am4core.unuseAllThemes();
-    am4core.disposeAllCharts();
+    this.clearCharts();
   },
   methods: {
-    loadStation() {
+    clearCharts() {
+      am4core.unuseAllThemes();
+      // console.log('disposeAllCharts via OverviewPage');
+      // am4core.disposeAllCharts();
     },
     anyClick(){
       this.$emit('anyClick');
