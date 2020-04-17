@@ -63,7 +63,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.dataFields.category = dateValueField;
     // dateAxis.renderer.minGridDistance = 40;
-    dateAxis.renderer.minGridDistance = 90;
+    dateAxis.renderer.minGridDistance = 60;
     dateAxis.groupData = groupData;
     // dateAxis.groupCount = 50;
     
