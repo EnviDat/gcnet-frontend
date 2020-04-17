@@ -41,7 +41,7 @@
           {{ dataError }}
         </v-flex>
 
-        <v-flex v-show="!chartIsLoading && hasData" >
+        <v-flex v-show="intersected && !chartIsLoading && hasData" >
           <div class='chart' :id="chartId" >
           </div>            
         </v-flex>
@@ -72,15 +72,17 @@ export default {
     },
   },
   mounted() {
-    var that = this;
+    this.registeryIntersectionObserver();
 
-    window.setTimeout(function() {
-      that.visible = true;
-      // console.log("delayed visible " + that.chartId + ' ' + that.visible);
-      that.loadChart();
+    // var that = this;
+
+    // window.setTimeout(function() {
+    //   that.visible = true;
+    //   // console.log("delayed visible " + that.chartId + ' ' + that.visible);
+    //   that.loadChart();
       
-    }, that.delay);
-    // console.log("visible " + that.chartId + ' ' + that.visible);
+    // }, that.delay);
+    // // console.log("visible " + that.chartId + ' ' + that.visible);
   },
   beforeDestroy() {
     this.clearChart();
@@ -189,10 +191,26 @@ export default {
         this.clearChart();
       }
     },
+    registeryIntersectionObserver(){
+      this.ISObserver = new IntersectionObserver(entries => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          if (!this.intersected){
+            this.intersected = true;
+            this.loadChart();
+          }
+        }
+      });
+
+      this.ISObserver.observe(this.$el);
+    },
     clearChart(){
       if (this.detailChart) {
+        console.log('dispose via DetailChart');
         this.detailChart.dispose();
+        // console.log('delete via DetailChart');
         this.detailChart = null;
+        delete this.detailChart;
       }
     },
   },
@@ -207,6 +225,8 @@ export default {
       dataLength: 0,
       dataAvailable: false,
       dataError: '',
+      ISObserver: null,
+      intersected: false,
       noDataText: 'No data available',
       valueFieldMapping: {
         'temp': [

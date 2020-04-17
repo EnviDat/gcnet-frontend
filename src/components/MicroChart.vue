@@ -199,6 +199,7 @@ import BaseStatusIconButton from "@/components/BaseElements/BaseStatusIconButton
 
 
 export default {
+  name: 'MicroChart',
   props: {
     station: Object,
     JSONUrls: {
