@@ -1,7 +1,6 @@
 <template>
   <v-navigation-drawer
     class="gc_net_navigation"
-    absolute
     permanent
     app
     :width="open"

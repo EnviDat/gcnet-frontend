@@ -2,50 +2,40 @@
   <v-app class="application" :style="dynamicBackground()">
 
     <v-content app >
-      <stations-overview-page v-if="showOverview"
-                              @detailClick="listStationClick" />
-
-      <!-- <landing-page v-if="!showOverview"
-                    :currentStation="currentStation" 
+      <landing-page v-if="!currentStation"
                     :showHomeScreen="showHomeScreen"
-                    v-on:anyClick="catchAnyClick"
-                    v-on:mapViewClick="catchMapViewClick"
-                    v-on:listViewClick="catchListViewClick"
-                    v-on:updateDrawer="catchUpdateDrawer"
-                    /> -->
+                    :showOverview="showOverview"
+                    @anyClick="catchAnyClick"
+                    @mapViewClick="catchMapViewClick"
+                    @listViewClick="catchListViewClick"
+                    @updateDrawer="catchUpdateDrawer"
+                    @overviewClick="catchOverviewClick"
+                    @detailClick="listStationClick"
+                    />
 
-      <stations-detail-page v-if="!showOverview && currentStation" :currentStation="currentStation" />
+
+      <stations-detail-page v-if="!showOverview && currentStation"
+                            :currentStation="currentStation" />
     </v-content>
 
-<!--    <v-content app >-->
-<!--      <landing-page :currentStation="currentStation" -->
-<!--                    :showHomeScreen="showHomeScreen"-->
-<!--                    :showOverview="showOverview"-->
-<!--                    v-on:anyClick="catchAnyClick"-->
-<!--                    v-on:mapViewClick="catchMapViewClick"-->
-<!--                    v-on:listViewClick="catchListViewClick"-->
-<!--                    v-on:updateDrawer="catchUpdateDrawer"-->
-<!--                    />-->
-<!--    </v-content>-->
+    <the-navigation :mini="drawerIsMini"
+                    :navItems="navItems"
+                    :version="version"
+                    v-on:homeClick="catchHomeClick"
+                    v-on:drawerClick="catchDrawerClick"
+                    v-on:stationOverviewClick="catchNavigationOverviewClick">
 
-      <the-navigation :mini="drawerIsMini"
-                      :navItems="navItems"
-                      :version="version"
-                      v-on:homeClick="catchHomeClick"
-                      v-on:drawerClick="catchDrawerClick"
-                      v-on:stationOverviewClick="catchStationOverviewClick">
+      <template v-slot:map>        
+        <stations-map :currentStation="currentStation"
+                      v-on:mapClick="mapStationClick" />          
+      </template>
 
-        <template v-slot:map>        
-          <stations-map :currentStation="currentStation"
-                        v-on:mapClick="mapStationClick" />          
-        </template>
+      <template v-slot:list>        
+        <stations-list :currentStation="currentStation"
+                        v-on:listClick="listStationClick" />
+      </template>
 
-        <template v-slot:list>        
-          <stations-list :currentStation="currentStation"
-                          v-on:listClick="listStationClick" />
-        </template>
-
-      </the-navigation >
+    </the-navigation >
 
   </v-app>
 </template>
@@ -54,8 +44,7 @@
 import TheNavigation from '@/components/TheNavigation';
 import StationsMap from '@/components/StationsMap';
 import StationsList from '@/components/StationsList';
-// import LandingPage from '@/components/Pages/LandingPage';
-import StationsOverviewPage from '@/components/Pages/StationsOverviewPage';
+import LandingPage from '@/components/Pages/LandingPage';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 import StationsDetailPage from "./components/Pages/StationsDetailPage";
 
@@ -66,8 +55,7 @@ export default {
     TheNavigation,
     StationsMap,
     StationsList,
-    // LandingPage,
-    StationsOverviewPage,
+    LandingPage,
     StationsDetailPage,
   },
   beforeMount() {
@@ -103,9 +91,14 @@ export default {
         }
       });
     },
-    catchStationOverviewClick(){
-      this.showHomeScreen = false;
+    catchOverviewClick() {
+      // click from the landingPage is a toggle
+      this.showOverview = !this.showOverview;
+    },
+    catchNavigationOverviewClick() {
+      // click from the navigation is no toggle
       this.showOverview = true;
+      this.currentStation = null;
     },
     resetNavigationChoice(){
       this.navItems[0].active = false;
@@ -126,10 +119,6 @@ export default {
       }
       this.navItems[1].active = true;
     },
-    catchOverviewClick() {
-      this.showHomeScreen = false;
-      this.showOverview = true;
-    },    
     mapStationClick(stationUrl){
       this.showHomeScreen = false;
       this.showOverview = false;
@@ -152,6 +141,8 @@ export default {
     listStationClick(stationName) {
       this.showHomeScreen = false;
       this.showOverview = false;
+
+      window.scrollTo(0, 0);
 
       this.changeCurrentStation(stationName);
     },
