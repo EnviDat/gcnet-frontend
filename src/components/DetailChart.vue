@@ -29,14 +29,14 @@
         </v-flex>
 
         <v-flex v-if="!chartIsLoading && !hasData"
-              pt-2 pb-1
-              class="display-1"
-              :style="`color: ${ $vuetify.theme.error };`" >
+                pt-2 pb-1
+                class="title"
+                :style="`color: ${ $vuetify.theme.error };`" >
           {{ noDataText }}
         </v-flex>
 
         <v-flex v-if="dataError"
-                class="display-1"
+                class="title"
                 :style="`color: ${ $vuetify.theme.error };`" >
           {{ dataError }}
         </v-flex>
@@ -145,7 +145,8 @@ export default {
         this.createChart(response.data);
       })
       .catch(error => {
-        console.log('There was an error:' + error.response.statusText + ' url: ' + error.request.responseURL);
+        this.chartIsLoading = false;
+        this.dataError = `Error creating chart: ${error}`;
       })
     },
     createChart(records){
@@ -156,19 +157,13 @@ export default {
       };
     
        try {
-
-        // if (!this.detailChart) {
           this.detailChart = createLineChart(this.chartId, 'timestamp', records, this.graphs,
                                       !this.chartId.includes('_v'), undefined, undefined, dateFormatingInfos,
                                        undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
                                        this.chartDone, this.chartError);
-        // } else {
-        //   this.detailChart.data = this.records;
-        //   this.detailChart.invalidateRawData();
-        // }
-
       } catch (error) {
-        console.log(`Error creating the weather chart: ${error}`);
+        this.chartIsLoading = false;
+        this.dataError = `Error creating chart: ${error}`;
       }
     },
     chartError(error) {
@@ -206,11 +201,11 @@ export default {
     },
     clearChart(){
       if (this.detailChart) {
-        console.log('dispose via DetailChart');
+        // console.log('dispose via DetailChart');
         this.detailChart.dispose();
         // console.log('delete via DetailChart');
         this.detailChart = null;
-        delete this.detailChart;
+        // delete this.detailChart;
       }
     },
   },

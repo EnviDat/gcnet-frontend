@@ -23,10 +23,7 @@
                                 :color="recentIconColor"/>
             </v-flex>
 
-            <v-flex shrink>
-              {{ graphs && graphs[0] ? graphs[0].title : '' }}
-            </v-flex>
-          </v-layout>
+            </v-layout>
         </v-flex>
 
         <v-flex v-if="chartIsLoading"
@@ -61,7 +58,7 @@
         <v-flex v-if="!dataError"
                 xs12 py-0
                 class="smallText">
-          {{ `${ chartIsLoading ? 'Loading' : 'Showing'} ${ loadRecentData ? 'recent data' : 'all data'}` }}
+          {{ `${ chartIsLoading ? 'Loading' : 'Showing'} ${ graphs && graphs[0] ? graphs[0].title : '' } of ${ loadRecentData ? 'recent data' : 'all data'}` }}
         </v-flex>
 
         <v-flex xs12 
@@ -75,11 +72,6 @@
                                             :outline="true"
                                             @click="showInfo = !showInfo;" />          
                 </v-flex>
-                <!-- <v-flex shrink
-                        px-0
-                        class="smallText">
-                  {{ showInfo ? 'Hide infos' : 'More infos' }}
-                </v-flex> -->
               </v-layout>
             </v-flex>
 
@@ -335,9 +327,11 @@ export default {
     },
     clearChart(){
       if (this.microChart) {
-        // console.log( this.microChartId + ' cleared id ' + this.microChart.id);
+        // console.log('dispose via MicroChart');
         this.microChart.dispose();
+        // console.log('delete via MicroChart');
         this.microChart = null;
+        // delete this.microChart;
       }
     },
     loadJsonCharts(){
@@ -380,11 +374,10 @@ export default {
 
       if (this.loadRecentData ) {
         this.recentDataAvailable = false;
+
         if (this.fallback){
           this.loadRecentData = false;
           this.loadChart();
-        // } else {
-          // this.clearChart();
         }
       } else {
         this.alldataAvailable = false;
@@ -408,11 +401,10 @@ export default {
       } else {
         if (this.loadRecentData) {
           this.recentDataAvailable = false;
+
           if (this.fallback){
             this.loadRecentData = false;
             this.loadChart();
-          // } else {
-            // this.clearChart();
           }
         } else {
           this.alldataAvailable = false;
@@ -443,7 +435,7 @@ export default {
     showInfo: false,
     graphs: [],
     seriesSettings: {
-      lineStrokeWidth: 3,
+      lineStrokeWidth: 2,
       lineColor: '#8ACDCE',
     },    
     urlValueMapping: {},
