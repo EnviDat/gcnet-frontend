@@ -60,11 +60,12 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
         chart.data = chartData;
     }
 
-    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.dataFields.category = dateValueField;
     // dateAxis.renderer.minGridDistance = 40;
     dateAxis.renderer.minGridDistance = 90;
     dateAxis.groupData = groupData;
+    // dateAxis.groupCount = 50;
     
     dateAxis.renderer.inside = true;
     dateAxis.renderer.labels.template.dy = 10;
@@ -119,7 +120,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
 
     if (chartTitle) {
       // Create and format chart title
-      var title = chart.titles.create();
+      let title = chart.titles.create();
       title.contentAlign = 'left';
       title.fontSize = 30;
       title.marginBottom = 10;
@@ -272,6 +273,7 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
   //   console.log(chart.id + ' going to dispose');
   // });
 
+  let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
   dateAxis.baseInterval = {
     "timeUnit": "hour",
     "count": 1,
@@ -290,7 +292,7 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
     
     let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
-    var series = chart.series.push(new am4charts.LineSeries());
+    let series = chart.series.push(new am4charts.LineSeries());
 
     if (graph.dataUrl) {
       series.dataSource.url = graph.dataUrl;
