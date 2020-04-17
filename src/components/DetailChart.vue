@@ -1,57 +1,55 @@
 <template>
 
-  <v-fade-transition>
-    <v-card >
-      <v-container>
-        <v-layout column>
+  <v-card >
+    <v-container>
+      <v-layout column>
 
-          <v-flex pb-3>
-            <v-layout row wrap justify-space-between>
-              <v-flex shrink display-1>
-                {{ this.fileObject.chartTitle }}
-              </v-flex>
-              <v-flex shrink class="title">
-                {{ stationName }}
-              </v-flex>
-            </v-layout>            
-          </v-flex>
+        <v-flex pb-3>
+          <v-layout row wrap justify-space-between>
+            <v-flex shrink display-1>
+              {{ this.fileObject.chartTitle }}
+            </v-flex>
+            <v-flex shrink class="title">
+              {{ stationName }}
+            </v-flex>
+          </v-layout>            
+        </v-flex>
 
-          <v-flex v-if="chartIsLoading"
-                  class="chart"
-                  py-0 >
-            <v-layout row wrap fill-height justify-center align-center>
-              <v-flex shrink>
-                <v-progress-circular :size="50"
-                                      color="primary"
-                                      indeterminate />
-                
-              </v-flex>
-            </v-layout>
-          </v-flex>
+        <v-flex v-if="chartIsLoading"
+                class="chart"
+                py-0 >
+          <v-layout row wrap fill-height justify-center align-center>
+            <v-flex shrink>
+              <v-progress-circular :size="50"
+                                    color="primary"
+                                    indeterminate />
+              
+            </v-flex>
+          </v-layout>
+        </v-flex>
 
-          <v-flex v-if="!chartIsLoading && !hasData"
-                pt-2 pb-1
+        <v-flex v-if="!chartIsLoading && !hasData"
+              pt-2 pb-1
+              class="display-1"
+              :style="`color: ${ $vuetify.theme.error };`" >
+          {{ noDataText }}
+        </v-flex>
+
+        <v-flex v-if="dataError"
                 class="display-1"
                 :style="`color: ${ $vuetify.theme.error };`" >
-            {{ noDataText }}
-          </v-flex>
+          {{ dataError }}
+        </v-flex>
 
-          <v-flex v-if="dataError"
-                  class="display-1"
-                  :style="`color: ${ $vuetify.theme.error };`" >
-            {{ dataError }}
-          </v-flex>
+        <v-flex v-show="!chartIsLoading && hasData" >
+          <div class='chart' :id="chartId" >
+          </div>            
+        </v-flex>
 
-          <v-flex v-show="!chartIsLoading && hasData" >
-            <div class='chart' :id="chartId" >
-            </div>            
-          </v-flex>
+      </v-layout>
+    </v-container>
 
-        </v-layout>
-      </v-container>
-
-    </v-card>
-  </v-fade-transition>
+  </v-card>
 
 </template>
 
@@ -62,6 +60,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 //import * as bullets from "@amcharts/amcharts4/plugins/bullets";
 
 export default {
+  name: 'DetailChart',
   props: {
     url: String,
     stationName: String,
@@ -118,7 +117,7 @@ export default {
         "bulletRadius": this.seriesSettings.bulletsRadius,
         "title": infoObj.titleString,
         "valueField": infoObj.parameter,
-        "hideBulletsCount": 10,
+        "hideBulletsCount": 20,
       };
     },
     loadChart() {
