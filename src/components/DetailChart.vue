@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import { createLineChart } from "../chartData/charts";
 import * as am4core from "@amcharts/amcharts4/core";
 //import * as bullets from "@amcharts/amcharts4/plugins/bullets";
@@ -122,12 +122,13 @@ export default {
     },
     buildGraph(infoObj){
       return {
-        "lineColor": infoObj.color,
-        "bullet": new am4core.Circle(),
-        "bulletRadius": this.seriesSettings.bulletsRadius,
-        "title": infoObj.titleString,
-        "valueField": infoObj.parameter,
-        "hideBulletsCount": 20,
+        lineColor: infoObj.color,
+        bullet: new am4core.Circle(),
+        bulletRadius: this.seriesSettings.bulletsRadius,
+        title: infoObj.titleString,
+        valueField: infoObj.parameter,
+        hideBulletsCount: 20,
+        dataUrl: this.url,
       };
     },
     loadChart() {
@@ -139,23 +140,25 @@ export default {
 
       this.buildGraphs();
 
+      this.createChart();
+
       // clear and then new loading on the next tick is needed for the disposing to finish
       // this.$nextTick( () => {
-        this.loadJsonFiles();
+        // this.loadJsonFiles();
       // });
     },
-    loadJsonFiles(){
-      axios
-      .get(this.url)
-      .then(response => {
-        // createChart() gets called due to the watch on the records
-        this.records = response.data;
-      })
-      .catch(error => {
-        this.chartIsLoading = false;
-        this.dataError = `Error creating chart: ${error}`;
-      })
-    },
+    // loadJsonFiles(){
+    //   axios
+    //   .get(this.url)
+    //   .then(response => {
+    //     // createChart() gets called due to the watch on the records
+    //     this.records = response.data;
+    //   })
+    //   .catch(error => {
+    //     this.chartIsLoading = false;
+    //     this.dataError = `Error creating chart: ${error}`;
+    //   })
+    // },
     createChart(){
       const dateFormatingInfos = {
         dateFormat: this.dateFormat,
@@ -164,7 +167,7 @@ export default {
       };
     
        try {
-          this.detailChart = createLineChart(this.chartId, 'timestamp', this.records, this.graphs,
+          this.detailChart = createLineChart(this.chartId, 'timestamp', undefined, this.graphs,
                                       !this.chartId.includes('_v'), undefined, undefined, dateFormatingInfos,
                                        undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
                                        this.chartDone, this.chartError);

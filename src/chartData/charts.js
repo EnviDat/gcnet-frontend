@@ -46,16 +46,16 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     // chart._uid = selector;
     chart.padding(0, 0, 0, 0);
 
-    chart.events.on('error', errorCallback);
-    chart.events.on('ready', doneCallback);
-  
-    // chart.events.on('beforedisposed', () => {
-    //   console.log(chart._uid + ' going to dispose');
-    // });
 
     // chart.hiddenState.properties.opacity = 0;
   
     if (chartData) {
+      chart.events.on('error', errorCallback);
+      chart.events.on('ready', doneCallback);
+
+      // chart.events.on('beforedisposed', () => {
+      //   console.log(chart._uid + ' going to dispose');
+      // });
         // chartData is optional, to be able to give the series directly a datasource
         chart.data = chartData;
     }
@@ -92,7 +92,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     // Display month and date
      dateAxis.periodChangeDateFormats.setKey("hour", "[bold]MMM dd[/]");
 
-    if (chartData.length > 350){
+    if (chartData && chartData.length > 350){
       dateAxis.baseInterval = {
         "timeUnit": "day",
         "count": 1,
@@ -149,7 +149,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     for (let i = 0; i < graphs.length; i++) {
       const graph = graphs[i];
         
-      chart = addGraphToChart(chart, graph, dateAxis, dateValueField, i, scrollbarX, seriesSettings, valueAxisY);
+      chart = addGraphToChart(chart, graph, dateAxis, dateValueField, i, scrollbarX, seriesSettings, valueAxisY, doneCallback, errorCallback);
 
       if (i <= 0) {
         scrollbarX.scrollbarChart.xAxes.values[i].renderer.labels.template.inside = false;
@@ -169,7 +169,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
 
 
 // function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings) {
-function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings, valueAxisY) {
+function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings, valueAxisY, doneCallback, errorCallback) {
 
     // let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
@@ -189,18 +189,14 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
     series.hidden = graph.hidden ? graph.hidden : false;
 
     if (graph.dataUrl) {
-        series.dataSource.url = graph.dataUrl;
+      series.dataSource.url = graph.dataUrl;
 
-        // series.dataSource.events.on('error', (err) => {
-        //     console.log(`${graph.title} got an error: ${err}`);
-        // });
+      series.dataSource.events.on('parseerror', errorCallback);
+      series.dataSource.events.on('error', errorCallback);
+      series.dataSource.events.on('done', doneCallback);
 
-        // series.dataSource.events.on('done', () => {
-        //     console.log(`${graph.title} finished loading`);
-        // });
-
-        series.dataSource.reloadFrequency = seriesSettings.reloadFrequency;
-        series.dataSource.updateCurrentData = true;
+      // series.dataSource.reloadFrequency = seriesSettings.reloadFrequency;
+      series.dataSource.updateCurrentData = false;
     }
 
     // Assign tooltip to series color
@@ -301,8 +297,8 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
       series.dataSource.events.on('error', errorCallback);
       series.dataSource.events.on('done', doneCallback);
 
-      series.dataSource.reloadFrequency = seriesSettings.reloadFrequency;
-      series.dataSource.updateCurrentData = true;
+      // series.dataSource.reloadFrequency = seriesSettings.reloadFrequency;
+      series.dataSource.updateCurrentData = false;
     }  
 
     series.tooltipText = "[bold]{valueY}\n[/]{dateX.formatDate('dd-MM-yyyy HH:mm')}";
