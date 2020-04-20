@@ -7,7 +7,7 @@
     <v-layout row wrap >
 
       <v-flex>
-        <v-layout column >
+          <v-layout column >
 
           <v-flex  v-for="(fileObject, index) in generateFileList" :key="fileObject.fileName">
               <DetailChart :url="baseUrl + fileObject.fileName"
@@ -43,6 +43,8 @@ export default {
     am4core.unuseAllThemes();
     // console.log('disposeAllCharts via DetailPage');
     // am4core.disposeAllCharts();
+    // TODO test for memory leak reduction
+    this.detailChart.destroy();
   },
   data: () => ({
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',

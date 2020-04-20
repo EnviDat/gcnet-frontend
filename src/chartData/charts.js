@@ -22,7 +22,9 @@ const defaultSeriesSettings = {
 const defaultOptions = {
   queue: true,
   onlyShowOnViewport: true,
-  minPolylineStep: 5,
+  // Test
+  //minPolylineStep: 5,
+  minPolylineStep: 15,
 }
 
 const defaultFormatingInfos = {
@@ -34,12 +36,17 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
                                                   options = defaultOptions, seriesSettings = defaultSeriesSettings,
                                                   dateFormatingInfos = defaultFormatingInfos,
                                                   chartTitle, chartNumberFormat, dateFormatTime,
+                                                  chartUrl, // Test with direct data loading
                                                   doneCallback, errorCallback)
 {
     am4core.useTheme(amchartsDefaultTheme);
     // am4core.options.queue = options.queue;
     am4core.options.onlyShowOnViewport = options.onlyShowOnViewport;
     am4core.options.minPolylineStep = options.minPolylineStep;
+
+    // TODO test optimization code
+    //am4core.options.queue = true;
+    am4core.options.onlyShowOnViewport = true;
 
     let chart = am4core.create(selector, am4charts.XYChart);
     // chart.id = selector;
@@ -54,11 +61,15 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     // });
 
     // chart.hiddenState.properties.opacity = 0;
-  
-    if (chartData) {
-        // chartData is optional, to be able to give the series directly a datasource
-        chart.data = chartData;
-    }
+
+    // // TODO Test commenting out
+    // if (chartData) {
+    //     // chartData is optional, to be able to give the series directly a datasource
+    //     chart.data = chartData;
+    // }
+
+    // TODO test directly assigning dataSource to json url
+    chart.dataSource.url = chartUrl;
 
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.dataFields.category = dateValueField;
@@ -149,7 +160,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     for (let i = 0; i < graphs.length; i++) {
       const graph = graphs[i];
         
-      chart = addGraphToChart(chart, graph, dateAxis, dateValueField, i, scrollbarX, seriesSettings, valueAxisY);
+      chart = addGraphToChart(chart, graph, dateAxis, dateValueField, i, scrollbarX, seriesSettings, valueAxisY, chart.dataSource.url);
 
       if (i <= 0) {
         scrollbarX.scrollbarChart.xAxes.values[i].renderer.labels.template.inside = false;
@@ -169,7 +180,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
 
 
 // function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings) {
-function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings, valueAxisY) {
+function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings, valueAxisY, chartURL) {
 
     // let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
@@ -189,20 +200,23 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
     //series.name = graph.title;
     series.hidden = graph.hidden ? graph.hidden : false;
 
-    if (graph.dataUrl) {
-        series.dataSource.url = graph.dataUrl;
+    // if (graph.dataUrl) {
+    //     series.dataSource.url = graph.dataUrl;
+    //
+    //     // series.dataSource.events.on('error', (err) => {
+    //     //     console.log(`${graph.title} got an error: ${err}`);
+    //     // });
+    //
+    //     // series.dataSource.events.on('done', () => {
+    //     //     console.log(`${graph.title} finished loading`);
+    //     // });
+    //
+    //     series.dataSource.reloadFrequency = seriesSettings.reloadFrequency;
+    //     series.dataSource.updateCurrentData = true;
+    // }
 
-        // series.dataSource.events.on('error', (err) => {
-        //     console.log(`${graph.title} got an error: ${err}`);
-        // });
-
-        // series.dataSource.events.on('done', () => {
-        //     console.log(`${graph.title} finished loading`);
-        // });
-
-        series.dataSource.reloadFrequency = seriesSettings.reloadFrequency;
-        series.dataSource.updateCurrentData = true;
-    }
+    // TODO test directly assigning series dataSource
+    series.dataSource.url = chartURL;
 
     // Assign tooltip to series color
     series.tooltip.getFillFromObject = false;

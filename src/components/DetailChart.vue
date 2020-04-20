@@ -167,6 +167,7 @@ export default {
           this.detailChart = createLineChart(this.chartId, 'timestamp', this.records, this.graphs,
                                       !this.chartId.includes('_v'), undefined, undefined, dateFormatingInfos,
                                        undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
+                                       this.url, // Test with direct data loading
                                        this.chartDone, this.chartError);
       } catch (error) {
         this.chartIsLoading = false;
@@ -208,9 +209,9 @@ export default {
     },
     clearChart(){
       if (this.detailChart) {
-        // console.log('dispose via DetailChart');
+         //console.log('dispose via DetailChart');
         this.detailChart.dispose();
-        // console.log('delete via DetailChart');
+     //    console.log('delete via DetailChart');
         // this.detailChart = null;
         // delete this.detailChart;
       }
