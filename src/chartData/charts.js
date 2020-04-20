@@ -185,7 +185,8 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
     // valueAxis.extraMax = 0.1;
 
     let series = new am4charts.LineSeries();
-    series.name = graph.title;
+    // TODO Test commenting out line below
+    //series.name = graph.title;
     series.hidden = graph.hidden ? graph.hidden : false;
 
     if (graph.dataUrl) {
@@ -216,6 +217,9 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
 
     // Assign tooltipText
     series.tooltipText = "{dateX}\n{name}: [bold] {valueY}";
+
+    // TODO test if this fixed legend in production version
+    series.legendSettings.labelText = graph.title;
 
     series.autoGapCount = seriesSettings.lineAutoGap;
     series.connect = seriesSettings.lineConncet;

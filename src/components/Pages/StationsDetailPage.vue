@@ -38,7 +38,6 @@ export default {
   },
   components: {
     DetailChart,
-   // DetailChartTest
   },
   beforeDestroy(){
     am4core.unuseAllThemes();
