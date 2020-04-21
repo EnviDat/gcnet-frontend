@@ -13,7 +13,7 @@ const defaultSeriesSettings = {
   lineConnect: false,
   bulletsStrokeWidth: 2,
   bulletsRadius: 3,
-  bulletFill: 'black',
+  bulletFill: '#FFFFFF',
   bulletsfillOpacity: 1,
   bulletsStrokeOpacity: 1,
   reloadFrequency: 0,
@@ -24,12 +24,14 @@ const defaultOptions = {
   onlyShowOnViewport: true,
   // Test
   //minPolylineStep: 5,
-  minPolylineStep: 15,
+  minPolylineStep: 10,
 }
 
 const defaultFormatingInfos = {
   dateFormat: '',
   inputFormat: null,
+  chartLightColor: '#FFFFFF',
+  chartDarkColor: '#313131',
 }
 
 const createLineChart = function createLineChart(selector, dateValueField, chartData, graphs, groupData,
@@ -40,13 +42,9 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
                                                   doneCallback, errorCallback)
 {
     am4core.useTheme(amchartsDefaultTheme);
-    // am4core.options.queue = options.queue;
-    am4core.options.onlyShowOnViewport = options.onlyShowOnViewport;
+    am4core.options.queue = options.queue;
+    //am4core.options.onlyShowOnViewport = options.onlyShowOnViewport;
     am4core.options.minPolylineStep = options.minPolylineStep;
-
-    // TODO test optimization code
-    //am4core.options.queue = true;
-    am4core.options.onlyShowOnViewport = true;
 
     let chart = am4core.create(selector, am4charts.XYChart);
     // chart.id = selector;
@@ -75,8 +73,10 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     dateAxis.dataFields.category = dateValueField;
     // dateAxis.renderer.minGridDistance = 40;
     dateAxis.renderer.minGridDistance = 60;
-    dateAxis.groupData = groupData;
-    // dateAxis.groupCount = 50;
+    // TODO text commenting out line below
+    //dateAxis.groupData = groupData;
+    //dateAxis.groupCount = 200;
+    dateAxis.groupData = true;
     
     dateAxis.renderer.inside = true;
     dateAxis.renderer.labels.template.dy = 10;
@@ -85,6 +85,12 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     // dateAxis.renderer.labels.template.verticalCenter = "middle";
     // dateAxis.renderer.labels.template.horizontalCenter = "right";
     dateAxis.renderer.grid.template.strokeDasharray = "6";
+    dateAxis.renderer.grid.template.stroke = defaultFormatingInfos.chartLightColor;
+ //   dateAxis.renderer.grid.zIndex = 10;
+
+    // Assign dateAxis color to white
+     dateAxis.renderer.labels.template.fill = defaultFormatingInfos.chartLightColor;
+     dateAxis.background.fill = defaultFormatingInfos.chartLightColor;
 
     // If dateFormatTime in fileObject is false format date without time, else format date with time
     if (dateFormatTime === false) {
@@ -121,12 +127,15 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     // chart.legend.position = 'absolute';
     // chart.legend.dy = -30;
     chart.paddingTop = 0;
+    chart.legend.labels.template.fill = defaultFormatingInfos.chartLightColor;
 
     // Set legend location
     chart.legend.position = 'top';
     chart.legend.contentAlign = 'center';
 
     chart.cursor = new am4charts.XYCursor();
+    chart.cursor.lineX.stroke = defaultFormatingInfos.chartLightColor;
+    chart.cursor.lineY.stroke =defaultFormatingInfos.chartLightColor;
     chart.responsive.enabled = true;
 
     if (chartTitle) {
@@ -148,12 +157,18 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     const valueAxisY = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxisY.renderer.minGridDistance = 30;
 
-    // Assign valueAxis color to black
-    valueAxisY.renderer.labels.template.fill = am4core.color('#313131');
+    // Assign background color to black
+    chart.background.fill = defaultFormatingInfos.chartDarkColor;
+    chart.background.opacity = 0.8;
+
+     // Assign valueAxis color to white
+    valueAxisY.renderer.labels.template.fill = defaultFormatingInfos.chartLightColor;
     valueAxisY.renderer.minWidth = 30;
 
     valueAxisY.extraMin = 0.1;
     valueAxisY.extraMax = 0.1;
+
+    valueAxisY.renderer.grid.template.stroke = defaultFormatingInfos.chartLightColor;
 
     const scrollbarX = new am4charts.XYChartScrollbar();
   
@@ -230,7 +245,7 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
     series.minBulletDistance = graph.hideBulletsCount;
 
     // Assign tooltipText
-    series.tooltipText = "{dateX}\n{name}: [bold] {valueY}";
+    series.tooltipText = "{dateX}\n{legendSettings.labelText}: [bold] {valueY}";
 
     // TODO test if this fixed legend in production version
     series.legendSettings.labelText = graph.title;

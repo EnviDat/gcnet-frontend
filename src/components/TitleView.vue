@@ -45,7 +45,7 @@
               <v-flex xs8 lg9 pl-5
                       hidden-md-and-down
                       class="envidatTitle display-4"
-                      style="font-size: 100px !important;"
+                      style="font-size: 77px !important;"
                       >
                 {{ title }}
               </v-flex>

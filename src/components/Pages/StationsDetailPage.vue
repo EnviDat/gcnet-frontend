@@ -1,7 +1,8 @@
 <template>
   <v-container fluid
                 fill-height
-                :class="$vuetify.breakpoint.mdAndDown ? 'px-1 py-1' : 'px-4 py-4'" >
+                :class="$vuetify.breakpoint.mdAndDown ? 'px-1 py-1' : 'px-4 py-4'"
+                outlined >
 
 
     <v-layout row wrap >
@@ -41,33 +42,34 @@ export default {
   },
   beforeDestroy(){
     am4core.unuseAllThemes();
-    // console.log('disposeAllCharts via DetailPage');
-    // am4core.disposeAllCharts();
+   // console.log('disposeAllCharts via DetailPage');
+    am4core.disposeAllCharts();
     // TODO test for memory leak reduction
-    this.detailChart.destroy();
-    delete this.detailChart;
+    this.DetailChart.dispose();
+    //this.detailChart.destroy();
+   // delete this.detailChart;
   },
   data: () => ({
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',
     baseStationURLTestdata: './testdata/',
     loadingStation: false,
     fileObjects: [
-      { fileName: 'temp_v.json', chartTitle: 'Air Temperatures Recent Days', numberFormat: '##  °C', dateFormatTime: true },
-      { fileName: 'temp.json', chartTitle: 'Air Temperatures Historical Data', numberFormat: '##  °C', dateFormatTime: false },
-      { fileName: 'rh_v.json', chartTitle: 'Relative Humidity Recent Days', numberFormat: '##  %', dateFormatTime: true },
-      { fileName: 'rh.json', chartTitle: 'Relative Humidity Historical Data', numberFormat: '##  %', dateFormatTime: false },
-      { fileName: 'rad_v.json', chartTitle: 'Radiation Recent Days', numberFormat: '###  W/m²', dateFormatTime: true },
-      { fileName: 'rad.json', chartTitle: 'Radiation Historical Data', numberFormat: '###  W/m²', dateFormatTime: false },
-      { fileName: 'sheight_v.json', chartTitle: 'Snow Heights Recent Days', numberFormat: '#.#  m', dateFormatTime: true },
-      { fileName: 'sheight.json', chartTitle: 'Snow Heights Historical Data', numberFormat: '#.#  m', dateFormatTime: false },
-      { fileName: 'ws_v.json', chartTitle: 'Wind Speed Recent Days', numberFormat: '###  m/s', dateFormatTime: true },
-      { fileName: 'ws.json', chartTitle: 'Wind Speed Historical Data', numberFormat: '###  m/s', dateFormatTime: false },
-      { fileName: 'wd_v.json', chartTitle: 'Wind Direction Recent Days', numberFormat: '###  °', dateFormatTime: true },
-      { fileName: 'wd.json', chartTitle: 'Wind Direction Historical Data', numberFormat: '###  °', dateFormatTime: false },
-      { fileName: 'press_v.json', chartTitle: 'Air Pressure Recent Days', numberFormat: '###  mbar', dateFormatTime: true },
-      { fileName: 'press.json', chartTitle: 'Air Pressure Historical Data', numberFormat: '###  mbar', dateFormatTime: false },
-      { fileName: 'battvolt_v.json', chartTitle: 'Battery Voltage Recent Days', numberFormat: '## V', dateFormatTime: true },
-      { fileName: 'battvolt.json', chartTitle: 'Battery Voltage Historical Data', numberFormat: '## V', dateFormatTime: false },
+      //{ fileName: 'temp_v.json', chartTitle: 'Air Temperatures Recent Days', numberFormat: '##  °C', dateFormatTime: true },
+      { fileName: 'temp.json', chartTitle: 'Air Temperatures', numberFormat: '##  °C', dateFormatTime: false },
+      //{ fileName: 'rh_v.json', chartTitle: 'Relative Humidity Recent Days', numberFormat: '##  %', dateFormatTime: true },
+      { fileName: 'rh.json', chartTitle: 'Relative Humidity', numberFormat: '##  %', dateFormatTime: false },
+      //{ fileName: 'rad_v.json', chartTitle: 'Radiation Recent Days', numberFormat: '###  W/m²', dateFormatTime: true },
+      { fileName: 'rad.json', chartTitle: 'Radiation', numberFormat: '###  W/m²', dateFormatTime: false },
+      //{ fileName: 'sheight_v.json', chartTitle: 'Snow Heights Recent Days', numberFormat: '#.#  m', dateFormatTime: true },
+      { fileName: 'sheight.json', chartTitle: 'Snow Heights', numberFormat: '#.#  m', dateFormatTime: false },
+      //{ fileName: 'ws_v.json', chartTitle: 'Wind Speed Recent Days', numberFormat: '###  m/s', dateFormatTime: true },
+      { fileName: 'ws.json', chartTitle: 'Wind Speed', numberFormat: '###  m/s', dateFormatTime: false },
+     // { fileName: 'wd_v.json', chartTitle: 'Wind Direction Recent Days', numberFormat: '###  °', dateFormatTime: true },
+     // { fileName: 'wd.json', chartTitle: 'Wind Direction Historical Data', numberFormat: '###  °', dateFormatTime: false },
+      //{ fileName: 'press_v.json', chartTitle: 'Air Pressure Recent Days', numberFormat: '###  mbar', dateFormatTime: true },
+      { fileName: 'press.json', chartTitle: 'Air Pressure', numberFormat: '###  mbar', dateFormatTime: false },
+     // { fileName: 'battvolt_v.json', chartTitle: 'Battery Voltage Recent Days', numberFormat: '## V', dateFormatTime: true },
+      { fileName: 'battvolt.json', chartTitle: 'Battery Voltage', numberFormat: '## V', dateFormatTime: false },
     ],
   }),
   computed: {

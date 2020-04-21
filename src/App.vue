@@ -2,6 +2,7 @@
   <v-app class="application" :style="dynamicBackground()">
 
     <v-content app >
+
       <landing-page v-if="!currentStation"
                     :showHomeScreen="showHomeScreen"
                     :showOverview="showOverview"
