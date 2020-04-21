@@ -211,12 +211,17 @@ export default {
       if (this.detailChart) {
          //console.log('dispose via DetailChart');
         this.detailChart.dispose();
+      //  this.detailChart.destroy();
      //    console.log('delete via DetailChart');
         // this.detailChart = null;
-        // delete this.detailChart;
+        //delete this.detailChart;
       }
+      // TODO test commenting out the line below
+      //this.records = [];
+      this.records = null;
 
-      this.records = [];
+       // Test
+      this.ISObserver.disconnect();
     },
   },
   data()  {

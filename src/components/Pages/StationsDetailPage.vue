@@ -45,6 +45,7 @@ export default {
     // am4core.disposeAllCharts();
     // TODO test for memory leak reduction
     this.detailChart.destroy();
+    delete this.detailChart;
   },
   data: () => ({
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',
