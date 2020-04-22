@@ -236,6 +236,7 @@ export default {
 
   },
   beforeDestroy() {
+    console.log('MicroChart: beforeDestroy method ' + this.microChartId);
     this.clearChart();
   },
   computed: {
@@ -268,9 +269,9 @@ export default {
       this.buildGraphs();
 
       // clear and then new loading on the next tick is needed for the disposing to finish
-      // this.$nextTick( () => {
+      this.$nextTick( () => {
         this.loadJsonCharts();
-      // });
+      });
     },
     getUrlValueMapping(loadRecentData){
       const urlValueMapping = {};
@@ -332,7 +333,7 @@ export default {
         // console.log('dispose via MicroChart');
         this.microChart.dispose();
         // console.log('delete via MicroChart');
-        // this.microChart = null;
+        this.microChart = null;
         // delete this.microChart;
       }
     },

@@ -42,16 +42,16 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     am4core.options.minPolylineStep = options.minPolylineStep;
 
     let chart = am4core.create(selector, am4charts.XYChart);
-    // chart.id = selector;
+    chart.id = selector;
     // chart._uid = selector;
     chart.padding(0, 0, 0, 0);
 
     chart.events.on('error', errorCallback);
     chart.events.on('ready', doneCallback);
   
-    // chart.events.on('beforedisposed', () => {
-    //   console.log(chart._uid + ' going to dispose');
-    // });
+    chart.events.on('beforedisposed', () => {
+      console.log('beforedisposed event on ' + chart.id);
+    });
 
     // chart.hiddenState.properties.opacity = 0;
   
@@ -149,7 +149,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     for (let i = 0; i < graphs.length; i++) {
       const graph = graphs[i];
         
-      chart = addGraphToChart(chart, graph, dateAxis, dateValueField, i, scrollbarX, seriesSettings, valueAxisY);
+      chart = addGraphToChart(chart, graph, dateAxis, dateValueField, scrollbarX, seriesSettings, valueAxisY);
 
       if (i <= 0) {
         scrollbarX.scrollbarChart.xAxes.values[i].renderer.labels.template.inside = false;
@@ -168,24 +168,11 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
 }
 
 
-// function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings) {
-function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollbarX, seriesSettings, valueAxisY) {
-
-    // let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
-    // valueAxis.renderer.opposite = count % 2 == 0;
-    // valueAxis.renderer.minGridDistance = 30;
-    //
-    // // valueAxis.renderer.labels.template.stroke = am4core.color(graph.lineColor);
-    // valueAxis.renderer.labels.template.fill = am4core.color(graph.lineColor);
-    // valueAxis.renderer.minWidth = 30;
-    // // valueAxis.renderer.grid.template.stroke = am4core.color(graph.lineColor);
-    //
-    // valueAxis.extraMin = 0.1;
-    // valueAxis.extraMax = 0.1;
+function addGraphToChart(chart, graph, dateAxis, dateValueField, scrollbarX, seriesSettings, valueAxisY) {
 
     let series = new am4charts.LineSeries();
     series.name = graph.title;
+    series.legendSettings.title = graph.title;
     series.hidden = graph.hidden ? graph.hidden : false;
 
     if (graph.dataUrl) {
@@ -224,8 +211,6 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, count, scrollba
     series.strokeOpacity = seriesSettings.lineOpacity;
 
     let bullet = graph.bullet;
-    // let bullet = new am4core.Circle();
-  // let bullet = new am4core.Rectangle();
     bullet.width = graph.bulletRadius;
     bullet.height = graph.bulletRadius;
     bullet.radius = graph.bulletRadius;
@@ -266,12 +251,12 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
   am4core.options.minPolylineStep = 2;
 
   let chart = am4core.create(selector, am4charts.XYChart);
-  // chart.id = selector;
+  chart.id = selector;
   // chart._uid = selector;
 
-  // chart.events.on('beforedisposed', () => {
-  //   console.log(chart.id + ' going to dispose');
-  // });
+  chart.events.on('beforedisposed', () => {
+    console.log('beforedisposed event on ' + chart.id);
+  });
 
   let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
   dateAxis.baseInterval = {
@@ -287,11 +272,11 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
     chart.dateFormatter.inputDateFormat = dateFormatingInfos.inputFormat;
   }
 
+  let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
   for (let i = 0; i < graphs.length; i++) {
     const graph = graphs[i];
     
-    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
     let series = chart.series.push(new am4charts.LineSeries());
 
     if (graph.dataUrl) {
