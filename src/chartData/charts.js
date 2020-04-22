@@ -49,9 +49,9 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     chart.events.on('error', errorCallback);
     chart.events.on('ready', doneCallback);
   
-    chart.events.on('beforedisposed', () => {
-      console.log('beforedisposed event on ' + chart.id);
-    });
+    // chart.events.on('beforedisposed', () => {
+    //   console.log('beforedisposed event on ' + chart.id);
+    // });
 
     // chart.hiddenState.properties.opacity = 0;
   
@@ -254,9 +254,9 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
   chart.id = selector;
   // chart._uid = selector;
 
-  chart.events.on('beforedisposed', () => {
-    console.log('beforedisposed event on ' + chart.id);
-  });
+  // chart.events.on('beforedisposed', () => {
+  //   console.log('beforedisposed event on ' + chart.id);
+  // });
 
   let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
   dateAxis.baseInterval = {

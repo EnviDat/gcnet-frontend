@@ -235,7 +235,7 @@ export default {
     // console.log("visible " + that.station.name + ' ' + that.visible);
   },
   beforeDestroy() {
-    console.log('MicroChart: beforeDestroy method ' + this.microChartId);
+    // console.log('MicroChart: beforeDestroy method ' + this.microChartId);
     this.clearChart();
   },
   computed: {

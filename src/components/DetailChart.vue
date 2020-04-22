@@ -86,7 +86,7 @@ export default {
     // // console.log("visible " + that.chartId + ' ' + that.visible);
   },
   beforeDestroy() {
-    console.log('DetailChart: beforeDestroy method ' + this.chartId);
+    // console.log('DetailChart: beforeDestroy method ' + this.chartId);
     this.clearChart();
   },
   computed: {
