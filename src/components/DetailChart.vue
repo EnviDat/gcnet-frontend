@@ -86,6 +86,7 @@ export default {
     // // console.log("visible " + that.chartId + ' ' + that.visible);
   },
   beforeDestroy() {
+    console.log('DetailChart: beforeDestroy method ' + this.chartId);
     this.clearChart();
   },
   computed: {
@@ -140,9 +141,9 @@ export default {
       this.buildGraphs();
 
       // clear and then new loading on the next tick is needed for the disposing to finish
-      // this.$nextTick( () => {
+      this.$nextTick( () => {
         this.loadJsonFiles();
-      // });
+      });
     },
     loadJsonFiles(){
       axios
@@ -211,7 +212,7 @@ export default {
         // console.log('dispose via DetailChart');
         this.detailChart.dispose();
         // console.log('delete via DetailChart');
-        // this.detailChart = null;
+        this.detailChart = null;
         // delete this.detailChart;
       }
 
