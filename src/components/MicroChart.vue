@@ -233,7 +233,6 @@ export default {
       that = null;
     }, this.delay);
     // console.log("visible " + that.station.name + ' ' + that.visible);
-
   },
   beforeDestroy() {
     console.log('MicroChart: beforeDestroy method ' + this.microChartId);

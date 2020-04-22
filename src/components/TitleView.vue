@@ -9,9 +9,9 @@
 
             <v-layout row align-center>
 
-              <v-flex xs4 lg3
+              <v-flex xs4 lg2
                       hidden-md-and-down >
-                <img style="width: 200px;"
+                <img style="width: 100px;"
                       :src="gcNetlogo"
                       :alt="alternativeText" >
               </v-flex>
@@ -42,7 +42,7 @@
                       :src="smLogo" :alt="alternativeText" >
               </v-flex> -->
 
-              <v-flex xs8 lg9 pl-5
+              <v-flex xs8 lg10
                       hidden-md-and-down
                       class="envidatTitle display-4"
                       style="font-size: 100px !important;"

@@ -21,7 +21,7 @@
 
         <v-flex xs12
                 pt-3
-                v-if="!showOverview">
+                >
           <p v-html="homeInfos.awsInfo"></p>
         </v-flex>
 
@@ -38,30 +38,6 @@
         <v-flex xs12
                 pt-3>
           <v-layout row wrap >
-            <!-- <v-flex>
-              <base-rectangle-button :buttonText="MapSelectionText"
-                                      materialIconName="map"
-                                      iconColor="white"
-                                      v-on:clicked="catchMapViewClick()"
-                                      />
-            </v-flex>
-
-            <v-flex>
-              <base-rectangle-button :buttonText="ListSelectionText"
-                                      materialIconName="list"
-                                      iconColor="white"
-                                      v-on:clicked="catchListViewClick()"
-                                    />
-            </v-flex> -->
-
-            <v-flex>
-              <base-rectangle-button :buttonText="showOverview ? 'Hide Stations Overview' : 'Show Stations Overview'"
-                                      materialIconName="dashboard"
-                                      iconColor="white"
-                                      v-on:clicked="catchOverviewClick"
-                                    />
-            </v-flex>
-
             <v-flex>
               <base-rectangle-button :buttonText="dataRequestText"
                                       materialIconName="save_alt"

@@ -193,11 +193,11 @@ export default {
       appBGImages: {},
       currentStation: null,
       showHomeScreen: true,
-      showOverview: false,
+      showOverview: true,
       version: process.env.VUE_APP_VERSION,
       drawerIsMini: true, // this.$vuetify.breakpoint.smAndDown ? true : false,
       navItems: [
-        { title: 'Greenland Map', icon: 'map', active: false },
+        { title: 'Greenland Map', icon: 'map', active: true },
         { title: 'Station List', icon: 'list', active: false },
         { title: 'Stations Overview', icon: 'dashboard', active: false },
       ],

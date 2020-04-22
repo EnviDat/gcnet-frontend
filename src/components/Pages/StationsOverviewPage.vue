@@ -3,7 +3,8 @@
                 fill-height
                 grid-list-md
                 pa-2
-                @click="anyClick">  
+                @click="anyClick"
+                v-if="visible" >  
 
     <v-layout row wrap >
 
@@ -19,11 +20,11 @@
 
           <v-flex v-for="(station, index) in stations"
                   :key="`${station.id}_${station.alias}`"
-                  xs2>
+                  xs4 md2>
             <micro-chart :station="station"
                           :JSONUrls="getJSONUrls(station)"
                           :fileValueMapping="fileValueMapping"
-                          :delay="index * 500"
+                          :delay="index * 300"
                           @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
           </v-flex>
           
@@ -51,6 +52,8 @@ export default {
     showMoreInfosText: 'More Information',
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',
     baseStationURLTestdata: './testdata/',
+    visible: false,
+    initialDelay: 1000,
     fileValueMapping: {
       // only use one single file and parameter for the microCharts
       'temp': ['AirT1'],
@@ -60,6 +63,14 @@ export default {
     stations(){
       return this.$store.getters.stations;
     }
+  },
+  mounted(){
+    let that = this;
+
+    setTimeout(() => {
+      that.visible = true;
+      that = null;
+    }, this.initialDelay);
   },
   beforeDestroy(){
     this.clearCharts();
