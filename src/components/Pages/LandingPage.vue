@@ -59,6 +59,7 @@
       </v-flex>
 
       <v-flex v-if="showOverview"
+              xs12
               pt-3>
         <stations-overview-page @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
       </v-flex>

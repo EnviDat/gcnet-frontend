@@ -3,12 +3,22 @@
                 fill-height
                 grid-list-md
                 pa-2
-                @click="anyClick"
-                v-if="visible" >  
+                @click="anyClick">  
 
     <v-layout row wrap >
 
-      <v-flex xs12 >
+      <v-flex v-if="!visible"
+              xs12>
+        <v-layout row wrap justify-center>
+          <v-flex shrink
+                  class="title">
+            Loading MicroCharts...
+          </v-flex>
+        </v-layout>
+      </v-flex>
+
+      <v-flex v-if="visible"
+              xs12 >
         <v-layout row wrap>
 
           <!-- <v-flex xs2>
@@ -53,7 +63,7 @@ export default {
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',
     baseStationURLTestdata: './testdata/',
     visible: false,
-    initialDelay: 1000,
+    initialDelay: 1500,
     fileValueMapping: {
       // only use one single file and parameter for the microCharts
       'temp': ['AirT1'],
