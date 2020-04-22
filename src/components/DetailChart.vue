@@ -1,6 +1,6 @@
 <template>
 
-  <v-card >
+  <v-card dark>
     <v-container fluid pa-3>
       <v-layout column>
 
