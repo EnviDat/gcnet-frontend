@@ -143,6 +143,17 @@
 		"data" : 1
 	},
 	{
+		"id" : 13,
+		"name" : "CP2",
+		"latitude" : "69.87968",
+		"longitude" : "46.98692",
+		"elevation" : 1990,
+		"startdate" : null,
+		"active" : false,
+		"alias" : "",
+		"data" : 0
+	},
+	{
 		"id" : 14,
 		"name" : "NGRIP",
 		"latitude" : "75.09975",
@@ -162,6 +173,39 @@
 		"startdate" : "1998.30",
 		"active" : false,
 		"alias" : "nasasoutheast",
+		"data" : 0
+	},
+	{
+		"id" : 16,
+		"name" : "KAR",
+		"latitude" : "69.69942",
+		"longitude" : "33.00058",
+		"elevation" : 2579,
+		"startdate" : null,
+		"active" : false,
+		"alias" : "",
+		"data" : 0
+	},
+	{
+		"id" : 17,
+		"name" : "JAR 2",
+		"latitude" : "69.42000",
+		"longitude" : "50.05750",
+		"elevation" : 568,
+		"startdate" : null,
+		"active" : false,
+		"alias" : "",
+		"data" : 0
+	},
+	{
+		"id" : 18,
+		"name" : "KULU",
+		"latitude" : "65.75845",
+		"longitude" : "39.60177",
+		"elevation" : 878,
+		"startdate" : null,
+		"active" : false,
+		"alias" : "",
 		"data" : 0
 	},
 	{
@@ -195,6 +239,39 @@
 		"startdate" : "2014",
 		"active" : true,
 		"alias" : "eastgrip",
+		"data" : 1
+	},
+	{
+		"id" : 30,
+		"name" : "LAR1",
+		"latitude" : "68.14111111",
+		"longitude" : "63.95194444",
+		"elevation" : 0,
+		"startdate" : "2008",
+		"active" : true,
+		"alias" : "lar1",
+		"data" : 1
+	},
+	{
+		"id" : 42,
+		"name" : "PE Gun",
+		"latitude" : "0",
+		"longitude" : "0",
+		"elevation" : 2346,
+		"startdate" : "2013",
+		"active" : true,
+		"alias" : "pegun",
+		"data" : 1
+	},
+	{
+		"id" : 43,
+		"name" : "PE Blu",
+		"latitude" : "0",
+		"longitude" : "0",
+		"elevation" : null,
+		"startdate" : "2014",
+		"active" : true,
+		"alias" : "peblu",
 		"data" : 1
 	}
 ]
