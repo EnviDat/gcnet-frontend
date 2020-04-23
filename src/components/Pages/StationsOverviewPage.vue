@@ -66,7 +66,7 @@ export default {
     initialDelay: 1500,
     fileValueMapping: {
       // only use one single file and parameter for the microCharts
-      'temp': ['AirT1'],
+      'temp': ['AirTC1'],
     },
   }),
   computed: {
