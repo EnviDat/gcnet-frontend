@@ -16,55 +16,29 @@
                       :alt="alternativeText" >
               </v-flex>
 
-              <!-- <v-flex xs4 lg3
-                      hidden-md-and-down >
-                <img style="width: 200px;"
-                      :src="lgLogo" :alt="alternativeText" >
-              </v-flex>
-
-              <v-flex hidden-sm-and-down hidden-lg-and-up
-                      xs3
-              >
-                <img 
-                      :src="mdLogo" :alt="alternativeText" >
-              </v-flex>
-
-              <v-flex hidden-xs-only hidden-md-and-up
-                      xs1
-              >
-                <img 
-                      :src="smLogo" :alt="alternativeText" >
-              </v-flex>
-
-              <v-flex xs3
-                      hidden-sm-and-up >
-                <img 
-                      :src="smLogo" :alt="alternativeText" >
-              </v-flex> -->
-
-              <v-flex xs8 lg10
+              <v-flex xs10 lg10
                       hidden-md-and-down
                       class="envidatTitle display-4"
-                      style="font-size: 100px !important;"
+                      style="font-size: 80px !important;"
                       >
                 {{ title }}
               </v-flex>
 
-              <v-flex xs8 pl-2
+              <v-flex xs12
                       hidden-sm-and-down hidden-lg-and-up 
                       class="envidatTitle display-3">
                 {{ title }}
               </v-flex>
 
-              <v-flex xs8 pl-2
+              <v-flex xs12
                       hidden-xs-only hidden-md-and-up
                       class="envidatTitle display-2">
                 {{ title }}
               </v-flex>
 
-              <v-flex xs9 
+              <v-flex xs12 
                       hidden-sm-and-up
-                      class="envidatTitle display-3">
+                      class="envidatTitle display-1">
                 {{ title }}
               </v-flex>
 

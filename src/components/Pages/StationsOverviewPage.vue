@@ -30,7 +30,7 @@
 
           <v-flex v-for="(station, index) in stations"
                   :key="`${station.id}_${station.alias}`"
-                  xs4 md2>
+                  xs12 md3 lg2>
             <micro-chart :station="station"
                           :JSONUrls="getJSONUrls(station)"
                           :fileValueMapping="fileValueMapping"
