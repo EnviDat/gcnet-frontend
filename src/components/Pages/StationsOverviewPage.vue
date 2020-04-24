@@ -7,8 +7,12 @@
 
     <v-layout row wrap >
 
+      <v-flex xs3>
+        <stations-map @mapClick="mapStationClick" />
+      </v-flex>
+
       <v-flex v-if="!visible"
-              xs12>
+              xs9>
         <v-layout row wrap justify-center>
           <v-flex shrink
                   class="title">
@@ -18,10 +22,10 @@
       </v-flex>
 
       <v-flex v-if="visible"
-              xs12 >
+              xs9 >
         <v-layout row wrap>
 
-          <!-- <v-flex xs2>
+          <!-- <v-flex xs12 md4 lg3>
             <micro-chart :station="stations[0]"
                           :JSONUrls="getJSONUrls(stations[0])"
                           :fileValueMapping="fileValueMapping"
@@ -30,7 +34,7 @@
 
           <v-flex v-for="(station, index) in stations"
                   :key="`${station.id}_${station.alias}`"
-                  xs12 md3 lg2>
+                  xs12 md4 lg3>
             <micro-chart :station="station"
                           :JSONUrls="getJSONUrls(station)"
                           :fileValueMapping="fileValueMapping"
@@ -46,6 +50,7 @@
 </template>
 
 <script>
+import StationsMap from '@/components/StationsMap';
 import MicroChart from '@/components/MicroChart.vue';
 import * as am4core from "@amcharts/amcharts4/core";
 am4core.options.queue = true;
@@ -56,6 +61,7 @@ export default {
   },
   components: {
     MicroChart,
+    StationsMap,
   },
   data: () => ({
     showMoreInfos: false,
@@ -90,6 +96,17 @@ export default {
       am4core.unuseAllThemes();
       // console.log('disposeAllCharts via OverviewPage');
       // am4core.disposeAllCharts();
+    },
+    mapStationClick(stationUrl){
+      const splits = stationUrl.split('/');
+
+      if (splits.length > 0) {
+        const stationName = splits[splits.length - 1];
+        this.changeCurrentStation(stationName);
+      }
+    },
+    changeCurrentStation(newStation){
+      this.$emit('mapClick', newStation);
     },
     anyClick(){
       this.$emit('anyClick');
