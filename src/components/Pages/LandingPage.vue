@@ -8,11 +8,11 @@
   
       <v-flex xs12 md8 offset-md2 >
 
-        <v-flex pb-3>
+        <!-- <v-flex pb-3>
           <title-view :title="homeInfos.title"
                       :slogan="showHomeScreen ? homeInfos.startText : ''"
                       />
-        </v-flex>
+        </v-flex> -->
 
         <!-- <v-flex xs12
                 pt-5>
@@ -72,7 +72,7 @@
 import StationsOverviewPage from '@/components/Pages/StationsOverviewPage';
 
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton.vue';
-import TitleView from '@/components/TitleView.vue';
+// import TitleView from '@/components/TitleView.vue';
 import homeInfos from '@/homeInfos';
 
 export default {
@@ -82,7 +82,7 @@ export default {
   },
   components: {
     BaseRectangleButton,
-    TitleView,
+    // TitleView,
     StationsOverviewPage,
   },
   data: () => ({

@@ -1,27 +1,39 @@
 <template>
     <v-toolbar
-        app
-        dense
         color="primary"
+        tabs
+        dense
         dark >
 
       <v-toolbar-side-icon><img style="width: 35px; height: 35px;" :src="gcNetlogo"></v-toolbar-side-icon>
 
-      <v-toolbar-title class="headline" style="font-weight: 300 !important;">{{ gcNetHomeText }} </v-toolbar-title>
+      <!-- <v-toolbar-title class="headline" style="font-weight: 300 !important;">
+        {{ gcNetHomeText }} 
+      </v-toolbar-title> -->
+      <div class="ml-3 headline" style="font-weight: 300 !important; width: 200px !important;">{{ gcNetHomeText }} </div>
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>search</v-icon>
-      </v-btn>
+      <!-- <v-toolbar-items centered> -->
+        
+        <v-tabs v-model="activeTab"
+                color="primary"
+                centered
+                slider-color="white" >
 
-      <v-btn icon>
-        <v-icon>favorite</v-icon>
-      </v-btn>
+          <v-tab v-for="(navItem, index) in navItems"
+                :key="index"
+                :href="`#tab-${index}`" >
+            <!-- {{ navItem.title }} -->
 
-      <v-btn icon>
-        <v-icon>more_vert</v-icon>
-      </v-btn>
+            <v-btn icon @click="$emit('navigationClick', navItem.pageName)">
+              <v-icon>{{ navItem.icon }}</v-icon>
+            </v-btn>
+
+          </v-tab>
+        </v-tabs>
+      <!-- </v-toolbar-items> -->
+
     </v-toolbar>
 </template>
 
@@ -48,11 +60,9 @@ export default {
     },
   },
   data: () => ({
-    drawer: true,
-    drawerIsMini: true,
-    right: null,
     gcNetlogo,
-    gcNetHomeText: 'GC-Net Data Portal'
+    gcNetHomeText: 'GC-Net',
+    activeTab: null,
   }),
 }
 </script>

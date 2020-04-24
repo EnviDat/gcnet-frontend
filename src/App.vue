@@ -1,7 +1,9 @@
 <template>
   <v-app class="application" :style="dynamicBackground()">
 
-    <the-toolbar :navItems="navItems" :version="version">
+    <the-toolbar :navItems="navItems"
+                  :version="version"
+                  @navigationClick="catchNavigationClick">
 
     </the-toolbar>
 
@@ -46,25 +48,6 @@
                             @mapClick="mapStationClick" />
     </v-content>
 
-    <!-- <the-navigation :mini="drawerIsMini"
-                    :navItems="navItems"
-                    :version="version"
-                    v-on:homeClick="catchHomeClick"
-                    v-on:drawerClick="catchDrawerClick"
-                    v-on:stationOverviewClick="catchNavigationOverviewClick">
-
-      <template v-slot:map>        
-        <stations-map :currentStation="currentStation"
-                      v-on:mapClick="mapStationClick" />          
-      </template>
-
-      <template v-slot:list>        
-        <stations-list :currentStation="currentStation"
-                        v-on:listClick="listStationClick" />
-      </template>
-
-    </the-navigation > -->
-
   </v-app>
 </template>
 
@@ -93,6 +76,9 @@ export default {
       this.appBGImages = imgCache;
   },
   methods: {
+    catchNavigationClick(pageName) {
+      console.log('naviagte to ' + pageName);      
+    },
     catchHomeClick() {
       this.showHomeScreen = true;
       this.showOverview = false;
@@ -218,11 +204,10 @@ export default {
       showHomeScreen: true,
       showOverview: true,
       version: process.env.VUE_APP_VERSION,
-      drawerIsMini: true, // this.$vuetify.breakpoint.smAndDown ? true : false,
       navItems: [
-        { title: 'Greenland Map', icon: 'map', active: true },
-        { title: 'Station List', icon: 'list', active: false },
-        { title: 'Stations Overview', icon: 'dashboard', active: false },
+        { title: 'Stations', toolTip: 'Shows the Stations overview', icon: 'dashboard', active: true, pageName: 'overview' },
+        { title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', active: true, pageName: 'request' },
+        { title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info', active: false , pageName: 'about'},
       ],
     }
   },
