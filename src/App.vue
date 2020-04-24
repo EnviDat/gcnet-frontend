@@ -1,6 +1,33 @@
 <template>
   <v-app class="application" :style="dynamicBackground()">
 
+    <the-toolbar :navItems="navItems" :version="version">
+
+    </the-toolbar>
+
+    <!-- <div
+      id="scrolling-techniques"
+      class="scroll-y"
+      style="max-height: 600px;"
+    >
+      <v-content app >
+        <landing-page v-if="!currentStation"
+                      :showHomeScreen="showHomeScreen"
+                      :showOverview="showOverview"
+                      @anyClick="catchAnyClick"
+                      @mapViewClick="catchMapViewClick"
+                      @listViewClick="catchListViewClick"
+                      @updateDrawer="catchUpdateDrawer"
+                      @overviewClick="catchOverviewClick"
+                      @detailClick="listStationClick"
+                      />
+
+
+        <stations-detail-page v-if="!showOverview && currentStation"
+                              :currentStation="currentStation" />
+      </v-content>
+    </div>     -->
+
     <v-content app >
       <landing-page v-if="!currentStation"
                     :showHomeScreen="showHomeScreen"
@@ -15,10 +42,11 @@
 
 
       <stations-detail-page v-if="!showOverview && currentStation"
-                            :currentStation="currentStation" />
+                            :currentStation="currentStation"
+                            @mapClick="mapStationClick" />
     </v-content>
 
-    <the-navigation :mini="drawerIsMini"
+    <!-- <the-navigation :mini="drawerIsMini"
                     :navItems="navItems"
                     :version="version"
                     v-on:homeClick="catchHomeClick"
@@ -35,26 +63,21 @@
                         v-on:listClick="listStationClick" />
       </template>
 
-    </the-navigation >
+    </the-navigation > -->
 
   </v-app>
 </template>
 
 <script>
-import TheNavigation from '@/components/TheNavigation';
-import StationsMap from '@/components/StationsMap';
-import StationsList from '@/components/StationsList';
+import TheToolbar from '@/components/Navigation/TheToolbar';
 import LandingPage from '@/components/Pages/LandingPage';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
 import StationsDetailPage from "./components/Pages/StationsDetailPage";
 
-
 export default {
   name: 'App',
   components: {
-    TheNavigation,
-    StationsMap,
-    StationsList,
+    TheToolbar,
     LandingPage,
     StationsDetailPage,
   },
