@@ -7,62 +7,34 @@
 
     </the-toolbar>
 
-    <!-- <div
-      id="scrolling-techniques"
-      class="scroll-y"
-      style="max-height: 600px;"
-    >
-      <v-content app >
-        <landing-page v-if="!currentStation"
-                      :showHomeScreen="showHomeScreen"
-                      :showOverview="showOverview"
-                      @anyClick="catchAnyClick"
-                      @mapViewClick="catchMapViewClick"
-                      @listViewClick="catchListViewClick"
-                      @updateDrawer="catchUpdateDrawer"
-                      @overviewClick="catchOverviewClick"
-                      @detailClick="listStationClick"
-                      />
+    <v-content>
+      <v-container fluid
+                    :class="$vuetify.breakpoint.mdAndDown ? 'pa-1' : 'pa-4'"  
+                    fill-height >
+        <v-layout column >
+          <v-flex mx-0 >
 
+            <transition name="fade" mode="out-in">
+              <router-view />
+            </transition>
 
-        <stations-detail-page v-if="!showOverview && currentStation"
-                              :currentStation="currentStation" />
-      </v-content>
-    </div>     -->
+          </v-flex>
 
-    <v-content app >
-      <landing-page v-if="!currentStation"
-                    :showHomeScreen="showHomeScreen"
-                    :showOverview="showOverview"
-                    @anyClick="catchAnyClick"
-                    @mapViewClick="catchMapViewClick"
-                    @listViewClick="catchListViewClick"
-                    @updateDrawer="catchUpdateDrawer"
-                    @overviewClick="catchOverviewClick"
-                    @detailClick="listStationClick"
-                    />
+        </v-layout>
+      </v-container>
 
-
-      <stations-detail-page v-if="!showOverview && currentStation"
-                            :currentStation="currentStation"
-                            @mapClick="mapStationClick" />
     </v-content>
-
   </v-app>
 </template>
 
 <script>
 import TheToolbar from '@/components/Navigation/TheToolbar';
-import LandingPage from '@/components/Pages/LandingPage';
 import '@/../node_modules/skeleton-placeholder/dist/bone.min.css';
-import StationsDetailPage from "./components/Pages/StationsDetailPage";
 
 export default {
   name: 'App',
   components: {
     TheToolbar,
-    LandingPage,
-    StationsDetailPage,
   },
   beforeMount() {
       const imgs = require.context('./assets/', false, /\.jpg$/);
@@ -76,8 +48,8 @@ export default {
       this.appBGImages = imgCache;
   },
   methods: {
-    catchNavigationClick(pageName) {
-      console.log('naviagte to ' + pageName);      
+    catchNavigationClick(route) {
+      this.$router.push({ path: route });
     },
     catchHomeClick() {
       this.showHomeScreen = true;
@@ -127,25 +99,6 @@ export default {
         this.drawerIsMini = false;
       }
       this.navItems[1].active = true;
-    },
-    mapStationClick(stationUrl){
-      this.showHomeScreen = false;
-      this.showOverview = false;
-
-      const splits = stationUrl.split('/');
-      if (splits.length > 0) {
-        const stationName = splits[splits.length - 1];
-        this.changeCurrentStation(stationName);
-      }
-    },
-    changeCurrentStation(newStation){
-      this.currentStation = null;
-      // console.log('currentStation ' + this.currentStation);
-      this.$nextTick(() => {
-        this.currentStation = this.getStation(newStation);
-        // console.log('changed current station to ' + this.currentStation.name);
-      });
-      // console.log('currentStation after ' + this.currentStation);
     },
     listStationClick(stationName) {
       this.showHomeScreen = false;
@@ -205,9 +158,9 @@ export default {
       showOverview: true,
       version: process.env.VUE_APP_VERSION,
       navItems: [
-        { title: 'Stations', toolTip: 'Shows the Stations overview', icon: 'dashboard', active: true, pageName: 'overview' },
-        { title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', active: true, pageName: 'request' },
-        { title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info', active: false , pageName: 'about'},
+        { title: 'Stations', toolTip: 'Shows the Stations overview', icon: 'dashboard', active: true, route: '/' },
+        // { title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', active: true, route: 'request' },
+        { title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info', active: false , route: 'about'},
       ],
     }
   },

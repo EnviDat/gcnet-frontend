@@ -1,5 +1,6 @@
 <template>
     <v-toolbar
+        app
         color="primary"
         tabs
         dense
@@ -26,7 +27,7 @@
                 :href="`#tab-${index}`" >
             <!-- {{ navItem.title }} -->
 
-            <v-btn icon @click="$emit('navigationClick', navItem.pageName)">
+            <v-btn icon @click="$emit('navigationClick', navItem.route)">
               <v-icon>{{ navItem.icon }}</v-icon>
             </v-btn>
 
