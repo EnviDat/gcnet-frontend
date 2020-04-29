@@ -12,7 +12,7 @@
                     :class="$vuetify.breakpoint.mdAndDown ? 'pa-1' : 'pa-4'"  
                     fill-height >
         <v-layout column >
-          <v-flex mx-0 >
+          <v-flex >
 
             <transition name="fade" mode="out-in">
               <router-view />
@@ -159,7 +159,7 @@ export default {
       version: process.env.VUE_APP_VERSION,
       navItems: [
         { title: 'Stations', toolTip: 'Shows the Stations overview', icon: 'dashboard', active: true, route: '/' },
-        // { title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', active: true, route: 'request' },
+        { title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', active: true, route: 'request' },
         { title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info', active: false , route: 'about'},
       ],
     }
