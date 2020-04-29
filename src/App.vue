@@ -49,7 +49,11 @@ export default {
   },
   methods: {
     catchNavigationClick(route) {
-      this.$router.push({ path: route });
+      const routeCompare = route === "/" ? route : `/${route}`;
+
+      if (this.$route.path !== routeCompare) {
+        this.$router.push({ path: route });
+      }
     },
     catchHomeClick() {
       this.showHomeScreen = true;
