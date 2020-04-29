@@ -6,6 +6,13 @@
 
     <v-layout row wrap >
 
+      <v-flex xs12
+              pb-3
+              class="display-1"
+              style="text-align: center;">
+        {{ `Detailed charts of ${currentStation.name}` }}
+      </v-flex>
+
       <v-flex>
         <v-layout column >
 
