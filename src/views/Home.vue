@@ -2,13 +2,20 @@
   <v-container fluid
                 fill-height
                 grid-list-md
-                pa-2
-                @click="anyClick">  
+                pa-0 >
 
     <v-layout row wrap >
 
+      <v-flex xs12 offset-xs4>
+        <p v-html="homeInfos.smallInfo"></p>
+      </v-flex>
+
+      <v-flex xs3>
+        <stations-map @mapClick="mapStationClick" />
+      </v-flex>
+
       <v-flex v-if="!visible"
-              xs12>
+              xs9>
         <v-layout row wrap justify-center>
           <v-flex shrink
                   class="title">
@@ -18,24 +25,24 @@
       </v-flex>
 
       <v-flex v-if="visible"
-              xs12 >
+              xs9 >
         <v-layout row wrap>
 
-          <!-- <v-flex xs2>
+          <!-- <v-flex xs12 md4 lg3>
             <micro-chart :station="stations[0]"
                           :JSONUrls="getJSONUrls(stations[0])"
                           :fileValueMapping="fileValueMapping"
-                          @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
+                          @detailClick="(stationID) => { changeCurrentStation(stationID); }" />
           </v-flex> -->
 
           <v-flex v-for="(station, index) in stations"
                   :key="`${station.id}_${station.alias}`"
-                  xs12 md3 lg2>
+                  xs12 md4 lg3>
             <micro-chart :station="station"
                           :JSONUrls="getJSONUrls(station)"
                           :fileValueMapping="fileValueMapping"
-                          :delay="index * 300"
-                          @detailClick="(stationID) => { $emit('detailClick', stationID); }" />
+                          :delay="index * 100"
+                          @detailClick="(stationID) => { changeCurrentStation(stationID); }" />
           </v-flex>
           
         </v-layout>
@@ -46,6 +53,8 @@
 </template>
 
 <script>
+import homeInfos from '@/homeInfos';
+import StationsMap from '@/components/StationsMap';
 import MicroChart from '@/components/MicroChart.vue';
 import * as am4core from "@amcharts/amcharts4/core";
 am4core.options.queue = true;
@@ -56,10 +65,10 @@ export default {
   },
   components: {
     MicroChart,
+    StationsMap,
   },
   data: () => ({
-    showMoreInfos: false,
-    showMoreInfosText: 'More Information',
+    homeInfos,
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',
     baseStationURLTestdata: './testdata/',
     visible: false,
@@ -91,8 +100,17 @@ export default {
       // console.log('disposeAllCharts via OverviewPage');
       // am4core.disposeAllCharts();
     },
-    anyClick(){
-      this.$emit('anyClick');
+    mapStationClick(stationUrl){
+      const splits = stationUrl.split('/');
+
+      if (splits.length > 0) {
+        const stationName = splits[splits.length - 1];
+        this.changeCurrentStation(stationName);
+      }
+    },
+    changeCurrentStation(newStation){
+      this.$router.push({ path: `/station/${newStation}` });
+      this.$emit('detailClick', newStation);
     },
     getJSONUrls(station){
       const dataURLs = [], recentDataURLs = [];
