@@ -87,7 +87,7 @@
                 <v-flex shrink>
                   <base-status-icon-button icon="search"
                                             color="secondary"
-                                            @click="catchDetailClick(station.id)" />
+                                            @click="catchDetailClick(station.alias)" />
                 </v-flex>
               </v-layout>
             </v-flex>
