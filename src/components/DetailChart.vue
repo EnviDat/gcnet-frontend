@@ -70,6 +70,7 @@ export default {
       type: Number,
       default: 500,
     },
+    valueFieldMapping: Object,
   },
   mounted() {
     this.registeryIntersectionObserver();
@@ -234,97 +235,6 @@ export default {
       intersected: false,
       noDataText: 'No data available',
       records: [],
-      valueFieldMapping: {
-        'temp': [
-          {
-              parameter: 'AirTC1',
-              color: '#D26200',
-              titleString: 'Thermocouple 1',
-          },
-          {
-              parameter: 'AirTC2',
-              color: '#0EAACD',
-              titleString: 'Thermocouple 2',
-          },
-        ],
-        'rh': [
-            {   parameter: 'RH1',
-                color: '#1DAFD7',
-                titleString: 'Relative humidity 1',
-            },
-            {
-                parameter: 'RH2',
-                color: '#393DA3',
-                titleString: 'Relative humidity 2',
-            },
-        ],
-        'rad': [
-            {
-                parameter: 'NetRad',
-                color: '#1C5197',
-                titleString: 'Net radiation',
-            },
-            {
-                parameter: 'SWin',
-                color: '#E79F32',
-                titleString: 'Short-wave incoming',
-            },
-            {
-                parameter: 'SWout',
-                color: '#9A6008',
-                titleString: 'Short-wave outgoing',
-            }
-        ],
-        'sheight': [
-            {
-                parameter: 'Sheight1',
-                color: '#679DE2',
-                titleString: 'Snow height 1',
-            },
-            {
-                parameter: 'Sheight2',
-                color: '#3375CD',
-                titleString: 'Snow height 2',
-            }
-        ],
-        'ws': [
-          {   parameter: 'WS1',
-              color: '#046401',
-              titleString: 'Wind-speed 1',
-          },
-          {
-              parameter: 'WS2',
-              color: '#5ED352',
-              titleString: 'Wind-speed 2',
-          }
-        ],
-        'wd': [
-            {
-                parameter: 'WD1',
-                color: '#046401',
-                titleString: 'Wind-direction 1',
-            },
-            {
-                parameter: 'WD2',
-                color: '#2FCE32',
-                titleString: 'Wind-direction 2',
-            }
-        ],
-        'press': [
-            {
-                parameter: 'press',
-                color: '#FF01FF',
-                titleString: 'Atmospheric pressure',
-            }
-        ],
-        'battvolt': [
-          {
-              parameter: 'BattVolt',
-              color: '#27AE61',
-              titleString: 'Battery voltage',
-          }
-        ],
-      },
       seriesSettings: {
         // lineStrokeWidth: 3,
         // lineOpacity: 1,
