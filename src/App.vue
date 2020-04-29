@@ -55,79 +55,6 @@ export default {
         this.$router.push({ path: route });
       }
     },
-    catchHomeClick() {
-      this.showHomeScreen = true;
-      this.showOverview = false;
-    },
-    catchAnyClick(){
-
-      // this.$nextTick(() => {
-      //   if (!this.drawerIsMini){
-      //     this.drawerIsMini = true;
-      //   }
-      // });
-        // this.drawerIsMini = !this.drawerIsMini;
-    },
-    catchDrawerClick(currentMini){
-      this.$nextTick(() => {
-        this.drawerIsMini = !currentMini;
-        if (this.drawerIsMini) {
-          this.resetNavigationChoice();
-        }
-      });
-    },
-    catchOverviewClick() {
-      // click from the landingPage is a toggle
-      this.showOverview = !this.showOverview;
-    },
-    catchNavigationOverviewClick() {
-      // click from the navigation is no toggle
-      this.showOverview = true;
-      this.currentStation = null;
-    },
-    resetNavigationChoice(){
-      this.navItems[0].active = false;
-      this.navItems[1].active = false;
-    },
-    catchUpdateDrawer(currentMini) {
-      this.drawerIsMini = currentMini;
-    },
-    catchMapViewClick() {
-      if (this.drawerIsMini){
-        this.drawerIsMini = false;
-      }
-      this.navItems[0].active = true;
-    },
-    catchListViewClick() {
-      if (this.drawerIsMini){
-        this.drawerIsMini = false;
-      }
-      this.navItems[1].active = true;
-    },
-    listStationClick(stationName) {
-      this.showHomeScreen = false;
-      this.showOverview = false;
-
-      window.scrollTo(0, 0);
-
-      this.changeCurrentStation(stationName);
-    },
-    getStation(stationName) {
-      const stations = this.$store.getters.stations;
-      let station = null;
-      const keys = Object.keys(stations);
-
-      for(let key of keys) {
-        let val = stations[key];
-
-        if (val.name === stationName || val.alias === stationName || val.id === stationName){
-          station = val;
-          break;
-        }
-      }
-
-      return station;
-    },
     dynamicBackground() {
       const bgImg = this.randomImg(this.appBGImages);
       let bgStyle = '';
@@ -158,11 +85,10 @@ export default {
       name: 'App',
       appBGImages: {},
       currentStation: null,
-      showHomeScreen: true,
-      showOverview: true,
       version: process.env.VUE_APP_VERSION,
       navItems: [
-        { title: 'Stations', toolTip: 'Shows the Stations overview', icon: 'dashboard', active: true, route: '/' },
+        { title: 'Overview', toolTip: 'Shows the stations overview', icon: 'dashboard', active: true, route: '/' },
+        // { title: 'Stations', toolTip: 'Shows a list of stations overview', icon: 'list', active: true, route: '/station' },
         { title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', active: true, route: 'request' },
         { title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info', active: false , route: 'about'},
       ],

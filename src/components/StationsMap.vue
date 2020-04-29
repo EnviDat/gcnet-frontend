@@ -3,7 +3,7 @@
     
           <!-- :style="`height: ${iframeScreenHeight()}px; height: 75vh; overflow: auto;`" -->
     <div
-          :style="`height: ${iframeScreenHeight()}px; height: 85vh; overflow: hidden;`"
+          :style="`height: ${iframeScreenHeight()}px; height: 80vh; overflow: hidden;`"
           class="pa-1"
           id="map_svg"
           ref="map_svg"

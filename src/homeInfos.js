@@ -1,6 +1,8 @@
 export default {
   title: 'GC Net Data Portal',
   startText: 'Select stations in the menu to the left!',
+  smallInfo: `<h3>Automatic Weather Stations on Greenland</h3>
+As of the 1999 field season, several automatic weather stations (AWS) are collecting climate information on Greenland's ice sheet.<br />Hourly average data are transmitted via a satellite link (GOES or ARGOS) throughout the year.`,
   homeText: `Prof. Dr. Konrad Steffen is the principal investigator of this project.
 
   GC-Net Automated Weather Stations (AWS) are collecting climate information on Greenland's ice sheet. They are equipped with communication satellite transmitters that enable near-real time monitoring of weather conditions on the Greenland ice sheet. Transmission latency is typically 1-2 hours, and occasionally as long as 48 hours. All times displayed are Zulu = UTC.

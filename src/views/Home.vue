@@ -6,6 +6,10 @@
 
     <v-layout row wrap >
 
+      <v-flex xs12 offset-xs4>
+        <p v-html="homeInfos.smallInfo"></p>
+      </v-flex>
+
       <v-flex xs3>
         <stations-map @mapClick="mapStationClick" />
       </v-flex>
@@ -24,22 +28,22 @@
               xs9 >
         <v-layout row wrap>
 
-          <v-flex xs12 md4 lg3>
+          <!-- <v-flex xs12 md4 lg3>
             <micro-chart :station="stations[0]"
                           :JSONUrls="getJSONUrls(stations[0])"
                           :fileValueMapping="fileValueMapping"
                           @detailClick="(stationID) => { changeCurrentStation(stationID); }" />
-          </v-flex>
+          </v-flex> -->
 
-          <!-- <v-flex v-for="(station, index) in stations"
+          <v-flex v-for="(station, index) in stations"
                   :key="`${station.id}_${station.alias}`"
                   xs12 md4 lg3>
             <micro-chart :station="station"
                           :JSONUrls="getJSONUrls(station)"
                           :fileValueMapping="fileValueMapping"
-                          :delay="index * 300"
+                          :delay="index * 100"
                           @detailClick="(stationID) => { changeCurrentStation(stationID); }" />
-          </v-flex> -->
+          </v-flex>
           
         </v-layout>
       </v-flex>
@@ -49,6 +53,7 @@
 </template>
 
 <script>
+import homeInfos from '@/homeInfos';
 import StationsMap from '@/components/StationsMap';
 import MicroChart from '@/components/MicroChart.vue';
 import * as am4core from "@amcharts/amcharts4/core";
@@ -63,8 +68,7 @@ export default {
     StationsMap,
   },
   data: () => ({
-    showMoreInfos: false,
-    showMoreInfosText: 'More Information',
+    homeInfos,
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',
     baseStationURLTestdata: './testdata/',
     visible: false,
@@ -106,6 +110,7 @@ export default {
     },
     changeCurrentStation(newStation){
       this.$router.push({ path: `/station/${newStation}` });
+      this.$emit('detailClick', newStation);
     },
     getJSONUrls(station){
       const dataURLs = [], recentDataURLs = [];
