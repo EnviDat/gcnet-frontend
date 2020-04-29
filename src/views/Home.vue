@@ -39,6 +39,7 @@
                   :key="`${station.id}_${station.alias}`"
                   xs12 md4 lg3>
             <micro-chart :station="station"
+                          :image="stationImg(station.alias)"
                           :JSONUrls="getJSONUrls(station)"
                           :fileValueMapping="fileValueMapping"
                           :delay="index * 100"
@@ -77,11 +78,22 @@ export default {
       // only use one single file and parameter for the microCharts
       'temp': ['AirTC1'],
     },
+    cardImgs: {},
   }),
   computed: {
     stations(){
       return this.$store.getters.stations;
     }
+  },
+  beforeMount() {
+    const imgs = require.context('@/assets/cards', false, /\.jpg$/);
+    const imgCache = {};
+
+    imgs.keys().forEach((key) => {
+      imgCache[key] = imgs(key);
+    });
+
+    this.cardImgs = imgCache;
   },
   mounted(){
     let that = this;
@@ -136,6 +148,9 @@ export default {
         dataURLs,
         recentDataURLs,
       };
+    },
+    stationImg(alias){
+      return this.cardImgs[`./${alias}.jpg`];
     },
   },
 };

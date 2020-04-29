@@ -3,110 +3,29 @@
   <!-- <v-fade-transition> -->
   <v-card :id="stationId"
           ref="main_container"
+          class="pa-1"
           v-show="visible" >
-    <v-container fluid fill-height pa-3>
 
-      <v-layout column justify-space-between fill-height>
-        <v-flex pt-0>
-          <v-layout row justify-space-between>
+    <v-container fluid
+                  pa-0>
 
-            <v-flex grow style="font-weight: 700;">
-              {{ station.name }}
-            </v-flex>
-
-            <v-flex shrink>
-              <base-status-icon icon="access_time"
-                                :color="allIconColor" />
-            </v-flex>
-
-            <v-flex shrink>
-              <base-status-icon icon="av_timer"
-                                :color="recentIconColor"/>
-            </v-flex>
-
-            </v-layout>
+      <v-layout row wrap>
+        <v-flex xs3
+                pa-0 >
+          <img :style="`${ showInfo ? '' : 'height: 100%;'} cursor: pointer;`"
+                @click="catchDetailClick(station.alias)"
+                :src="image" />
         </v-flex>
 
-        <v-flex v-if="chartIsLoading"
-                xs12 py-0
-                style="width: 100%">
-          <div class='skeleton skeleton-animation-shimmer' :style="`height: ${chartHeight};`" >
-            <div style="width: 100%;" class='bone bone-type-image'></div>
-          </div>
-        </v-flex>
+        <v-flex xs9
+                py-3
+                pr-3>
+          <v-layout column justify-space-between fill-height>
+            <v-flex pt-0>
+              <v-layout row justify-space-between>
 
-        <v-flex v-if="!chartIsLoading && !hasData"
-              xs12 py-1
-              class="body-1"
-              :style="`color: ${ $vuetify.theme.error };`" >
-          {{ noDataText }}
-        </v-flex>
-
-        <v-flex v-if="dataError"
-                xs12
-                class="smallText"
-                :style="`color: ${ $vuetify.theme.error };`" >
-          {{ dataError }}
-        </v-flex>
-
-        <v-flex v-show="!chartIsLoading && hasData"
-                xs12 py-0 >
-          <div :id="microChartId"
-                :style="`width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
-          </div>    
-        </v-flex>
-
-        <v-flex v-if="!dataError"
-                xs12 py-0
-                class="smallText">
-          {{ `${ chartIsLoading ? 'Loading' : 'Showing'} ${ graphs && graphs[0] ? graphs[0].title : '' } of ${ loadRecentData ? 'recent data' : 'all data'}` }}
-        </v-flex>
-
-        <v-flex xs12 
-                pt-2>
-          <v-layout row align-center justify-space-between >
-            <v-flex shrink>
-              <v-layout row>
-                <v-flex shrink>
-                  <base-status-icon-button :icon="showInfo ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-                                            color="primary"
-                                            :outline="true"
-                                            @click="showInfo = !showInfo;" />          
-                </v-flex>
-              </v-layout>
-            </v-flex>
-
-            <v-flex shrink>
-              <v-layout row>
-                <v-flex shrink
-                        px-0
-                        class="smallText">
-                  Station Details
-                </v-flex>
-
-                <v-flex shrink>
-                  <base-status-icon-button icon="search"
-                                            color="secondary"
-                                            @click="catchDetailClick(station.alias)" />
-                </v-flex>
-              </v-layout>
-            </v-flex>
-          </v-layout>
-        </v-flex>
-
-        <v-flex v-if="showInfo"
-                xs12>
-          <v-layout column>
-            <v-flex >
-              <v-divider></v-divider>
-            </v-flex>
-
-            <v-flex >
-              <v-layout row wrap
-                        justify-space-between align-center>
-                <v-flex grow
-                        class="body-1">
-                  {{ 'All Data' }}
+                <v-flex grow style="font-weight: 700;">
+                  {{ station.name }}
                 </v-flex>
 
                 <v-flex shrink>
@@ -114,68 +33,165 @@
                                     :color="allIconColor" />
                 </v-flex>
 
-                <v-flex shrink
-                        class="smallText">
-                  <div :style="`background-color: ${ $vuetify.theme.secondary };`"
-                        class="py-0 px-1">
-                    {{ allDataLength }}
-                  </div>
-
-                </v-flex>
-
-                <v-flex shrink>
-                  <base-status-icon-button icon="refresh"
-                                            color="secondary"
-                                            @click="loadRecentData = false; loadChart(false);" />
-                </v-flex>
-              </v-layout>
-            </v-flex>
-
-            <v-flex grow
-                    class="smallText">
-              {{ allDataUrl }}
-            </v-flex>
-
-            <v-flex >
-              <v-divider></v-divider>
-            </v-flex>
-
-            <v-flex >
-              <v-layout row justify-space-between align-center>
-                <v-flex grow
-                        class="body-1">
-                  {{ 'Recent Data' }}
-                </v-flex>
-
                 <v-flex shrink>
                   <base-status-icon icon="av_timer"
                                     :color="recentIconColor"/>
                 </v-flex>
 
-                <v-flex shrink
-                        class="smallText">
-                  <div :style="`background-color: ${ $vuetify.theme.secondary };`"
-                        class="py-0 px-1">
-                    {{ recentDataLength }}
-                  </div>
+                </v-layout>
+            </v-flex>
+
+            <v-flex v-if="chartIsLoading"
+                    xs12 py-0
+                    style="width: 100%">
+              <div class='skeleton skeleton-animation-shimmer' :style="`height: ${chartHeight};`" >
+                <div style="width: 100%;" class='bone bone-type-image'></div>
+              </div>
+            </v-flex>
+
+            <v-flex v-if="!chartIsLoading && !hasData"
+                  xs12 py-1
+                  class="body-1"
+                  :style="`color: ${ $vuetify.theme.error };`" >
+              {{ noDataText }}
+            </v-flex>
+
+            <v-flex v-if="dataError"
+                    xs12
+                    class="smallText"
+                    :style="`color: ${ $vuetify.theme.error };`" >
+              {{ dataError }}
+            </v-flex>
+
+            <v-flex v-show="!chartIsLoading && hasData"
+                    xs12 py-0 >
+              <div :id="microChartId"
+                    :style="`width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
+              </div>    
+            </v-flex>
+
+            <v-flex v-if="!dataError"
+                    xs12 py-0
+                    class="smallText">
+              {{ `${ chartIsLoading ? 'Loading' : 'Showing'} ${ graphs && graphs[0] ? graphs[0].title : '' } of ${ loadRecentData ? 'recent data' : 'all data'}` }}
+            </v-flex>
+
+            <v-flex xs12 
+                    pt-2>
+              <v-layout row align-center justify-space-between >
+                <v-flex shrink>
+                  <v-layout row>
+                    <v-flex shrink>
+                      <base-status-icon-button :icon="showInfo ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+                                                color="primary"
+                                                :outline="true"
+                                                @click="showInfo = !showInfo;" />          
+                    </v-flex>
+                  </v-layout>
                 </v-flex>
 
                 <v-flex shrink>
-                  <base-status-icon-button icon="refresh"
-                                            color="secondary"
-                                            @click="loadRecentData = true; loadChart(false);" />
+                  <v-layout row>
+                    <v-flex shrink
+                            px-0
+                            class="smallText">
+                      Station Details
+                    </v-flex>
+
+                    <v-flex shrink>
+                      <base-status-icon-button icon="search"
+                                                color="secondary"
+                                                @click="catchDetailClick(station.alias)" />
+                    </v-flex>
+                  </v-layout>
                 </v-flex>
               </v-layout>
             </v-flex>
-      
-            <v-flex grow
-                    class="smallText">
-              {{ recentDataUrl }}
+
+            <v-flex v-if="showInfo"
+                    xs12>
+              <v-layout column>
+                <v-flex >
+                  <v-divider></v-divider>
+                </v-flex>
+
+                <v-flex >
+                  <v-layout row wrap
+                            justify-space-between align-center>
+                    <v-flex grow
+                            class="body-1">
+                      {{ 'All Data' }}
+                    </v-flex>
+
+                    <v-flex shrink>
+                      <base-status-icon icon="access_time"
+                                        :color="allIconColor" />
+                    </v-flex>
+
+                    <v-flex shrink
+                            class="smallText">
+                      <div :style="`background-color: ${ $vuetify.theme.secondary };`"
+                            class="py-0 px-1">
+                        {{ allDataLength }}
+                      </div>
+
+                    </v-flex>
+
+                    <v-flex shrink>
+                      <base-status-icon-button icon="refresh"
+                                                color="secondary"
+                                                @click="loadRecentData = false; loadChart(false);" />
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+
+                <v-flex grow
+                        class="smallText">
+                  {{ allDataUrl }}
+                </v-flex>
+
+                <v-flex >
+                  <v-divider></v-divider>
+                </v-flex>
+
+                <v-flex >
+                  <v-layout row justify-space-between align-center>
+                    <v-flex grow
+                            class="body-1">
+                      {{ 'Recent Data' }}
+                    </v-flex>
+
+                    <v-flex shrink>
+                      <base-status-icon icon="av_timer"
+                                        :color="recentIconColor"/>
+                    </v-flex>
+
+                    <v-flex shrink
+                            class="smallText">
+                      <div :style="`background-color: ${ $vuetify.theme.secondary };`"
+                            class="py-0 px-1">
+                        {{ recentDataLength }}
+                      </div>
+                    </v-flex>
+
+                    <v-flex shrink>
+                      <base-status-icon-button icon="refresh"
+                                                color="secondary"
+                                                @click="loadRecentData = true; loadChart(false);" />
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+          
+                <v-flex grow
+                        class="smallText">
+                  {{ recentDataUrl }}
+                </v-flex>
+
+              </v-layout>
             </v-flex>
 
           </v-layout>
         </v-flex>
-
       </v-layout>
 
     </v-container>
@@ -195,6 +211,7 @@ export default {
   name: 'MicroChart',
   props: {
     station: Object,
+    image: String,
     JSONUrls: {
       type: Object,
       default: () =>({
@@ -329,8 +346,8 @@ export default {
     },
     clearChart(){
       if (this.microChart) {
-        // console.log('dispose via MicroChart');
         this.microChart.dispose();
+        console.log('dispose via MicroChart ' + this.microChartId + ' isDisposed() ' + this.microChart.isDisposed());
         // console.log('delete via MicroChart');
         this.microChart = null;
         // delete this.microChart;
@@ -380,9 +397,11 @@ export default {
         if (this.fallback){
           this.loadRecentData = false;
 
-          this.$nextTick( () => {
+          // this.$nextTick( () => {
             this.loadChart();
-          });
+          // });
+        } else {
+          this.clearChart();
         }
       } else {
         this.alldataAvailable = false;
@@ -410,9 +429,9 @@ export default {
           if (this.fallback){
             this.loadRecentData = false;
             
-            this.$nextTick( () => {
+            // this.$nextTick( () => {
               this.loadChart();
-            });
+            // });
           }
         } else {
           this.alldataAvailable = false;
