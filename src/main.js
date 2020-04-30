@@ -9,6 +9,8 @@ Vue.config.productionTip = false;
 
 Vue.mixin(globalMethods);
 
+Vue.prototype.$eventHub = new Vue(); // Global event bus
+
 new Vue({
   store,
   router,

@@ -8,24 +8,17 @@
 
       <v-toolbar-side-icon><img style="width: 35px; height: 35px;" :src="gcNetlogo"></v-toolbar-side-icon>
 
-      <!-- <v-toolbar-title class="headline" style="font-weight: 300 !important;">
-        {{ gcNetHomeText }} 
-      </v-toolbar-title> -->
       <div class="ml-3 headline" style="font-weight: 300 !important; width: 200px !important;">{{ gcNetHomeText }} </div>
 
       <v-spacer></v-spacer>
 
-      <!-- <v-toolbar-items centered> -->
-        
         <v-tabs v-model="activeTab"
                 color="primary"
                 centered
                 slider-color="white" >
 
           <v-tab v-for="(navItem, index) in navItems"
-                :key="index"
-                :href="`#tab-${index}`" >
-            <!-- {{ navItem.title }} -->
+                :key="index" >
 
             <v-btn icon @click="$emit('navigationClick', navItem.route)">
               <v-icon>{{ navItem.icon }}</v-icon>
@@ -33,7 +26,6 @@
 
           </v-tab>
         </v-tabs>
-      <!-- </v-toolbar-items> -->
 
     </v-toolbar>
 </template>
@@ -49,7 +41,20 @@ export default {
   },
   computed: {
   },
+  mounted(){
+    this.$eventHub.$on('detailClick', (station) => {
+      if (station){
+        this.overwriteTab(1);
+      }
+    });
+  },
+  beforeDestroy() {
+    this.$eventHub.$off('detailClick');
+  },  
   methods: {
+    overwriteTab(newActive){
+      this.activeTab = parseInt(newActive);
+    },
     catchDrawerClick(){
       this.$emit('drawerClick', this.drawerIsMini);
     },
@@ -63,7 +68,7 @@ export default {
   data: () => ({
     gcNetlogo,
     gcNetHomeText: 'GC-Net',
-    activeTab: null,
+    activeTab: 0,
   }),
 }
 </script>

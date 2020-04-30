@@ -55,6 +55,9 @@ export default {
         this.$router.push({ path: route });
       }
     },
+    catchDetailClick(station){
+      this.$eventHub.$emit('detailClick', station);
+    },
     dynamicBackground() {
       const bgImg = this.randomImg(this.appBGImages);
       let bgStyle = '';
