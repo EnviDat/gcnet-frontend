@@ -4,7 +4,6 @@
     <v-container fluid pa-3>
       <v-layout row> 
 
-        <!-- <v-flex v-bind="{ 'xs6': expand, 'xs8': !expand }"> -->
         <v-flex xs6 shrink>
           <v-layout column>
             <v-flex class="title">
@@ -31,13 +30,15 @@
           </v-layout>
         </v-flex>
         
-                <!-- v-bind="{ 'xs8': expand, 'xs6': !expand }"> -->
-        <v-flex v-if="stationImage"
-                xs6 grow>
+        <v-flex xs6 grow>
           <v-layout column align-center fill-height>
             <v-flex shrink>
+              <!-- <v-img :lazy-src="stationPreloadImage"
+                      :src="stationImage"
+                      :style="`height: ${ expand ? bigSize : smallSize }px; transition: all 0.3s; max-width: 100%;`" /> -->
+
               <img :style="`height: ${ expand ? bigSize : smallSize }px; transition: all 0.3s; max-width: 100%;`"
-                    :src="stationImage" />
+                    :src="expand ? stationImage : stationPreloadImage" />
             </v-flex>
 
             <v-flex shrink
@@ -45,7 +46,7 @@
               <v-btn
                 dark
                 small
-                color="primary"
+                color="secondary"
                 @click="expand = !expand" >
 
                 {{ expand ? 'Minimize Image' : 'Expand Image' }}
@@ -67,11 +68,12 @@ export default {
   name: 'StationControl',
   props: {
     stationImage: String,
+    stationPreloadImage: String,
     paramList: Array,
   },
   data: () => ({
     expand: false,
-    smallSize: 200,
+    smallSize: 140,
     bigSize: 700,
   }),
 };
