@@ -18,6 +18,11 @@ const routes = [
     component: Request,
   },
   {
+    path: '/station',
+    name: 'Station',
+    component: Station,
+  },
+  {
     path: '/station/:id',
     name: 'Station',
     component: Station,

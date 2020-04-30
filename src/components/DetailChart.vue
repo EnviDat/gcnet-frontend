@@ -101,23 +101,8 @@ export default {
     this.preloading = this.preload;
 
     if (this.preloading) {
-    //   this.visible = true;
-    //   this.intersected = true;
-    //   this.loadChart();
-    // } else {
       this.registeryIntersectionObserver();
     }
-
-    // var that = this;
-
-    // window.setTimeout(function() {
-    //   that.visible = true;
-    //   // console.log("delayed visible " + that.chartId + ' ' + that.visible);
-    //   that.loadChart();
-    //   that = null;
-      
-    // }, this.delay);
-    // // console.log("visible " + that.chartId + ' ' + that.visible);
   },
   beforeDestroy() {
     // console.log('DetailChart: beforeDestroy method ' + this.chartId);
@@ -273,7 +258,7 @@ export default {
       ISObserver: null,
       intersected: false,
       noDataText: 'No data available',
-      disclaimerText: 'Please note that this data is averaged for visulisation purposes.',
+      disclaimerText: 'Please note: this data is averaged for visulisation purposes.',
       records: [],
       seriesSettings: {
         // lineStrokeWidth: 3,

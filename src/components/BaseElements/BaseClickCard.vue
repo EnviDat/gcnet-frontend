@@ -12,7 +12,7 @@
         <v-flex xs3 md5 py-0
                 ref="card_image_parent"
                 style="overflow: hidden;"
-                :style="`height: ${$vuetify.breakpoint.smAndDown ? '45px' : '60px'}`"
+                :style="`height: ${$vuetify.breakpoint.smAndDown ? '45px' : '100px'}`"
                 >
           <img v-if="img"
                 ref="card_image"

@@ -15,7 +15,7 @@
           <v-flex >
 
             <transition name="fade" mode="out-in">
-              <router-view />
+              <router-view @detailClick="catchDetailClick" />
             </transition>
 
           </v-flex>
@@ -88,11 +88,11 @@ export default {
       version: process.env.VUE_APP_VERSION,
       navItems: [
         { title: 'Overview', toolTip: 'Shows the stations overview', icon: 'dashboard', active: true, route: '/' },
-        // { title: 'Stations', toolTip: 'Shows a list of stations overview', icon: 'list', active: true, route: '/station' },
+        { title: 'Stations', toolTip: 'Shows a list of stations overview', icon: 'view_list', active: true, route: '/station' },
         { title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', active: true, route: 'request' },
         { title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info', active: false , route: 'about'},
       ],
-    }
+    };
   },
 }
 </script>

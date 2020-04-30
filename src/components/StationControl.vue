@@ -32,11 +32,8 @@
         
         <v-flex xs6 grow>
           <v-layout column align-center fill-height>
-            <v-flex shrink>
-              <!-- <v-img :lazy-src="stationPreloadImage"
-                      :src="stationImage"
-                      :style="`height: ${ expand ? bigSize : smallSize }px; transition: all 0.3s; max-width: 100%;`" /> -->
 
+            <v-flex shrink>
               <img :style="`height: ${ expand ? bigSize : smallSize }px; transition: all 0.3s; max-width: 100%;`"
                     :src="expand ? stationImage : stationPreloadImage" />
             </v-flex>

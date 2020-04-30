@@ -3,8 +3,8 @@
                 pa-0
                 fill-height >
 
-
-    <v-layout row wrap >
+    <v-layout v-if="currentStation"
+              row wrap >
 
       <v-flex xs12
               mb-2        
@@ -48,6 +48,15 @@
 
     </v-layout>
 
+    <v-layout v-if="!currentStation"
+              row wrap >
+
+      <v-flex xs12>
+        <stations-list @listClick="catchListClick"/>
+      </v-flex>
+    </v-layout>
+
+
     <v-btn
       fab
       color="accent"
@@ -64,6 +73,7 @@
 <script>
 import DetailChart from "@/components/DetailChart";
 import StationControl from "@/components/StationControl";
+import StationsList from "@/components/Navigation/StationsList";
 import * as am4core from "@amcharts/amcharts4/core";
 am4core.options.queue = true;
 
@@ -74,32 +84,144 @@ export default {
   components: {
     DetailChart,
     StationControl,
+    StationsList,
   },
   mounted() {
-    let imgs = require.context('@/assets/stations/', false, /\.jpg$/);
-    let imgCache = {};
-
-    imgs.keys().forEach((key) => {
-      imgCache[key] = imgs(key);
-    });
-
-    this.stationImg = imgCache[`./${this.currentStation.alias}.jpg`];
-
-    imgs = require.context('@/assets/cards', false, /\.jpg$/);
-    imgCache = {};
-
-    imgs.keys().forEach((key) => {
-      imgCache[key] = imgs(key);
-    });
-
-    this.stationPreloadImage = imgCache[`./${this.currentStation.alias}.jpg`];
-
-    window.scrollTo(0, 0);
   },
   beforeDestroy(){
     am4core.unuseAllThemes();
     // console.log('disposeAllCharts via DetailPage');
     // am4core.disposeAllCharts();
+  },
+  watch: {
+    currentStation() {
+      if (this.currentStation){
+        let imgs = require.context('@/assets/stations/', false, /\.jpg$/);
+        let imgCache = {};
+
+        imgs.keys().forEach((key) => {
+          imgCache[key] = imgs(key);
+        });
+
+        this.stationImg = imgCache[`./${this.currentStation.alias}.jpg`];
+
+        imgs = require.context('@/assets/cards', false, /\.jpg$/);
+        imgCache = {};
+
+        imgs.keys().forEach((key) => {
+          imgCache[key] = imgs(key);
+        });
+
+        this.stationPreloadImage = imgCache[`./${this.currentStation.alias}.jpg`];
+      }
+
+      window.scrollTo(0, 0);
+    },
+  },
+  methods: {
+    stationRouteId(){
+      return this.$route.params.id;
+    },
+    chartId(fileName){
+      return `${this.stationId}_${fileName}`;
+    },
+    catchParamClick(fileName){
+      let scrollToChart = null;
+
+      for (let i = 0; i < this.fileObjects.length; i++) {
+        const obj = this.fileObjects[i];
+
+        if (obj.fileName.includes(fileName)){
+          scrollToChart = obj.fileName;
+          break;
+        }        
+      }
+
+      if (scrollToChart){
+        const scrollToKey = `${this.currentStation.id}${scrollToChart}`
+
+        if (this.$refs && this.$refs[scrollToKey] && this.$refs[scrollToKey].length >= 1){
+          const scrollToDOM = this.$refs[scrollToKey][0];
+          const scrollY = scrollToDOM.offsetTop;
+          window.scrollTo(0, scrollY);
+        }
+      }
+    },
+    backToTop(){
+      window.scrollTo(0, 0);
+    },
+    catchListClick(stationToFind){
+      const stationClicked = this.getStation(stationToFind);
+
+      if (stationClicked){
+        this.$router.push({ path: `/station/${stationClicked.alias}` });
+      }
+
+    },
+    getStation(stationToFind){
+      if (stationToFind) {
+        const stations = this.$store.getters.stations;
+
+        for (let i = 0; i < stations.length; i++) {
+          const station = stations[i];
+
+          if (station.id === stationToFind || station.alias === stationToFind || station.name === stationToFind){
+            return station;
+          }
+        }
+      }
+
+      return null;
+    }
+  },
+  computed: {
+    generateFileList() {
+      let fileList = [];
+
+      if (!this.currentStation){
+        // handle empty case, just return the empty list
+        return fileList;
+      }
+
+      for (let i = 0; i < this.fileObjects.length; i++) {
+        const fileObj = this.fileObjects[i];
+
+        const fileObjectTemplate = {
+          fileName: this.currentStation.id + fileObj.fileName,
+          chartTitle: fileObj.chartTitle,
+          numberFormat: fileObj.numberFormat,
+          dateFormatTime: fileObj.dateFormatTime,
+          preload: fileObj.preload,
+          showDisclaimer: fileObj.showDisclaimer,
+        }
+        
+        fileList.push(fileObjectTemplate);
+      }
+
+      return fileList;
+    },
+    paramList(){
+      // just pick the first param name of the each list
+      const params = [];
+      const keys = Object.keys(this.valueFieldMapping);
+
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        params.push({ fileName: key, paramName: this.valueFieldMapping[key][0].titleString });
+      }
+
+      return params;
+    },
+    currentStation(){
+      const stationToFind = this.stationRouteId();
+      return this.getStation(stationToFind);
+    },
+    baseUrl(){
+      return process.env.NODE_ENV === 'production' ? this.baseStationURL : this.baseStationURLTestdata;
+    },
+    stationId(){
+      return `${this.currentStation.id}_${this.currentStation.alias ? this.currentStation.alias : this.currentStation.name}`;
+    },
   },
   data: () => ({
     baseStationURL: 'https://www.wsl.ch/gcnet/data/',
@@ -219,98 +341,6 @@ export default {
     },
     // stationImgs: {},
   }),
-  methods: {
-    stationRouteId(){
-      return this.$route.params.id;
-    },
-    chartId(fileName){
-      return `${this.stationId}_${fileName}`;
-    },
-    catchParamClick(fileName){
-      let scrollToChart = null;
-
-      for (let i = 0; i < this.fileObjects.length; i++) {
-        const obj = this.fileObjects[i];
-
-        if (obj.fileName.includes(fileName)){
-          scrollToChart = obj.fileName;
-          break;
-        }        
-      }
-
-      if (scrollToChart){
-        const scrollToKey = `${this.currentStation.id}${scrollToChart}`
-
-        if (this.$refs && this.$refs[scrollToKey] && this.$refs[scrollToKey].length >= 1){
-          const scrollToDOM = this.$refs[scrollToKey][0];
-          const scrollY = scrollToDOM.offsetTop;
-          window.scrollTo(0, scrollY);
-        }
-      }
-    },
-    backToTop(){
-      window.scrollTo(0, 0);
-    }
-  },
-  computed: {
-    generateFileList() {
-      let fileList = [];
-
-      if (!this.currentStation){
-        // handle empty case, just return the empty list
-        return fileList;
-      }
-
-      for (let i = 0; i < this.fileObjects.length; i++) {
-        const fileObj = this.fileObjects[i];
-
-        const fileObjectTemplate = {
-          fileName: this.currentStation.id + fileObj.fileName,
-          chartTitle: fileObj.chartTitle,
-          numberFormat: fileObj.numberFormat,
-          dateFormatTime: fileObj.dateFormatTime,
-          preload: fileObj.preload,
-          showDisclaimer: fileObj.showDisclaimer,
-        }
-        
-        fileList.push(fileObjectTemplate);
-      }
-
-      return fileList;
-    },
-    paramList(){
-      // just pick the first param name of the each list
-      const params = [];
-      const keys = Object.keys(this.valueFieldMapping);
-
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        params.push({ fileName: key, paramName: this.valueFieldMapping[key][0].titleString });
-      }
-
-      return params;
-    },
-    currentStation(){
-      const stations = this.$store.getters.stations;
-      const stationToFind = this.stationRouteId();
-
-      for (let i = 0; i < stations.length; i++) {
-        const station = stations[i];
-
-        if (station.id === stationToFind || station.alias === stationToFind || station.name === stationToFind){
-          return station;
-        }
-      }
-
-      return null;
-    },
-    baseUrl(){
-      return process.env.NODE_ENV === 'production' ? this.baseStationURL : this.baseStationURLTestdata;
-    },
-    stationId(){
-      return `${this.currentStation.id}_${this.currentStation.alias ? this.currentStation.alias : this.currentStation.name}`;
-    },
-  },
 };
 </script>
 
