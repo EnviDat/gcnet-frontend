@@ -15,7 +15,7 @@
           </v-layout>            
         </v-flex>
 
-        <v-flex v-if="chartIsLoading"
+        <v-flex v-if="chartIsLoading && preloading"
                 class="chart"
                 py-0 >
           <v-layout row wrap fill-height justify-center align-center>
@@ -41,6 +41,18 @@
           {{ dataError }}
         </v-flex>
 
+        <v-flex v-if="!preloading" >
+          <v-layout row wrap justify-center>
+            <v-flex shrink>
+              
+              <base-rectangle-button buttonText="Load historical Chart"
+                                      materialIconName="refresh"
+                                      @clicked="preloading = true; intersected = true; chartIsLoading = true; loadChart();"
+                                      iconColor="white" />
+            </v-flex>
+          </v-layout>
+        </v-flex>
+
         <v-flex v-show="intersected && !chartIsLoading && hasData" >
           <div class='chart' :id="chartId" >
           </div>            
@@ -57,6 +69,7 @@
 import axios from 'axios'
 import { createLineChart } from "../chartData/charts";
 import * as am4core from "@amcharts/amcharts4/core";
+import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 //import * as bullets from "@amcharts/amcharts4/plugins/bullets";
 
 export default {
@@ -71,9 +84,21 @@ export default {
       default: 500,
     },
     valueFieldMapping: Object,
+    preload: Boolean,
+  },
+  components: {
+    BaseRectangleButton,
   },
   mounted() {
-    this.registeryIntersectionObserver();
+    this.preloading = this.preload;
+
+    if (this.preloading) {
+    //   this.visible = true;
+    //   this.intersected = true;
+    //   this.loadChart();
+    // } else {
+      this.registeryIntersectionObserver();
+    }
 
     // var that = this;
 
@@ -152,6 +177,8 @@ export default {
       .then(response => {
         // createChart() gets called due to the watch on the records
         this.records = response.data;
+        this.dataAvailable = response.data && response.data.length > 0;
+        this.chartIsLoading = this.dataAvailable;
       })
       .catch(error => {
         this.chartIsLoading = false;
@@ -231,6 +258,7 @@ export default {
       dataLength: 0,
       dataAvailable: false,
       dataError: '',
+      preloading: true,
       ISObserver: null,
       intersected: false,
       noDataText: 'No data available',
