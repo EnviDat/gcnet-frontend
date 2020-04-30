@@ -53,7 +53,14 @@
           </v-layout>
         </v-flex>
 
-        <v-flex v-show="intersected && !chartIsLoading && hasData" >
+
+        <v-flex v-if="showDisclaimer && showChart"
+                class="title" style="color: red;">
+          {{ disclaimerText }}
+        </v-flex>
+
+
+        <v-flex v-show="showChart" >
           <div class='chart' :id="chartId" >
           </div>            
         </v-flex>
@@ -85,6 +92,7 @@ export default {
     },
     valueFieldMapping: Object,
     preload: Boolean,
+    showDisclaimer: Boolean,
   },
   components: {
     BaseRectangleButton,
@@ -118,6 +126,9 @@ export default {
   computed: {
     hasData() {
       return this.dataAvailable;
+    },
+    showChart(){
+      return this.intersected && !this.chartIsLoading && this.hasData;
     },
   },
   watch: {
@@ -262,6 +273,7 @@ export default {
       ISObserver: null,
       intersected: false,
       noDataText: 'No data available',
+      disclaimerText: 'Please note that this data is averaged for visulisation purposes.',
       records: [],
       seriesSettings: {
         // lineStrokeWidth: 3,
