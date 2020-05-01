@@ -41,13 +41,13 @@
                 </v-layout>
             </v-flex>
 
-            <!-- <v-flex v-if="chartIsLoading"
+            <v-flex v-if="chartIsLoading"
                     xs12 py-0
                     style="width: 100%">
               <div class='skeleton skeleton-animation-shimmer' :style="`height: ${chartHeight};`" >
                 <div style="width: 100%;" class='bone bone-type-image'></div>
               </div>
-            </v-flex> -->
+            </v-flex>
 
             <v-flex v-if="!chartIsLoading && !hasData"
                   xs12 py-1
@@ -63,19 +63,10 @@
               {{ dataError }}
             </v-flex>
 
-<!-- v-show="!chartIsLoading && hasData" -->
-                    
             <v-flex xs12 py-0 px-0 mx-1
-                    ref="mircoChart"
-                    style="background-color: #f5f5f5; border: 1px solid #eee;" >
-              <!-- <div :id="microChartId"
-                    
-                    :style="`width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
-              </div>     -->
-              <!-- <canvas :id="microChartId"
-                      ref="mircoChart"
-                    :style="`width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
-              </canvas>     -->
+                    :id="microChartId"
+                    ref="microChart"
+                    :style="`background-color: #f5f5f5; width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
             </v-flex>
 
             <v-flex v-if="!dataError"
@@ -213,7 +204,6 @@
 import axios from 'axios'
 import uPlot from "uplot/dist/uPlot.esm";
 import 'uplot/dist/uPlot.min.css';
-// import { createMicroLineChart } from "@/chartData/charts";
 import BaseStatusIcon from "@/components/BaseElements/BaseStatusIcon";
 import BaseStatusIconButton from "@/components/BaseElements/BaseStatusIconButton";
 
@@ -357,116 +347,93 @@ export default {
       this.graphs = graphs;
     },
     clearChart(){
-      if (this.microChart) {
-        this.microChart.dispose();
-        console.log('dispose via MicroChart ' + this.microChartId + ' isDisposed() ' + this.microChart.isDisposed());
-        // console.log('delete via MicroChart');
-        this.microChart = null;
-        // delete this.microChart;
+      // if (this.microChart) {
+      //   this.microChart.dispose();
+      //   console.log('dispose via MicroChart ' + this.microChartId + ' isDisposed() ' + this.microChart.isDisposed());
+      //   // console.log('delete via MicroChart');
+      //   this.microChart = null;
+      //   // delete this.microChart;
+      // }
+      if (this.$refs.microChart){
+
+        const childs = this.$refs.microChart.children;
+
+        if (childs){
+          for (let i = 0; i < childs.length; i++) {
+            const child = childs[i];
+            this.$refs.microChart.removeChild(child);
+          }
+        }
       }
     },
     loadJsonFiles(){
-      const currentDataUrl = this.graphs[0].dataUrl;
-      axios
-      .get(currentDataUrl)
-      .then(response => {
-
-        const x = [];
-        const y = [];
-
-        for (let i = 0; i < response.data.length; i++) {
-          const entry = response.data[i];
-          
-          x.push(entry['timestamp']);
-          y.push(entry['AirTC1']);
-
-        }
-
-        this.makeSpark([x, y]);
-      })
-      .catch(error => {
-        this.chartIsLoading = false;
-        this.dataError = `Error creating chart: ${error}`;
-      })
-    },
-    loadJsonCharts(){
       this.chartIsLoading = true;
       const currentDataUrl = this.graphs[0].dataUrl;
 
       this.loadRecentData ? this.recentDataUrl = currentDataUrl : this.allDataUrl = currentDataUrl;
       this.loadRecentData ? this.recentDataLength = 0 : this.allDataLength = 0;
 
-      // const dateFormatingInfos = {
-      //   dateFormat: this.dateFormat,
-      //   inputFormat: 'x',
-      // };
+      axios
+      .get(currentDataUrl)
+      .then(response => {
+        this.makeSparkChart(response.data);
+      })
+      .catch(error => {
+        this.chartError(error);
+      })
+    },
+    makeSparkChart(data){
+      const x = [];
+      const y = [];
+      const dataLength = data ? data.length : 0;
 
-      // try {
-      //   this.microChart = createMicroLineChart(this.microChartId, 'timestamp', this.graphs, this.seriesSettings,
-      //                                             dateFormatingInfos, this.seriesDone, this.seriesError);
-      //   // if (!this.microChart) {
-      //   //   this.microChart = createMicroLineChart(this.microChartId, 'timestamp', [this.graphs[0]], this.seriesSettings,
-      //   //                                             dateFormatingInfos, this.seriesDone, this.seriesError);
-      //   // } else {
-      //   //   // this.clearChart();
-      //   //   const series = this.microChart.series.values[0];
-      //   //   series.data = [];
-      //   //   const source = series.dataSource;
-      //   //   source.dispose();
-      //   //   source.url = currentDataUrl;
-      //   //   source.load();
-      //   // }
-        
-      // } catch (error) {
-      //   this.dataError = `Error creating chart: ${error}`;
-      // }
+      if (dataLength > 0){
+        this.chartIsLoading = false;
+
+        for (let i = 0; i < data.length; i++) {
+          const entry = data[i];
+          
+          x.push(entry['timestamp']);
+          y.push(entry['AirTC1']);
+        }
+
+        this.makeSpark([x, y]);
+      }
+
+      this.loadRecentData ? this.recentCheckedOnce = true : this.allCheckedOnce = true;
+
+      if (dataLength > 0) {
+        if (this.loadRecentData) {
+          this.recentDataAvailable = true;
+          this.recentDataLength = dataLength;
+        } else {
+          this.alldataAvailable = true;
+          this.allDataLength = dataLength;
+        }
+      } else {
+        if (this.loadRecentData) {
+          this.recentDataAvailable = false;
+
+          if (this.fallback){
+            this.loadRecentData = false;
+            
+            this.$nextTick( () => {
+              this.loadChart();
+            });
+          }
+        } else {
+          this.alldataAvailable = false;
+          this.clearChart();
+        }
+      }
     },
     makeSpark(data) {
-      const opts = {
-        width: this.$refs.mircoChart.clientWidth,
-        height: 50,
-        class: "spark",
-        background: 'black',
-        plugins: [
-          this.tooltipsPlugin(),
-        ],
-        cursor: {
-          show: true,
-          y: false,
-          drag: { setScale: false },
-        },
-        select: {
-          show: false,
-        },
-        legend: {
-          show: false,
-        },
-        scales: {
-          x: {
-            time: false,
-          },
-        },
-        axes: [
-          {
-            show: false,
-          },
-          {
-            show: false,
-          }
-        ],
-        series: [
-          {
-            // fill: "green",
-          },
-          {
-            stroke: "#03a9f4",
-            fill: "#b3e5fc",
-            // min: 0,
-          },
-        ],
-      };
+      this.sparkLineOptions.width = this.$refs.microChart.clientWidth;
+      this.sparkLineOptions.height = this.chartHeight;
+      this.sparkLineOptions.plugins = [this.tooltipsPlugin()];
 
-      let sparkChart = new uPlot(opts, data, this.$refs.mircoChart);
+
+      let sparkChart = new uPlot(this.sparkLineOptions, data, this.$refs.microChart);
 
       return sparkChart;
     },
@@ -584,7 +551,7 @@ export default {
         },
       };
     },
-    seriesError(error) {
+    chartError(error) {
       this.chartIsLoading = false;
       this.dataError = error.message;
 
@@ -596,18 +563,19 @@ export default {
         if (this.fallback){
           this.loadRecentData = false;
 
-          // this.$nextTick( () => {
+          this.$nextTick( () => {
             this.loadChart();
-          // });
+          });
         } else {
           this.clearChart();
         }
       } else {
         this.alldataAvailable = false;
         this.clearChart();
+        this.$refs.microChart.style.display = "none";
       }
     },
-    seriesDone(doneResponse) {
+    chartDone(doneResponse) {
       this.chartIsLoading = false;
       const dataLength = doneResponse && doneResponse.data ? doneResponse.data.length : 0;
       
@@ -644,7 +612,7 @@ export default {
   },
   data: () => ({
     microChart: null,
-    chartHeight: '50px',
+    chartHeight: 50,
     dateFormat: 'HH:mm DD/MM/YYYY',
     dataError: '',
     noDataText: 'No data available',
@@ -665,6 +633,41 @@ export default {
       lineColor: '#8ACDCE',
     },    
     urlValueMapping: {},
+    sparkLineOptions: {
+      class: "spark",
+      background: 'black',
+      cursor: {
+        show: true,
+        y: false,
+        drag: { setScale: false },
+      },
+      select: {
+        show: false,
+      },
+      legend: {
+        show: false,
+      },
+      scales: {
+        x: {
+          time: false,
+        },
+      },
+      axes: [
+        {
+          show: false,
+        },
+        {
+          show: false,
+        }
+      ],
+      series: [
+        {},
+        {
+          stroke: "#03a9f4",
+          fill: "#b3e5fc",
+        },
+      ],
+    },
     visible: false,
     colorCount: 0,
     colorPalette: ['#8ACDCE', 
