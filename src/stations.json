@@ -143,17 +143,6 @@
 		"data" : 1
 	},
 	{
-		"id" : 14,
-		"name" : "NGRIP",
-		"latitude" : "75.09975",
-		"longitude" : "42.33256",
-		"elevation" : 2950,
-		"startdate" : null,
-		"active" : false,
-		"alias" : "",
-		"data" : 0
-	},
-	{
 		"id" : 15,
 		"name" : "NASA-SE",
 		"latitude" : "66.4797",

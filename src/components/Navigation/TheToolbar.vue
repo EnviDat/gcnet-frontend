@@ -18,11 +18,22 @@
                 slider-color="white" >
 
           <v-tab v-for="(navItem, index) in navItems"
-                :key="index" >
+                :key="index"
+                @click="$emit('navigationClick', navItem.route)" >
+            <v-tooltip
+              bottom
+              lazy >
+              
+              <span>{{ navItem.toolTip }}</span>              
 
-            <v-btn icon @click="$emit('navigationClick', navItem.route)">
-              <v-icon>{{ navItem.icon }}</v-icon>
-            </v-btn>
+              <template v-slot:activator="{ on }">
+                <v-btn v-on="on"
+                        icon
+                        @click="$emit('navigationClick', navItem.route)">
+                  <v-icon>{{ navItem.icon }}</v-icon>
+                </v-btn>
+              </template>              
+            </v-tooltip>
 
           </v-tab>
         </v-tabs>
