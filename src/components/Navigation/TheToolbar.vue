@@ -15,34 +15,42 @@
         {{ gcNetHomeText }}
       </div>
 
+      <!-- <div v-if="$vuetify.breakpoint.smAndUp"
+            class="ml-3"
+            >
+        {{ version }}
+      </div> -->
+
       <v-spacer></v-spacer>
 
-        <v-tabs v-model="activeTab"
-                color="primary"
-                centered
-                slider-color="white" >
+      <v-tabs v-model="activeTab"
+              color="primary"
+              centered
+              slider-color="white" >
 
-          <v-tab v-for="(navItem, index) in navItems"
-                :key="index"
-                @click="$emit('navigationClick', navItem.route)" >
-            <v-tooltip
-              bottom
-              :disabled="$vuetify.breakpoint.xsOnly"
-              lazy >
-              
-              <span>{{ navItem.toolTip }}</span>              
+        <v-tab v-for="(navItem, index) in navItems"
+              :key="index"
+              @click="$emit('navigationClick', navItem.route)" >
+          <v-tooltip
+            bottom
+            :disabled="$vuetify.breakpoint.xsOnly"
+            lazy >
+            
+            <span>{{ navItem.toolTip }}</span>              
 
-              <template v-slot:activator="{ on }">
-                <v-btn v-on="on"
-                        icon
-                        @click="$emit('navigationClick', navItem.route)">
-                  <v-icon>{{ navItem.icon }}</v-icon>
-                </v-btn>
-              </template>              
-            </v-tooltip>
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on"
+                      icon
+                      @click="$emit('navigationClick', navItem.route)">
+                <v-icon>{{ navItem.icon }}</v-icon>
+              </v-btn>
+            </template>              
+          </v-tooltip>
 
-          </v-tab>
-        </v-tabs>
+        </v-tab>
+      </v-tabs>
+
+      <div style="font-size: 8px !important;">{{ version }}</div>
 
     </v-toolbar>
 </template>
