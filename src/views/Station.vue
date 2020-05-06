@@ -246,7 +246,7 @@ export default {
       { fileName: 'rad_v.json', chartTitle: 'Radiation Recent Days', numberFormat: '###  W/m²', dateFormatTime: true, preload: true, showDisclaimer: false },
       { fileName: 'rad.json', chartTitle: 'Radiation Historical Data', numberFormat: '###  W/m²', dateFormatTime: false, preload: false, showDisclaimer: true },
       { fileName: 'sheight_v.json', chartTitle: 'Snow Heights Recent Days', numberFormat: '#.##  m', dateFormatTime: true, preload: true, showDisclaimer: false, seriesNumberFormat: '#.00' },
-      { fileName: 'sheight.json', chartTitle: 'Snow Heights Historical Data', numberFormat: '#.##  m', dateFormatTime: false, preload: false, showDisclaimer: true, seriesNumberFormat: '#.00' },
+      { fileName: 'sheight.json', chartTitle: 'Snow Heights Historical Data', numberFormat: '#.##  m', dateFormatTime: false, preload: false, showDisclaimer: true },
       { fileName: 'press_v.json', chartTitle: 'Air Pressure Recent Days', numberFormat: '###  mbar', dateFormatTime: true, preload: true, showDisclaimer: false },
       { fileName: 'press.json', chartTitle: 'Air Pressure Historical Data', numberFormat: '###  mbar', dateFormatTime: false, preload: false, showDisclaimer: true },
       { fileName: 'battvolt_v.json', chartTitle: 'Battery Voltage Recent Days', numberFormat: '## V', dateFormatTime: true, preload: true, showDisclaimer: false },
