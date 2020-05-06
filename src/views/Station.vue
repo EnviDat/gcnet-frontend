@@ -14,9 +14,9 @@
       </v-flex>
 
 
-      <v-flex xs12 md6
+      <v-flex xs12 md8
               my-1
-              offset-md3 >
+              offset-md2 >
         <station-control :stationImage="stationImg"
                           :stationPreloadImage="stationPreloadImage"
                           :paramList="paramList"
