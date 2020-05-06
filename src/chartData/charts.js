@@ -18,6 +18,7 @@ const defaultSeriesSettings = {
   bulletsStrokeOpacity: 1,
   reloadFrequency: 0,
   showLegend: true,
+  numberFormat: '#.0',
 };
 
 const defaultOptions = {
@@ -201,15 +202,15 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, scrollbarX, ser
     series.tooltip.getFillFromObject = false;
     series.tooltip.background.fill = am4core.color(graph.lineColor);
 
-    // series.yAxis = valueAxis;
     series.xAxis = dateAxis;
   
     series.dataFields.dateX = dateValueField;
     series.dataFields.valueY = graph.valueField;
     series.minBulletDistance = graph.hideBulletsCount;
 
-    // Assign tooltipText
-    series.tooltipText = "{dateX}\n{name}: [bold] {valueY}";
+    series.numberFormatter = new am4core.NumberFormatter();
+    series.numberFormatter.numberFormat = seriesSettings.numberFormat;
+    series.tooltipText = `{dateX}\n{name}: [bold] {valueY}`;
 
     series.autoGapCount = seriesSettings.lineAutoGap;
     series.connect = seriesSettings.lineConncet;

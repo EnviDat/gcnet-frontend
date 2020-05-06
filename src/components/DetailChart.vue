@@ -192,8 +192,9 @@ export default {
 
       // this.$vuetify.breakpoint.smAndDown ? this.seriesSettings.lineStrokeWidth = 4 : this.seriesSettings.lineStrokeWidth = 3;
       this.seriesSettings.showLegend = this.$vuetify.breakpoint.smAndUp;
+      this.seriesSettings.numberFormat = this.fileObject.seriesNumberFormat ? this.fileObject.seriesNumberFormat : this.seriesSettings.numberFormat;
     
-       try {
+      try {
           this.detailChart = createLineChart(this.chartId, 'timestamp', this.records, this.graphs,
                                       !this.chartId.includes('_v'), undefined, this.seriesSettings, dateFormatingInfos,
                                        undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
@@ -265,7 +266,7 @@ export default {
       noDataText: 'No data available',
       disclaimerText: 'Please note: this data is averaged for visulisation purposes.',
       records: [],
-      seriesSettings: defaultSeriesSettings,
+      seriesSettings: {...defaultSeriesSettings},
     };
   },
 }
