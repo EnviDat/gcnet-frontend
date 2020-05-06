@@ -50,7 +50,7 @@
               </div>
             </v-flex>
 
-            <v-flex v-if="!chartIsLoading && !hasData"
+            <v-flex v-if="!chartIsLoading && !hasData()"
                   xs12 py-1
                   class="body-1"
                   :style="`color: ${ $vuetify.theme.error };`" >
@@ -70,10 +70,10 @@
                     :style="`background-color: #f5f5f5; width: 100%; height: ${chartHeight}; border: 1px solid #eee;`" >
             </v-flex>
 
-            <v-flex v-if="!dataError"
+            <v-flex v-if="!dataError && hasData()"
                     xs12 py-0
                     class="smallText">
-              {{ `${ chartIsLoading ? 'Loading' : 'Showing'} ${ graphs && graphs[0] ? graphs[0].title : '' } of ${ loadRecentData ? 'recent data' : 'all data'}` }}
+              {{ chartSubText }}
             </v-flex>
 
             <v-flex xs12 
@@ -258,10 +258,6 @@ export default {
     this.clearChart();
   },
   computed: {
-    hasData() {
-      // return this.recentDataLength > 0 || this.allDataLength > 0;
-      return this.recentDataAvailable || this.alldataAvailable;
-    },
     microChartId(){
       return `${this.stationId}_microChart`;
     },
@@ -274,8 +270,21 @@ export default {
     allIconColor() {
       return this.allCheckedOnce ? this.alldataAvailable ? this.$vuetify.theme.success : this.$vuetify.theme.error : 'transparent';
     },
+    chartSubText(){
+      return `${ this.chartIsLoading ? 'Loading' : 'Showing'} ${ this.graphs && this.graphs[0] ? this.graphs[0].title : '' } of ${ this.loadRecentData ? 'recent data' : 'all data'} 
+              from ${ new Date(this.minDate).toLocaleDateString('en-US')} to ${ new Date(this.maxDate).toLocaleDateString('en-US') }`;
+    }
   },
   methods: {
+    hasData() {
+      // return this.recentDataLength > 0 || this.allDataLength > 0;
+      if (this.fallback) {
+        return this.recentDataAvailable || this.alldataAvailable;
+      }
+
+      return (this.loadRecentData && this.recentDataAvailable)
+          || (!this.loadRecentData && this.alldataAvailable);
+    },
     loadChart(fallback = true){
       this.clearChart();
 
@@ -384,12 +393,13 @@ export default {
       })
     },
     makeSparkChart(data){
+      this.chartIsLoading = false;
+
       const x = [];
       const y = [];
       const dataLength = data ? data.length : 0;
 
       if (dataLength > 0){
-        this.chartIsLoading = false;
 
         for (let i = 0; i < data.length; i++) {
           const entry = data[i];
@@ -399,6 +409,9 @@ export default {
         }
 
         this.makeSpark([x, y]);
+
+        this.minDate = data[0].timestamp;
+        this.maxDate = data[data.length - 1].timestamp;
       }
 
       this.loadRecentData ? this.recentCheckedOnce = true : this.allCheckedOnce = true;
@@ -421,6 +434,8 @@ export default {
             this.$nextTick( () => {
               this.loadChart();
             });
+          } else {
+            this.clearChart();
           }
         } else {
           this.alldataAvailable = false;
@@ -573,37 +588,8 @@ export default {
       } else {
         this.alldataAvailable = false;
         this.clearChart();
-        this.$refs.microChart.style.display = "none";
-      }
-    },
-    chartDone(doneResponse) {
-      this.chartIsLoading = false;
-      const dataLength = doneResponse && doneResponse.data ? doneResponse.data.length : 0;
-      
-      this.loadRecentData ? this.recentCheckedOnce = true : this.allCheckedOnce = true;
-
-      if (dataLength > 0) {
-        if (this.loadRecentData) {
-          this.recentDataAvailable = true;
-          this.recentDataLength = dataLength;
-        } else {
-          this.alldataAvailable = true;
-          this.allDataLength = dataLength;
-        }
-      } else {
-        if (this.loadRecentData) {
-          this.recentDataAvailable = false;
-
-          if (this.fallback){
-            this.loadRecentData = false;
-            
-            // this.$nextTick( () => {
-              this.loadChart();
-            // });
-          }
-        } else {
-          this.alldataAvailable = false;
-          this.clearChart();
+        if (this.$refs.microChart) {
+          this.$refs.microChart.style.display = "none";
         }
       }
     },
@@ -628,6 +614,8 @@ export default {
     allDataUrl: '',
     chartIsLoading: true,
     showInfo: false,
+    minDate: null,
+    maxDate: null,
     graphs: [],
     seriesSettings: {
       lineStrokeWidth: 2,
@@ -686,6 +674,6 @@ export default {
 <style scoped>
  .smallText {
    font-size: 9px;
-   word-break: break-all;
+   word-break: break-word;
  }
 </style>
