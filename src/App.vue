@@ -52,7 +52,7 @@ export default {
       const routeCompare = route === "/" ? route : `/${route}`;
 
       if (this.$route.path !== routeCompare) {
-        this.$router.push({ path: route });
+        this.$router.push({ path: routeCompare });
       }
     },
     catchDetailClick(station){
@@ -90,10 +90,10 @@ export default {
       currentStation: null,
       version: process.env.VUE_APP_VERSION,
       navItems: [
-        { title: 'Overview', toolTip: 'Shows the stations overview', icon: 'dashboard', active: true, route: '/' },
-        { title: 'Stations', toolTip: 'Shows a list of stations overview', icon: 'view_list', active: true, route: '/station' },
-        { title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', active: true, route: 'request' },
-        { title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info', active: false , route: 'about'},
+        { title: 'Overview', toolTip: 'Shows the stations overview', icon: 'dashboard', route: '/' },
+        { title: 'Stations', toolTip: 'Shows a list of stations overview', icon: 'view_list', route: 'station' },
+        { title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', route: 'request' },
+        { title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info', route: 'about'},
       ],
     };
   },

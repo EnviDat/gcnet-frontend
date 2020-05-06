@@ -87,6 +87,8 @@ export default {
     StationsList,
   },
   mounted() {
+    const stationToFind = this.stationRouteId();
+    this.currentStation = this.getStation(stationToFind);
   },
   beforeDestroy(){
     am4core.unuseAllThemes();
@@ -94,6 +96,10 @@ export default {
     // am4core.disposeAllCharts();
   },
   watch: {
+    $route(to) {
+      const stationToFind = to.params.id;
+      this.currentStation = this.getStation(stationToFind);
+    },    
     currentStation() {
       if (this.currentStation){
         let imgs = require.context('@/assets/stations/', false, /\.jpg$/);
@@ -213,10 +219,6 @@ export default {
 
       return params;
     },
-    currentStation(){
-      const stationToFind = this.stationRouteId();
-      return this.getStation(stationToFind);
-    },
     baseUrl(){
       return process.env.NODE_ENV === 'production' ? this.baseStationURL : this.baseStationURLTestdata;
     },
@@ -230,6 +232,7 @@ export default {
     loadingStation: false,
     stationImg: null,
     stationPreloadImage: null,
+    currentStation: null,
     expand: false,
     fileObjects: [
       { fileName: 'temp_v.json', chartTitle: 'Air Temperatures Recent Days', numberFormat: '##  °C', dateFormatTime: true, preload: true, showDisclaimer: false },

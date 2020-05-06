@@ -6,7 +6,8 @@
         dense
         dark >
 
-      <v-toolbar-side-icon><img style="width: 35px; height: 35px;" :src="gcNetlogo"></v-toolbar-side-icon>
+      <!-- <v-toolbar-side-icon @click="$emit('navigationClick', '/')" ><img style="width: 35px; height: 35px;" :src="gcNetlogo"></v-toolbar-side-icon> -->
+      <div class="mt-1"><img style="width: 35px; height: 35px;" :src="gcNetlogo"></div>
 
       <div v-if="$vuetify.breakpoint.smAndUp"
             class="ml-3 headline"
@@ -70,15 +71,6 @@ export default {
   methods: {
     overwriteTab(newActive){
       this.activeTab = parseInt(newActive);
-    },
-    catchDrawerClick(){
-      this.$emit('drawerClick', this.drawerIsMini);
-    },
-    catchHomeClick(){
-      this.$emit('homeClick');
-    },
-    catchStationOverviewClick(){
-      this.$emit('stationOverviewClick');
     },
   },
   data: () => ({
