@@ -17,7 +17,7 @@
         </v-flex>
 
         <v-flex v-if="chartIsLoading && preloading"
-                class="chart"
+                :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`"
                 py-0 >
           <v-layout row wrap fill-height justify-center align-center>
             <v-flex shrink>
@@ -42,11 +42,17 @@
           {{ dataError }}
         </v-flex>
 
-        <v-flex v-if="!preloading" >
-          <v-layout row wrap justify-center>
+        <v-flex v-if="!preloading"
+                :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`" >
+          <v-layout column
+                    fill-height justify-center align-center>
             <v-flex shrink>
+              Historical datasets can be very large and take a while to load, therefore aren't loaded by default.
+            </v-flex>
+            <v-flex shrink
+                    pt-3>
               
-              <base-rectangle-button buttonText="Load historical Chart"
+              <base-rectangle-button buttonText="Load historical data"
                                       materialIconName="refresh"
                                       @clicked="preloading = true; intersected = true; chartIsLoading = true; loadChart();"
                                       iconColor="white" />
