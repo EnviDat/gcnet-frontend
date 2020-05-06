@@ -4,7 +4,7 @@
     <v-layout row wrap>
 
       <!-- Domi: For single line only the "xs12" css-class is needed  -->
-      <v-flex xs12 md3 lg2
+      <v-flex xs6 md3 lg2
               my-1
               v-for="station in $store.getters.stations"
               :key="station.name"

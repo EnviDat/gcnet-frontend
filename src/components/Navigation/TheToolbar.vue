@@ -8,7 +8,11 @@
 
       <v-toolbar-side-icon><img style="width: 35px; height: 35px;" :src="gcNetlogo"></v-toolbar-side-icon>
 
-      <div class="ml-3 headline" style="font-weight: 300 !important; width: 200px !important;">{{ gcNetHomeText }} </div>
+      <div v-if="$vuetify.breakpoint.smAndUp"
+            class="ml-3 headline"
+            style="font-weight: 300 !important; width: 200px !important;">
+        {{ gcNetHomeText }}
+      </div>
 
       <v-spacer></v-spacer>
 
@@ -22,6 +26,7 @@
                 @click="$emit('navigationClick', navItem.route)" >
             <v-tooltip
               bottom
+              :disabled="$vuetify.breakpoint.xsOnly"
               lazy >
               
               <span>{{ navItem.toolTip }}</span>              

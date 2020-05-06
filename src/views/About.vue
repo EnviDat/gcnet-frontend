@@ -1,5 +1,6 @@
 <template>
   <v-container fluid
+                grid-list-lg
                 fill-height
                 pa-0
                 >

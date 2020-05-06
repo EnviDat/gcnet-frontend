@@ -17,6 +17,7 @@ const defaultSeriesSettings = {
   bulletsfillOpacity: 1,
   bulletsStrokeOpacity: 1,
   reloadFrequency: 0,
+  showLegend: true,
 };
 
 const defaultOptions = {
@@ -52,12 +53,10 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     // chart.events.on('beforedisposed', () => {
     //   console.log('beforedisposed event on ' + chart.id);
     // });
-
-    // chart.hiddenState.properties.opacity = 0;
   
     if (chartData) {
-        // chartData is optional, to be able to give the series directly a datasource
-        chart.data = chartData;
+      // chartData is optional, to be able to give the series directly a datasource
+      chart.data = chartData;
     }
 
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
@@ -104,16 +103,24 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
       }
     }
 
-    chart.legend = new am4charts.Legend();
-    // chart.legend.parent = chart.plotContainer;
-    chart.legend.zIndex = 100;
-    // chart.legend.position = 'absolute';
-    // chart.legend.dy = -30;
-    chart.paddingTop = 0;
+    chart.paddingTop = options.paddingTop;
 
-    // Set legend location
-    chart.legend.position = 'top';
-    chart.legend.contentAlign = 'center';
+    if (seriesSettings.showLegend) {
+      chart.legend = new am4charts.Legend();
+      // chart.legend.parent = chart.plotContainer;
+      chart.legend.zIndex = 100;
+      // chart.legend.position = 'absolute';
+      // chart.legend.dy = -30;
+
+      // Set legend location
+      chart.legend.position = 'top';
+      chart.legend.contentAlign = 'center';
+      chart.paddingTop = 0;
+      // chart.paddingLeft = 0;
+    } else {
+      chart.paddingTop = 15;
+      chart.paddingLeft = 0;
+    }
 
     chart.cursor = new am4charts.XYCursor();
     chart.responsive.enabled = true;
@@ -316,4 +323,5 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
 export {
   createLineChart,
   createMicroLineChart,
+  defaultSeriesSettings,
 };

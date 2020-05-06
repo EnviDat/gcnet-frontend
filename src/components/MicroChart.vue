@@ -19,7 +19,8 @@
 
         <v-flex xs9
                 py-3
-                pr-3>
+                pr-3
+                style="background-color: white; ">
           <v-layout column justify-space-between fill-height>
             <v-flex pt-0>
               <v-layout row justify-space-between>

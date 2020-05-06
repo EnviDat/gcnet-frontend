@@ -2,24 +2,22 @@
   <v-card >
   
     <v-container fluid pa-3>
-      <v-layout row> 
+      <v-layout row wrap> 
 
-        <v-flex xs6 shrink>
+        <v-flex xs12 sm6 shrink>
           <v-layout column>
-            <v-flex class="title">
-              Directly scroll to detail chart              
-            </v-flex>
+            <v-flex class="title">Directly scroll to specific measurement</v-flex>
 
             <v-flex pt-4>
               <v-layout row wrap>
 
                 <v-flex v-for="(paramObj, index) in paramList"
                         :key="index"
-                        xs6
+                        xs12 sm6
                         pa-0>
 
                   <v-btn color="primary"
-                        small
+                        :small="$vuetify.breakpoint.mdAndUp"
                         @click="$emit('paramClick', paramObj.fileName);">
                     {{ paramObj.paramName }}
                   </v-btn>
@@ -30,7 +28,7 @@
           </v-layout>
         </v-flex>
         
-        <v-flex xs6 grow>
+        <v-flex xs12 sm6 grow>
           <v-layout column align-center fill-height>
 
             <v-flex shrink>
@@ -68,10 +66,14 @@ export default {
     stationPreloadImage: String,
     paramList: Array,
   },
+  computed: {
+    bigSize(){
+      return this.$vuetify.breakpoint.xsOnly ? 450 : 700;
+    },
+  },
   data: () => ({
     expand: false,
     smallSize: 140,
-    bigSize: 700,
   }),
 };
 </script>

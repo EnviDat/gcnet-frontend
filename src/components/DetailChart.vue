@@ -6,10 +6,11 @@
 
         <v-flex pb-3>
           <v-layout row wrap justify-space-between>
-            <v-flex shrink display-1>
+            <v-flex shrink
+                    :class="$vuetify.breakpoint.xsOnly ? 'title' : 'display-1'">
               {{ this.fileObject.chartTitle }}
             </v-flex>
-            <v-flex shrink class="title">
+            <v-flex shrink title>
               {{ stationName }}
             </v-flex>
           </v-layout>            
@@ -61,7 +62,8 @@
 
 
         <v-flex v-show="showChart" >
-          <div class='chart' :id="chartId" >
+          <div :id="chartId"
+                :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`" >
           </div>            
         </v-flex>
 
@@ -74,7 +76,7 @@
 
 <script>
 import axios from 'axios'
-import { createLineChart } from "../chartData/charts";
+import { createLineChart, defaultSeriesSettings } from "../chartData/charts";
 import * as am4core from "@amcharts/amcharts4/core";
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 //import * as bullets from "@amcharts/amcharts4/plugins/bullets";
@@ -187,10 +189,13 @@ export default {
         dateFormatNoTime: this.dateFormatNoTime,
         inputFormat: 'x',
       };
+
+      // this.$vuetify.breakpoint.smAndDown ? this.seriesSettings.lineStrokeWidth = 4 : this.seriesSettings.lineStrokeWidth = 3;
+      this.seriesSettings.showLegend = this.$vuetify.breakpoint.smAndUp;
     
        try {
           this.detailChart = createLineChart(this.chartId, 'timestamp', this.records, this.graphs,
-                                      !this.chartId.includes('_v'), undefined, undefined, dateFormatingInfos,
+                                      !this.chartId.includes('_v'), undefined, this.seriesSettings, dateFormatingInfos,
                                        undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
                                        this.chartDone, this.chartError);
       } catch (error) {
@@ -260,60 +265,12 @@ export default {
       noDataText: 'No data available',
       disclaimerText: 'Please note: this data is averaged for visulisation purposes.',
       records: [],
-      seriesSettings: {
-        // lineStrokeWidth: 3,
-        // lineOpacity: 1,
-        // // the auto gap depends on the baseInterval, which might be "hours"
-        // // works if the lineConnect is false
-        // lineAutoGap: 2,
-        // lineConnect: false,
-        // bulletsStrokeWidth: 2,
-        bulletsRadius: 3,
-        // bulletFill: 'black',
-        // bulletsfillOpacity: 1,
-        // bulletsStrokeOpacity: 1,
-      },
+      seriesSettings: defaultSeriesSettings,
     };
   },
 }
 </script>
 
-<style>
-
-    /**************  Responsive Web Design ****************/
-
-    /*  Small to large handset */
-    @media screen and (min-width: 480px) {
-        .chart {
-          height: 300px;
-        }
-    }
-
-    /* Small to medium tablet */
-    @media screen and (min-width: 700px) {
-        .chart {
-          height: 450px;
-        }
-    }
-
-    /* Large tablet to laptop */
-     @media screen and (min-width: 960px) {
-         .chart {
-            height: 450px;
-        }
-    }
-
-     /* Desktop */
-     @media screen and (min-width: 1264px) {
-        .chart {
-          height: 450px;
-        }
-    }
-
-
-    /*.chart {*/
-    /*    margin-bottom: 2em;*/
-    /*    height: 450px;*/
-    /*}*/
+<style scoped>
 
 </style>

@@ -6,16 +6,16 @@
 
     <v-layout row wrap >
 
-      <v-flex xs12 offset-xs4>
+      <v-flex xs12 offset-md4>
         <p v-html="homeInfos.smallInfo"></p>
       </v-flex>
 
-      <v-flex xs3>
+      <v-flex xs12 sm3>
         <stations-map @mapClick="mapStationClick" />
       </v-flex>
 
       <v-flex v-if="!visible"
-              xs9>
+              xs12 sm9>
         <v-layout row wrap justify-center>
           <v-flex shrink
                   class="title">
@@ -25,7 +25,7 @@
       </v-flex>
 
       <v-flex v-if="visible"
-              xs9 >
+              xs12 sm9 >
         <v-layout row wrap>
 
           <!-- <v-flex xs12 md4 lg3>
