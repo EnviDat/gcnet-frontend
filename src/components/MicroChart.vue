@@ -53,14 +53,14 @@
             <v-flex v-if="!chartIsLoading && !hasData()"
                   xs12 py-1
                   class="body-1"
-                  :style="`color: ${ $vuetify.theme.error };`" >
+                  :style="`color: red;`" >
               {{ noDataText }}
             </v-flex>
 
             <v-flex v-if="dataError"
                     xs12
                     class="smallText"
-                    :style="`color: ${ $vuetify.theme.error };`" >
+                    :style="`color: red;`" >
               {{ dataError }}
             </v-flex>
 
@@ -94,7 +94,7 @@
                   <v-layout row>
                     <v-flex shrink
                             px-0
-                            class="smallText">
+                            class="caption">
                       Station Details
                     </v-flex>
 
@@ -130,7 +130,7 @@
 
                     <v-flex shrink
                             class="smallText">
-                      <div :style="`background-color: ${ $vuetify.theme.secondary };`"
+                      <div :style="`background-color: ${ $vuetify.theme.accent };`"
                             class="py-0 px-1">
                         {{ allDataLength }}
                       </div>
@@ -168,7 +168,7 @@
 
                     <v-flex shrink
                             class="smallText">
-                      <div :style="`background-color: ${ $vuetify.theme.secondary };`"
+                      <div :style="`background-color: ${ $vuetify.theme.accent };`"
                             class="py-0 px-1">
                         {{ recentDataLength }}
                       </div>
