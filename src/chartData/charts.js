@@ -157,7 +157,7 @@ const createLineChart = function createLineChart(selector, dateValueField, chart
     for (let i = 0; i < graphs.length; i++) {
       const graph = graphs[i];
         
-      chart = addGraphToChart(chart, graph, dateAxis, dateValueField, scrollbarX, seriesSettings, valueAxisY);
+      addGraphToChart(chart, graph, dateAxis, dateValueField, scrollbarX, seriesSettings, valueAxisY);
 
       if (i <= 0) {
         scrollbarX.scrollbarChart.xAxes.values[i].renderer.labels.template.inside = false;
@@ -180,8 +180,11 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, scrollbarX, ser
 
     let series = new am4charts.LineSeries();
     series.name = graph.title;
-    series.legendSettings.title = graph.title;
     series.hidden = graph.hidden ? graph.hidden : false;
+
+    series.xAxis = dateAxis;
+    // Assign series yAxis to valueAxisY
+    series.yAxis = valueAxisY;
 
     if (graph.dataUrl) {
         series.dataSource.url = graph.dataUrl;
@@ -202,8 +205,6 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, scrollbarX, ser
     series.tooltip.getFillFromObject = false;
     series.tooltip.background.fill = am4core.color(graph.lineColor);
 
-    series.xAxis = dateAxis;
-  
     series.dataFields.dateX = dateValueField;
     series.dataFields.valueY = graph.valueField;
     series.minBulletDistance = graph.hideBulletsCount;
@@ -230,7 +231,7 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, scrollbarX, ser
     bullet.stroke.color = am4core.color(graph.lineColor);
 
     let bullethover = bullet.states.create("hover");
-    bullethover.properties.scale = 1.3;
+    bullethover.properties.scale = 1.5;
   
     series.bullets.push(bullet);
   
@@ -238,13 +239,9 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, scrollbarX, ser
 
     // TODO series preview needs to display in scrollbarX
     scrollbarX.series.push(series);
-    // Temporarily hide series preview
+  
+    // hide preview of the series in the scrollbar
     scrollbarX.scrollbarChart.seriesContainer.hide();
-
-    // Assign series yAxis to valueAxisY
-    series.yAxis = valueAxisY;
-
-    return chart;
 }
 
 

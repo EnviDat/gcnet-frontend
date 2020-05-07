@@ -139,13 +139,18 @@ export default {
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
 
-        if (this.url.includes(key)) {
+        const splits = this.url.split('/');
+        const fileName = splits[splits.length - 1];
+
+        if (fileName.includes(key)) {
           const graphInfo = this.valueFieldMapping[key];
 
           for (let j = 0; j < graphInfo.length; j++) {
             const infoObj = graphInfo[j];
             graphs.push(this.buildGraph(infoObj));
           }
+
+          break;
         }
       }
 

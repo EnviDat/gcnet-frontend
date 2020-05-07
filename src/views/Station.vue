@@ -276,6 +276,29 @@ export default {
             titleString: 'Thermocouple 2',
         },
       ],
+      'wd': [
+          {
+              parameter: 'WD1',
+              color: '#046401',
+              titleString: 'Wind-direction 1',
+          },
+          {
+              parameter: 'WD2',
+              color: '#2FCE32',
+              titleString: 'Wind-direction 2',
+          }
+      ],
+      'ws': [
+        {   parameter: 'WS1',
+            color: '#046401',
+            titleString: 'Wind-speed 1',
+        },
+        {
+            parameter: 'WS2',
+            color: '#5ED352',
+            titleString: 'Wind-speed 2',
+        }
+      ],
       'rh': [
           {   parameter: 'RH1',
               color: '#1DAFD7',
@@ -316,29 +339,6 @@ export default {
               titleString: 'Snow height 2',
           }
       ],
-      'ws': [
-        {   parameter: 'WS1',
-            color: '#046401',
-            titleString: 'Wind-speed 1',
-        },
-        {
-            parameter: 'WS2',
-            color: '#5ED352',
-            titleString: 'Wind-speed 2',
-        }
-      ],
-      'wd': [
-          {
-              parameter: 'WD1',
-              color: '#046401',
-              titleString: 'Wind-direction 1',
-          },
-          {
-              parameter: 'WD2',
-              color: '#2FCE32',
-              titleString: 'Wind-direction 2',
-          }
-      ],
       'press': [
           {
               parameter: 'press',
@@ -354,7 +354,6 @@ export default {
         }
       ],
     },
-    // stationImgs: {},
   }),
 };
 </script>

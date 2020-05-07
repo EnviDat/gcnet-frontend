@@ -57,7 +57,7 @@
         </v-tab>
       </v-tabs>
 
-      <div style="font-size: 8px !important;">{{ version }}</div>
+      <div style="font-size: 9px !important;">{{ version }}</div>
 
     </v-toolbar>
 </template>
