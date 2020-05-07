@@ -16,6 +16,7 @@ export default new Vuex.Store({
   },
   getters: {
     stations: (state) => state.stations,
+    overviewStations: (state) => state.stations.filter(s => s.alias !== 'swisscamp10m'),
     appBGImage: (state) => state.appBGImage,
     mapViewPos: (state) => state.mapViewPos,
     listViewPos: (state) => state.listViewPos,

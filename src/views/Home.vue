@@ -82,7 +82,7 @@ export default {
   }),
   computed: {
     stations(){
-      return this.$store.getters.stations;
+      return this.$store.getters.overviewStations;
     }
   },
   beforeMount() {
