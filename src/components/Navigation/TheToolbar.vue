@@ -30,7 +30,9 @@
 
         <v-tab v-for="(navItem, index) in navItems"
               :key="index"
-              @click="$emit('navigationClick', navItem.route)" >
+              :href="navItem.route === 'request' ? 'http://cires1.colorado.edu/steffen/gcnet/order/admin/station.php' : ''"
+              :target="navItem.route === 'request' ? '_blank' : ''"
+              @click.stop="navItem.route === 'request' ? null : $emit('navigationClick', navItem.route)" >
           <v-tooltip
             bottom
             :disabled="$vuetify.breakpoint.xsOnly"
@@ -41,8 +43,13 @@
             <template v-slot:activator="{ on }">
               <v-btn v-on="on"
                       icon
-                      @click="$emit('navigationClick', navItem.route)">
+                      @click="navItem.route === 'request' ? '' : $emit('navigationClick', navItem.route)">
+
                 <v-icon>{{ navItem.icon }}</v-icon>
+
+                <v-icon v-if="navItem.route === 'request'"
+                        small
+                        style="position: absolute; right: -10px; top: 20px; " >open_in_new</v-icon>
               </v-btn>
             </template>              
           </v-tooltip>
@@ -69,7 +76,8 @@ export default {
   mounted(){
     this.$eventHub.$on('detailClick', (station) => {
       if (station){
-        this.overwriteTab(1);
+        this.activeTab = null;
+        // this.overwriteTab(-1);
       }
     });
   },

@@ -9,7 +9,7 @@
 
     <v-content>
       <v-container fluid
-                    :class="$vuetify.breakpoint.mdAndDown ? 'pa-1' : 'pa-4'"  
+                    :class="$vuetify.breakpoint.mdAndDown ? 'pa-1' : 'pa-2'"  
                     fill-height >
         <v-layout column >
           <v-flex >
@@ -91,9 +91,9 @@ export default {
       version: process.env.VUE_APP_VERSION,
       navItems: [
         { title: 'Overview', toolTip: 'Shows the stations overview', icon: 'dashboard', route: '/' },
-        { title: 'Stations', toolTip: 'Shows a list of stations overview', icon: 'view_list', route: 'station' },
+        // { title: 'Stations', toolTip: 'Shows a list of stations overview', icon: 'view_list', route: 'station' },
         { title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', route: 'request' },
-        { title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info', route: 'about'},
+        { title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info_outline', route: 'about'},
       ],
     };
   },
