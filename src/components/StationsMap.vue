@@ -3,7 +3,7 @@
     
           <!-- :style="`height: ${iframeScreenHeight()}px; height: 75vh; overflow: auto;`" -->
     <div
-          :style="`height: ${iframeScreenHeight()}px; height: 80vh; overflow: hidden;`"
+          :style="`height: ${iframeScreenHeight()}px; height: ${height}; overflow: hidden;`"
           class="pa-1"
           id="map_svg"
           ref="map_svg"
@@ -14,11 +14,15 @@
 </template>
 
 <script>
-import mapHTML from '@/map_html.html';
+import mapHTML from '@/components/map_html.html';
 
 export default {
   props: {
     currentStation: Object,
+    height: {
+      type: String,
+      default: '70vh',
+    },
   },
   data: () => ({
     mapHTML,
@@ -49,8 +53,29 @@ export default {
       }
       el.removeAttribute('target');
     });
+
+    if (this.currentStation) {
+      this.highlightStation(this.currentStation);
+    }    
+  },
+  watch: {
+    currentStation(){
+      if (this.currentStation) {
+        this.highlightStation(this.currentStation);
+      }
+    },
   },
   methods: {
+    highlightStation(station){
+        const links = this.$el.querySelectorAll('#map_svg svg > g > g > a');
+
+        links.forEach(el => {
+          el.classList.remove('current');
+        });
+
+        const stationLink = this.$el.querySelector('#map_svg svg > g > g > a#' + station.alias);
+        stationLink.classList.add('current');
+    },
     iframeScreenHeight() {
       return window.innerHeight - 150;
     },

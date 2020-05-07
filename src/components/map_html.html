@@ -35,13 +35,25 @@
         g.stations > a > circle:first-child {
             fill: #1DB409 !important;
         }
-        g.stations > a:hover circle:first-child{
+        g.stations > a:hover circle:first-child {
             fill:#FFFFFF !important;
         }
-        g.stations > a circle:nth-child(2){
+
+        g.stations > a.current circle:first-child {
+            fill:blue !important;
+        }
+
+        g.stations > a.current rect {
+            opacity: 1;
+            /* fill: white; */
+            stroke: blue;
+            stroke-width: 15px;
+        }
+
+        /* g.stations > a circle:nth-child(2){
             opacity: 0.45;
             fill:#FFFFFF !important;
-        }
+        } */
 
         g.stations > a:hover rect,
         g.stations > a:hover line {
@@ -51,7 +63,7 @@
     </style>
 <!-- <body> -->
 <!-- <div class="scaling-svg-container"> -->
-    <svg version="1.2" xmlns="http://www.w3.org/2000/svg" class="scaling-svg" viewBox="-135 500 4400 9015" preserveAspectRatio="xMidYMin slice"
+    <svg version="1.2" xmlns="http://www.w3.org/2000/svg" class="scaling-svg" viewBox="0 500 4400 9015" preserveAspectRatio="xMidYMin slice"
     xmlns:xlink="http://www.w3.org/1999/xlink" baseProfile="tiny" xmlns:gcnet="https://www.wsl.ch/namespaces/gcnet">
     <!-- preserveAspectRatio="xMidYMin meet" -->
         <g fill-rule="evenodd" gcnet:label="Greenland generalized" gcnet:groupmode="layer" font-family=".SF NS Text" font-size="54.167" font-weight="400" stroke-linecap="square" stroke-linejoin="bevel">
@@ -299,14 +311,13 @@
             font-weight="400" stroke-linecap="square" stroke-linejoin="bevel">
 
             <!-- Station 0 Swiss Camp 10m -->
-            <g class="stations" fill-rule="evenodd"
+            <!-- <g class="stations" fill-rule="evenodd"
                 font-size="120" stroke-width="10" stroke="black"
                 stroke-linecap="square" stroke-linejoin="bevel">
 
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/swisscamp10m"
+                <a id="swisscamp10m" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/swisscamp10m"
                     xlink:title="Elevation 1176m">
                     <circle cx="1786.4" cy="3924.8" r="40" stroke-width="10" stroke="black"  />
-                    <!-- <circle cx="1786.4" cy="3924.8" r="125" /> -->
 
                     <line x1="1800" y1="3970" x2="1950" y2="4108" opacity="0.6" />
 
@@ -318,14 +329,6 @@
                     <text fill="black" font-family=".SF NS Text"
                         y="4255" x="1855" stroke="none" xml:space="preserve">Swiss Camp 10m</text>
                 </a>
-            </g>
-            <!-- <g transform="matrix(.99987 0 0 .99987 1855.4 4123)" font-size="120"
-                stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/swisscamp10m"
-                    xlink:title="Elevation 1176m">
-                    <text fill="black" font-family=".SF NS Text" font-weight="400"
-                            stroke="none" xml:space="preserve">Swiss Camp 10m</text>
-                </a>
             </g> -->
 
             <!-- Station 1 Swiss Camp -->
@@ -333,11 +336,11 @@
                 font-size="120" stroke-width="10" stroke="black"
                 stroke-linecap="square" stroke-linejoin="bevel">
 
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/swisscamp"
+                <a id="swisscamp" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/swisscamp"
                     xlink:title="swisscamp">
                     <circle cx="1786.4" cy="3874" r="40"stroke-width="10" stroke="black"  />
-                    <!-- <circle cx="1786.4" cy="3874" r="125"  /> -->
-                    <line x1="1765" y1="3830" x2="1600" y2="3700" opacity="0.6" />
+
+                    <!-- <line x1="1765" y1="3830" x2="1600" y2="3700" opacity="0.6" />
 
                     <rect width="750" height="225" stroke="transparent"
                         y="3479" x="1000" fill="white" opacity="0.6" />
@@ -345,7 +348,13 @@
                     <line x1="1000" y1="3704" x2="1750" y2="3700" opacity="0.6" />
 
                     <text fill="black" font-family=".SF NS Text"
-                        y="3630" x="1035" stroke="none" xml:space="preserve">Swiss Camp</text>
+                        y="3630" x="1035" stroke="none" xml:space="preserve">Swiss Camp</text> -->
+
+                    <rect width="750" height="225" stroke="transparent"
+                        y="3529" x="1000" fill="white" opacity="0.6" />
+
+                    <text fill="black" font-family=".SF NS Text"
+                        y="3680" x="1035" stroke="none" xml:space="preserve">Swiss Camp</text>
                 </a>
             </g>
             <!-- <g transform="matrix(.99987 0 0 .99987 1208.9 3779.7)" font-size="120"
@@ -361,7 +370,7 @@
             <g class="stations" fill-rule="evenodd" font-size="120"
                 stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
 
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/crawfordpoint"
+                <a id="crawfordpoint" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/crawfordpoint"
                     xlink:title="Elevation 2022m">
                     <circle cx="2000" cy="3852.4" r="40" stroke-width="10" stroke="black"  />
                     <!-- <circle cx="2000" cy="3852.4" r="125" /> -->
@@ -386,7 +395,7 @@
             <g class="stations" fill-rule="evenodd" font-size="120"
                 stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
 
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/nasau"
+                <a id="nasau" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/nasau"
                     xlink:title="Elevation 2369m">
                     <circle cx="1851.6" cy="2772.1" r="40" stroke-width="10" stroke="black"  />
                     <!-- <circle cx="1851.6" cy="2772.1" r="125" /> -->
@@ -414,14 +423,18 @@
             </g>
             <g transform="matrix(.99987 0 0 .99987 1294.1 1725.3)" font-size="120"
                 stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
+
+                <!-- <rect width="350" height="180" stroke="transparent"
+                    y="-185" x="10" fill="gray" opacity="0.4"></rect> -->
+
                 <text fill="black" font-family=".SF NS Text" font-weight="400"
-                    stroke="none" xml:space="preserve">GITS</text>
+                    y="-40" x="30" stroke="none" xml:space="preserve">GITS</text>
             </g>
 
 
             <!-- Station 5 Humboldt -->
             <g class="stations" fill-rule="evenodd" font-size="120" stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/humboldt"
+                <a id="humboldt" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/humboldt"
                     xlink:title="Elevation 1995m">
                     <circle cx="1575" cy="1468.1" r="40" stroke-width="10" stroke="black"  />
                     <!-- <circle cx="1575" cy="1468.1" r="125" /> -->
@@ -444,7 +457,7 @@
             <!-- Station 6 Summit Station -->
             <g class="stations" fill-rule="evenodd" font-size="120"
                 stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/summitstation"
+                <a id="summitstation" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/summitstation"
                     xlink:title="Elevation 3199m">
                     <circle cx="2711" cy="3095.3" r="40" stroke-width="10" stroke="black"  />
                     <!-- <circle cx="2711" cy="3095.3" r="125" fill="white" /> -->
@@ -468,7 +481,7 @@
             <!-- Station 7 TUNU North -->
             <g class="stations" fill-rule="evenodd" font-size="120"
                 stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/tununorth"
+                <a id="tununorth" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/tununorth"
                     xlink:title="Elevation 2113m">
                     <circle cx="2793" cy="1610" r="40" stroke-width="10" stroke="black"  />
                     <!-- <circle cx="2793" cy="1610" r="125" /> -->
@@ -492,7 +505,7 @@
             <!-- "latitude" : "66.48001", "longitude" : "46.27889", -->
             <g class="stations" fill-rule="evenodd" font-size="120"
                 stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/dyeii"
+                <a id="dyeii" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/dyeii"
                     xlink:title="Elevation 2165m">
                     <circle cx="2047" cy="4782.4" r="40" stroke-width="10" stroke="black"  />
                     <!-- <circle cx="2047" cy="4782.4" r="125" /> -->
@@ -510,13 +523,13 @@
             <g class="stations" fill-rule="evenodd"
                 font-size="120" stroke-width="10" stroke="black"
                 stroke-linecap="square" stroke-linejoin="bevel">
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/jar1"
+                <a id="jar1" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/jar1"
                     xlink:title="Elevation 932m">
                     <circle cx="1692" cy="3954.4" r="40" stroke-width="10" />
                     <!-- <circle cx="1692" cy="3954.4" r="125" stroke-width="10" /> -->
                     <!-- <circle cx="1392" cy="4073" r="175" fill="white" opacity="0.75" /> -->
 
-                    <line x1="1660" y1="3980" x2="1392" y2="4100" opacity="0.6" />
+                    <!-- <line x1="1660" y1="3980" x2="1392" y2="4100" opacity="0.6" />
 
                     <rect width="500" height="225" stroke="transparent"
                         y="4108" x="1117" fill="white" opacity="0.6" />
@@ -524,7 +537,14 @@
                     <line x1="1117" y1="4108" x2="1617" y2="4108" opacity="0.6" />
 
                     <text fill="black" font-family=".SF NS Text"
-                        y="4255" x="1192" stroke="none" xml:space="preserve">JAR-1</text>
+                        y="4255" x="1192" stroke="none" xml:space="preserve">JAR-1</text> -->
+
+
+                    <rect width="500" height="225" stroke="transparent"
+                        y="4008" x="1117" fill="white" opacity="0.6" />
+
+                    <text fill="black" font-family=".SF NS Text"
+                        y="4155" x="1192" stroke="none" xml:space="preserve">JAR-1</text>
                 </a>                
             </g>
 
@@ -534,7 +554,7 @@
             <g class="stations" fill-rule="evenodd" font-size="120"
                 stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
 
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/saddle"
+                <a id="saddle" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/saddle"
                     xlink:title="Elevation 2467m">
                     <circle cx="2243.4" cy="4915.8" r="40" stroke-width="10" stroke="black"  />
                     <!-- <circle cx="2243.4" cy="4915.8" r="125" /> -->
@@ -562,7 +582,7 @@
             <!-- "latitude" : "75.00000", "longitude" : "29.99972" -->
             <g class="stations" font-size="120"
                 stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/nasaeast"
+                <a id="nasaeast" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/nasaeast"
                     xlink:title="Elevation 2631m">
                     <circle cx="3216.7" cy="2339" r="40" stroke-width="10" stroke="black"  />
                     <!-- <circle cx="3216.7" cy="2339" r="125" /> -->
@@ -608,7 +628,7 @@
 		    <!-- "latitude" : "80.09694444", "longitude" : "58.13166667", -->
             <g class="stations" fill-rule="evenodd" font-size="120"
                 stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/petermann"
+                <a id="petermann" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/petermann"
                     xlink:title="Elevation 924m">
                     <circle cx="1592.8" cy="1046.6" r="40" stroke-width="10" stroke="black"  />
                     <!-- <circle cx="1592.8" cy="1046.6" r="125" /> -->
@@ -637,7 +657,7 @@
 		    <!-- "latitude" : "77.50222222", "longitude" : "50.87444444" -->
             <g class="stations" fill-rule="evenodd" font-size="120"
                 stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/neem"
+                <a id="neem" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/neem"
                     xlink:title="Elevation 2454m">
                     <circle cx="1848.9" cy="1788.1" r="40" stroke-width="10" stroke="black"  />
                     <!-- <circle cx="1848.9" cy="1788.1" r="125" /> -->
@@ -646,7 +666,7 @@
                         y="1475" x="1900" fill="white" opacity="0.6"></rect>
 
                     <text fill="black" font-family=".SF NS Text"
-                        y="1615" x="1950" stroke="none" xml:space="preserve">NEEM</text>
+                        y="1625" x="1950" stroke="none" xml:space="preserve">NEEM</text>
                 </a>
             </g>
             <!-- <g transform="matrix(.99987 0 0 .99987 1895.9 1743.3)" font-size="120"
@@ -662,7 +682,7 @@
 		    <!-- "latitude" : "75.59333333", "longitude" : "35.98861111", -->
             <g class="stations" fill-rule="evenodd" font-size="120"
                 stroke="black" stroke-linecap="square" stroke-linejoin="bevel">
-                <a target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/eastgrip"
+                <a id="eastgrip" target="_blank" xlink:href="https://www.wsl.ch/gcnet/stations/eastgrip"
                     xlink:title="Elevation 2600m">
                     <circle cx="2785.4" cy="2268.4" r="40" stroke-width="10" stroke="black"  />
                     <!-- <circle cx="2785.4" cy="2268.4" r="125" /> -->

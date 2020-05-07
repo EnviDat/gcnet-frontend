@@ -4,6 +4,13 @@
     <v-container fluid pa-3>
       <v-layout row wrap> 
 
+        <v-flex xs12
+                class="display-1"
+                style="text-align: center;">
+          {{ `Detailed charts of ${ stationName } station` }}
+        </v-flex>
+
+
         <v-flex xs12 sm6 shrink>
           <v-layout column>
             <v-flex class="title">Directly scroll to specific measurement</v-flex>
@@ -59,9 +66,13 @@
 </template>
 
 <script>
+
 export default {
   name: 'StationControl',
+  components:{
+  },
   props: {
+    stationName: String,
     stationImage: String,
     stationPreloadImage: String,
     paramList: Array,

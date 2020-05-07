@@ -1,36 +1,33 @@
 <template>
   <v-container fluid
+                grid-list-lg
                 pa-0
                 fill-height >
 
     <v-layout v-if="currentStation"
               row wrap >
 
-      <v-flex xs12
-              mb-2        
-              class="display-1"
-              style="text-align: center;">
-        {{ `Detailed charts of ${ currentStation.name } station` }}
+      <v-flex xs12 md3>
+        <stations-map :height="'60vh'"
+                      :currentStation="currentStation"
+                      @mapClick="mapStationClick" />
       </v-flex>
 
-
-      <v-flex xs12 md8
-              my-1
-              offset-md2 >
-        <station-control :stationImage="stationImg"
+      <v-flex xs12 md8 >
+        <station-control :stationName="currentStation.name"
+                          :stationImage="stationImg"
                           :stationPreloadImage="stationPreloadImage"
                           :paramList="paramList"
                           @paramClick="catchParamClick"/>
       </v-flex>
 
-      <v-flex xs12
-              my-2>
+      <v-flex xs12 >
         <v-layout column >
 
           <v-flex v-for="(fileObject, index) in generateFileList"
                   :key="fileObject.fileName"
                   :ref="fileObject.fileName"
-                  :class="$vuetify.breakpoint.mdAndDown ? 'my-1' : 'my-3'">
+                  >
 
               <DetailChart :url="baseUrl + fileObject.fileName"
                           :stationName="currentStation.name"
@@ -71,6 +68,7 @@
 </template>
 
 <script>
+import StationsMap from '@/components/StationsMap';
 import DetailChart from "@/components/DetailChart";
 import StationControl from "@/components/StationControl";
 import StationsList from "@/components/Navigation/StationsList";
@@ -85,6 +83,7 @@ export default {
     DetailChart,
     StationControl,
     StationsList,
+    StationsMap,
   },
   mounted() {
     const stationToFind = this.stationRouteId();
@@ -125,6 +124,18 @@ export default {
     },
   },
   methods: {
+    mapStationClick(stationUrl){
+      const splits = stationUrl.split('/');
+
+      if (splits.length > 0) {
+        const stationName = splits[splits.length - 1];
+        this.changeCurrentStation(stationName);
+      }
+    },
+    changeCurrentStation(newStation){
+      this.$router.push({ path: `/station/${newStation}` });
+      this.$emit('detailClick', newStation);
+    },
     stationRouteId(){
       return this.$route.params.id;
     },
