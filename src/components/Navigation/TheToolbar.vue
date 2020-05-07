@@ -11,7 +11,7 @@
 
       <div v-if="$vuetify.breakpoint.smAndUp"
             class="ml-3 headline"
-            style="font-weight: 300 !important; width: 200px !important;">
+            style="font-weight: 300 !important; width: 100px !important;">
         {{ gcNetHomeText }}
       </div>
 
