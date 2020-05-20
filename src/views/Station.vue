@@ -267,12 +267,14 @@ export default {
       'temp': [
         {
             parameter: 'AirTC1',
-            color: '#D26200',
+            color: '#D48E00',
+            negativeColor: '#00CED4',
             titleString: 'Thermocouple 1',
         },
         {
             parameter: 'AirTC2',
-            color: '#0EAACD',
+            color: '#D26200',
+            negativeColor: '#07AACD',
             titleString: 'Thermocouple 2',
         },
       ],
