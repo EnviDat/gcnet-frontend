@@ -171,7 +171,8 @@ export default {
         "bulletRadius": this.seriesSettings.bulletsRadius,
         "title": infoObj.titleString,
         "valueField": infoObj.parameter,
-        "balloonText": `[[category]]<br/><b><span style='font-size:12px;'>${infoObj.titleString}: [[value]] ${unit}</span></b>`,
+        "balloonText": `<b><span style='font-size:12px;'>${infoObj.titleString}: [[value]] ${unit}</span></b>`,
+        // "balloonText": `[[category]]<br/><b><span style='font-size:12px;'>${infoObj.titleString}: [[value]] ${unit}</span></b>`,
         // "startDuration": 1,
         // "type": "line",
         "hideBulletsCount": 200,
@@ -185,7 +186,7 @@ export default {
         "gridAboveGraphs": true,
         "negativeLineColor": infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
 				"negativeFillColors": infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
-        // "useLineColorForBulletBorder": true,        
+        "precision": infoObj.precision ? infoObj.precision : 0,
         "fillAlphas": 0
       };
     },
