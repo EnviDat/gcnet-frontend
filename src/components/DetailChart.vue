@@ -67,7 +67,8 @@
         </v-flex>
 
 
-        <v-flex v-show="showChart" >
+        <v-flex v-show="showChart"
+                pt-0 >
           <div :id="chartId"
                 :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`" >
           </div>            
