@@ -167,15 +167,10 @@ export default {
 
       return {
         "lineColor": infoObj.color,
-        // "bulletColor": infoObj.color,
-        // "bullet": new am4core.Circle(),
         "bulletRadius": this.seriesSettings.bulletsRadius,
         "title": infoObj.titleString,
         "valueField": infoObj.parameter,
         "balloonText": `<b><span style='font-size:12px;'>${infoObj.titleString}: [[value]] ${unit}</span></b>`,
-        // "balloonText": `[[category]]<br/><b><span style='font-size:12px;'>${infoObj.titleString}: [[value]] ${unit}</span></b>`,
-        // "startDuration": 1,
-        // "type": "line",
         "hideBulletsCount": 200,
         "bullet": "round",
         "bulletBorderAlpha": this.seriesSettings.bulletsStrokeOpacity,
@@ -188,7 +183,6 @@ export default {
         "negativeLineColor": infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
 				"negativeFillColors": infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
         "precision": infoObj.precision ? infoObj.precision : 0,
-        "fillAlphas": 0
       };
     },
     loadChart() {
@@ -233,12 +227,14 @@ export default {
       const splits = this.fileObject.numberFormat.split(' ');
       const unit = splits.length > 0 ? splits[splits.length - 1] : '';
 
+      const recentData = this.chartId.includes('_v');
+
       try {
           // this.detailChart = createLineChart(this.chartId, 'timestamp', this.records, this.graphs,
           //                             !this.chartId.includes('_v'), undefined, this.seriesSettings, dateFormatingInfos,
           //                              undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
           //                              this.chartDone, this.chartError);
-          this.detailChart = createSerialChart(this.chartId, ' ' + unit, this.graphs, this.records, this.delay, this.chartDone, this.chartError);
+          this.detailChart = createSerialChart(this.chartId, ' ' + unit, this.graphs, this.records, this.delay, this.chartDone, this.chartError, recentData);
       } catch (error) {
         this.chartIsLoading = false;
         this.dataError = `Error creating chart: ${error}`;

@@ -325,7 +325,7 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
 
 
 // eslint-disable-next-line no-unused-vars
-const createSerialChart = function createSerialChart(selector, unit, graphs, chartData, delay, doneCallback, errorCallback) {
+const createSerialChart = function createSerialChart(selector, unit, graphs, chartData, delay, doneCallback, errorCallback, recentData) {
     // var chart = am4core.create(selector, am4charts.XYChart);
     // AmCharts.theme = AmCharts.themes.light;
     // AmCharts.useUTC = true;
@@ -351,15 +351,15 @@ const createSerialChart = function createSerialChart(selector, unit, graphs, cha
         "graphs": graphs,
         "chartScrollbar": {
           "oppositeAxis": false,
-          "offset": 30,
-          "scrollbarHeight": 20,
+          "offset": 35,
+          "scrollbarHeight": 30,
           "backgroundAlpha": 0,
-          "selectedBackgroundAlpha": 0.1,
-          "selectedBackgroundColor": "#888888",
-          "graphFillAlpha": 0,
-          "graphLineAlpha": 0.5,
-          "selectedGraphFillAlpha": 0,
-          "selectedGraphLineAlpha": 1,
+          // "selectedBackgroundAlpha": 0.1,
+          // "selectedBackgroundColor": "#888888",
+          // "graphFillAlpha": 0,
+          // "graphLineAlpha": 1,
+          // "selectedGraphFillAlpha": 0,
+          // "selectedGraphLineAlpha": 1,
           "autoGridCount": true,
           "color": "#AAAAAA"
         },
@@ -374,15 +374,8 @@ const createSerialChart = function createSerialChart(selector, unit, graphs, cha
         "categoryField": "timestamp",    
         "categoryAxis": {
           "parseDates": true,
-          /* "axisColor": "#DADADA", */
-          // "minPeriod": "xyz" is not a valid option but
-          // it seems only in this way the date gets calcualted automatically
-          // for recent and historical data. Not defining doesn't work...
-          "minPeriod": "xyz",
-          "equalSpacing": true,
-          "axisColor": "#DADADA",
-          "dashLength": 10,
-          "minorGridEnabled": true
+          "minPeriod": recentData ? "hh" : "DD",
+          "dashLength": 5,
         },
         "export": {
             "enabled": false,
