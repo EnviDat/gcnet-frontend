@@ -39,11 +39,11 @@
           <v-layout column align-center fill-height>
 
             <v-flex shrink>
-              <img :style="`height: ${ expand ? bigSize : smallSize }px; transition: all 0.3s; max-width: 100%;`"
-                    :src="expand ? stationImage : stationPreloadImage" />
+              <img :style="`height: 450px;`"
+                    :src="stationImage" />
             </v-flex>
 
-            <v-flex shrink
+            <!-- <v-flex shrink
                     pa-0>
               <v-btn
                 dark
@@ -55,7 +55,7 @@
 
                 <v-icon right >image</v-icon>
               </v-btn>
-            </v-flex>
+            </v-flex> -->
             
           </v-layout>
         </v-flex>
