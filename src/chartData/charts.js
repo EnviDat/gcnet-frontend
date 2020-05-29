@@ -1,10 +1,3 @@
-/* eslint-disable no-undef */
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4charts from "@amcharts/amcharts4/charts";
-import microchart from '@amcharts/amcharts4/themes/microchart';
-import amchartsDefaultTheme from '@amcharts/amcharts4/themes/amcharts';
-
-
 const defaultSeriesSettings = {
   lineStrokeWidth: 3,
   lineOpacity: 1,
@@ -21,6 +14,15 @@ const defaultSeriesSettings = {
   showLegend: true,
   numberFormat: '#.0',
 };
+
+/* eslint-disable no-undef */
+/*
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
+import microchart from '@amcharts/amcharts4/themes/microchart';
+import amchartsDefaultTheme from '@amcharts/amcharts4/themes/amcharts';
+
+
 
 const defaultOptions = {
   queue: true,
@@ -245,7 +247,6 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, scrollbarX, ser
     scrollbarX.scrollbarChart.seriesContainer.hide();
 }
 
-
 const createMicroLineChart = function createMicroLineChart(selector, dateValueField, graphs,
                                                             seriesSettings = defaultSeriesSettings,
                                                             dateFormatingInfos = defaultFormatingInfos,
@@ -317,6 +318,7 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
   
   return chart;
 }
+*/
 
 // import * as AmCharts from 'amcharts3'
 // eslint-disable-next-line no-unused-vars
@@ -378,7 +380,7 @@ const createSerialChart = function createSerialChart(selector, unit, graphs, cha
           "dashLength": 5,
         },
         "export": {
-            "enabled": false,
+            "enabled": true,
         },
         "listeners": [
           // {
@@ -414,8 +416,8 @@ const createSerialChart = function createSerialChart(selector, unit, graphs, cha
 
 
 export {
-  createLineChart,
-  createMicroLineChart,
+  // createLineChart,
+  // createMicroLineChart,
   createSerialChart,
   defaultSeriesSettings,
 };

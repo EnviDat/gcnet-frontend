@@ -72,8 +72,8 @@ import StationsMap from '@/components/StationsMap';
 import DetailChart from "@/components/DetailChart";
 import StationControl from "@/components/StationControl";
 import StationsList from "@/components/Navigation/StationsList";
-import * as am4core from "@amcharts/amcharts4/core";
-am4core.options.queue = true;
+// import * as am4core from "@amcharts/amcharts4/core";
+// am4core.options.queue = true;
 
 export default {
   name: 'Station',
@@ -90,7 +90,7 @@ export default {
     this.currentStation = this.getStation(stationToFind);
   },
   beforeDestroy(){
-    am4core.unuseAllThemes();
+    // am4core.unuseAllThemes();
     // console.log('disposeAllCharts via DetailPage');
     // am4core.disposeAllCharts();
   },

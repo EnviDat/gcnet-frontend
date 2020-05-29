@@ -51,9 +51,6 @@
             </v-flex>
 
           </v-layout>
-
-          <!-- Swiss Federal Institute for Forest, Snow and Landscape Research WSL  -->
-          <!-- Cooperative Institute for Research in Environmental Sciences at the University of Colorado Boulder -->
         </v-flex>
 
         <v-flex xs12 >

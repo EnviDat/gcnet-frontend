@@ -57,8 +57,8 @@
 import homeInfos from '@/homeInfos';
 import StationsMap from '@/components/StationsMap';
 import MicroChart from '@/components/MicroChart.vue';
-import * as am4core from "@amcharts/amcharts4/core";
-am4core.options.queue = true;
+// import * as am4core from "@amcharts/amcharts4/core";
+// am4core.options.queue = true;
 
 export default {
   name: 'StationOverviewPage',
@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     clearCharts() {
-      am4core.unuseAllThemes();
+      // am4core.unuseAllThemes();
       // console.log('disposeAllCharts via OverviewPage');
       // am4core.disposeAllCharts();
     },
