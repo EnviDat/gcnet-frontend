@@ -3,11 +3,10 @@
         app
         color="primary"
         tabs
-        dense
         dark >
 
       <!-- <v-toolbar-side-icon @click="$emit('navigationClick', '/')" ><img style="width: 35px; height: 35px;" :src="gcNetlogo"></v-toolbar-side-icon> -->
-      <div class="mt-1"><img style="width: 35px; height: 35px;" :src="gcNetlogo"></div>
+      <div class="mt-1"><img @click="$emit('navigationClick', '/')" style="width: 35px; height: 35px; cursor: pointer;" :src="gcNetlogo"></div>
 
       <div v-if="$vuetify.breakpoint.smAndUp"
             class="ml-3 headline"
@@ -45,13 +44,13 @@
                       icon
                       @click="navItem.route === 'request' ? '' : $emit('navigationClick', navItem.route)">
 
-                <v-icon>{{ navItem.icon }}</v-icon>
+                <v-icon large>{{ navItem.icon }}</v-icon>
 
                 <v-icon v-if="navItem.route === 'request'"
                         small
-                        style="position: absolute; right: -10px; top: 20px; " >open_in_new</v-icon>
+                        style="position: absolute; right: -10px; top: -5px; " >open_in_new</v-icon>
               </v-btn>
-            </template>              
+            </template>
           </v-tooltip>
 
         </v-tab>
