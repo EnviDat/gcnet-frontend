@@ -158,7 +158,7 @@
                   <v-layout row justify-space-between align-center>
                     <v-flex grow
                             class="body-1">
-                      {{ 'Recent Data' }}
+                      Recent Data
                     </v-flex>
 
                     <v-flex shrink>
@@ -396,16 +396,33 @@ export default {
       this.chartIsLoading = false;
 
       const x = [];
-      const y = [];
+      let y = [];
       const dataLength = data ? data.length : 0;
 
       if (dataLength > 0){
 
+        let useFallback = true;
+
         for (let i = 0; i < data.length; i++) {
           const entry = data[i];
+          const airTC1 = entry['AirTC1'];
+          
+          if (useFallback && airTC1){
+            useFallback = false;
+          }
           
           x.push(entry['timestamp']);
-          y.push(entry['AirTC1']);
+          y.push(airTC1);
+        }
+
+        if (useFallback){
+          y = [];
+          this.graphs[0].title = 'AirTC2';
+
+          for (let i = 0; i < data.length; i++) {
+            const entry = data[i];            
+            y.push(entry['AirTC2']);
+          }
         }
 
         this.makeSpark([x, y]);

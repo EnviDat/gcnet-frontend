@@ -1,9 +1,3 @@
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4charts from "@amcharts/amcharts4/charts";
-import microchart from '@amcharts/amcharts4/themes/microchart';
-import amchartsDefaultTheme from '@amcharts/amcharts4/themes/amcharts';
-
-
 const defaultSeriesSettings = {
   lineStrokeWidth: 3,
   lineOpacity: 1,
@@ -12,14 +6,23 @@ const defaultSeriesSettings = {
   lineAutoGap: 2,
   lineConnect: false,
   bulletsStrokeWidth: 2,
-  bulletsRadius: 3,
+  bulletsRadius: 5,
   bulletFill: 'black',
-  bulletsfillOpacity: 1,
+  bulletsfillOpacity: 0,
   bulletsStrokeOpacity: 1,
   reloadFrequency: 0,
   showLegend: true,
   numberFormat: '#.0',
 };
+
+/* eslint-disable no-undef */
+/*
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
+import microchart from '@amcharts/amcharts4/themes/microchart';
+import amchartsDefaultTheme from '@amcharts/amcharts4/themes/amcharts';
+
+
 
 const defaultOptions = {
   queue: true,
@@ -244,7 +247,6 @@ function addGraphToChart(chart, graph, dateAxis, dateValueField, scrollbarX, ser
     scrollbarX.scrollbarChart.seriesContainer.hide();
 }
 
-
 const createMicroLineChart = function createMicroLineChart(selector, dateValueField, graphs,
                                                             seriesSettings = defaultSeriesSettings,
                                                             dateFormatingInfos = defaultFormatingInfos,
@@ -316,10 +318,106 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
   
   return chart;
 }
+*/
+
+// import * as AmCharts from 'amcharts3'
+// eslint-disable-next-line no-unused-vars
+// import AmSerial from 'amcharts3/amcharts/serial'
+// import lightTheme from 'amcharts3/amcharts/themes/light';
+
+
+// eslint-disable-next-line no-unused-vars
+const createSerialChart = function createSerialChart(selector, unit, graphs, chartData, delay, doneCallback, errorCallback, recentData) {
+    // var chart = am4core.create(selector, am4charts.XYChart);
+    // AmCharts.theme = AmCharts.themes.light;
+    // AmCharts.useUTC = true;
+  
+  // console.log('typeof AmCharts.makeChart ' + typeof(AmCharts.makeChart));
+
+    var chartConfig = {
+        "type": "serial",
+        // "theme": lightTheme,
+        // "dataDateFormat": dateFormat,
+        "legend": {
+          "equalWidths": true,
+          "useGraphSettings": true,
+          "align": "center",
+          "position": "top",
+          "valueAlign": "left",
+        },
+        "dataProvider": chartData,
+        "synchronizeGrid": true,
+        "valueAxes": [{
+          "unit": unit,
+        }],
+        "graphs": graphs,
+        "chartScrollbar": {
+          "oppositeAxis": false,
+          "offset": 35,
+          "scrollbarHeight": 30,
+          "backgroundAlpha": 0,
+          // "selectedBackgroundAlpha": 0.1,
+          // "selectedBackgroundColor": "#888888",
+          // "graphFillAlpha": 0,
+          // "graphLineAlpha": 1,
+          // "selectedGraphFillAlpha": 0,
+          // "selectedGraphLineAlpha": 1,
+          "autoGridCount": true,
+          "color": "#AAAAAA"
+        },
+        "chartCursor": {
+          "pan": false,
+          "valueLineEnabled": true,
+          "valueLineBalloonEnabled": true,
+          "parseDates": true,
+          "categoryBalloonDateFormat": "MMM DD, YYYY JJ:NN",
+          // "dataDateFormat": "MMM DD, YYYY JJ:NN"
+        },
+        "categoryField": "timestamp",    
+        "categoryAxis": {
+          "parseDates": true,
+          "minPeriod": recentData ? "hh" : "DD",
+          "dashLength": 5,
+        },
+        "export": {
+            "enabled": true,
+        },
+        "listeners": [
+          // {
+          //     "event": "dataUpdated",
+          //     "method": () => { console.log("dataUpdated"); }
+          // },
+          {
+            "event": "error",
+            "method": (e) => { errorCallback(e); }
+          },
+          {
+            "event": "init",
+            "method": () => {
+              doneCallback(chart.dataProvider.length);
+              // console.log("init finished"); 
+            }
+          }
+        ],
+    };
+
+  var chart = AmCharts.makeChart(selector, chartConfig, delay);
+  // var chart = makeChart(selector, chartConfig);
+
+    // chart.addListener("dataUpdated", zoomChart);
+    // zoomChart(chart);
+
+    return chart;
+}
+
+// function zoomChart(chart) {
+//     chart.zoomToIndexes(chart.dataProvider.length - 20, chart.dataProvider.length - 1);
+// }
 
 
 export {
-  createLineChart,
-  createMicroLineChart,
+  // createLineChart,
+  // createMicroLineChart,
+  createSerialChart,
   defaultSeriesSettings,
 };

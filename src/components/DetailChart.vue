@@ -67,7 +67,8 @@
         </v-flex>
 
 
-        <v-flex v-show="showChart" >
+        <v-flex v-show="showChart"
+                pt-0 >
           <div :id="chartId"
                 :style="`height: ${ $vuetify.breakpoint.xsOnly ? 300 : 350 }px;`" >
           </div>            
@@ -82,8 +83,9 @@
 
 <script>
 import axios from 'axios'
-import { createLineChart, defaultSeriesSettings } from "../chartData/charts";
-import * as am4core from "@amcharts/amcharts4/core";
+// import { createLineChart, defaultSeriesSettings } from "../chartData/charts";
+import { createSerialChart, defaultSeriesSettings } from "../chartData/charts";
+// import * as am4core from "@amcharts/amcharts4/core";
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
 //import * as bullets from "@amcharts/amcharts4/plugins/bullets";
 
@@ -106,11 +108,14 @@ export default {
     BaseRectangleButton,
   },
   mounted() {
-    this.preloading = this.preload;
+    // this.preloading = this.preload;
 
-    if (this.preloading) {
-      this.registeryIntersectionObserver();
-    }
+    // if (this.preloading) {
+    //   this.registeryIntersectionObserver();
+    // }
+
+            this.intersected = true;
+            this.loadChart();    
   },
   beforeDestroy() {
     // console.log('DetailChart: beforeDestroy method ' + this.chartId);
@@ -157,13 +162,27 @@ export default {
       this.graphs = graphs;
     },
     buildGraph(infoObj){
+      const splits = this.fileObject.numberFormat.split(' ');
+      const unit = splits.length > 0 ? splits[splits.length - 1] : '';
+
       return {
         "lineColor": infoObj.color,
-        "bullet": new am4core.Circle(),
         "bulletRadius": this.seriesSettings.bulletsRadius,
         "title": infoObj.titleString,
         "valueField": infoObj.parameter,
-        "hideBulletsCount": 20,
+        "balloonText": `<b><span style='font-size:12px;'>${infoObj.titleString}: [[value]] ${unit}</span></b>`,
+        "hideBulletsCount": 200,
+        "bullet": "round",
+        "bulletBorderAlpha": this.seriesSettings.bulletsStrokeOpacity,
+				"bulletAlpha": this.seriesSettings.bulletsfillOpacity,
+				"bulletSize": this.seriesSettings.bulletsRadius,
+        "bulletBorderThickness": this.seriesSettings.bulletsStrokeWidth,
+				"lineThickness": this.seriesSettings.lineStrokeWidth,        
+        "connect": false,
+        "gridAboveGraphs": true,
+        "negativeLineColor": infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
+				"negativeFillColors": infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
+        "precision": infoObj.precision ? infoObj.precision : 0,
       };
     },
     loadChart() {
@@ -195,21 +214,27 @@ export default {
       })
     },
     createChart(){
-      const dateFormatingInfos = {
-        dateFormat: this.dateFormat,
-        dateFormatNoTime: this.dateFormatNoTime,
-        inputFormat: 'x',
-      };
+      // const dateFormatingInfos = {
+      //   dateFormat: this.dateFormat,
+      //   dateFormatNoTime: this.dateFormatNoTime,
+      //   inputFormat: 'x',
+      // };
 
       // this.$vuetify.breakpoint.smAndDown ? this.seriesSettings.lineStrokeWidth = 4 : this.seriesSettings.lineStrokeWidth = 3;
       this.seriesSettings.showLegend = this.$vuetify.breakpoint.smAndUp;
       this.seriesSettings.numberFormat = this.fileObject.seriesNumberFormat ? this.fileObject.seriesNumberFormat : this.seriesSettings.numberFormat;
     
+      const splits = this.fileObject.numberFormat.split(' ');
+      const unit = splits.length > 0 ? splits[splits.length - 1] : '';
+
+      const recentData = this.chartId.includes('_v');
+
       try {
-          this.detailChart = createLineChart(this.chartId, 'timestamp', this.records, this.graphs,
-                                      !this.chartId.includes('_v'), undefined, this.seriesSettings, dateFormatingInfos,
-                                       undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
-                                       this.chartDone, this.chartError);
+          // this.detailChart = createLineChart(this.chartId, 'timestamp', this.records, this.graphs,
+          //                             !this.chartId.includes('_v'), undefined, this.seriesSettings, dateFormatingInfos,
+          //                              undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
+          //                              this.chartDone, this.chartError);
+          this.detailChart = createSerialChart(this.chartId, ' ' + unit, this.graphs, this.records, this.delay, this.chartDone, this.chartError, recentData);
       } catch (error) {
         this.chartIsLoading = false;
         this.dataError = `Error creating chart: ${error}`;
@@ -225,7 +250,7 @@ export default {
     },
     chartDone(doneResponse) {
       this.chartIsLoading = false;
-      const dataLength = doneResponse && doneResponse.target.data ? doneResponse.target.data.length : 0;
+      const dataLength = doneResponse && typeof doneResponse === 'number' ? doneResponse : 0;
       
       this.dataAvailable = dataLength > 0;
       this.dataLength = dataLength;
@@ -251,7 +276,7 @@ export default {
     clearChart(){
       if (this.detailChart) {
         // console.log('dispose via DetailChart');
-        this.detailChart.dispose();
+        // this.detailChart.dispose(); 
         // console.log('delete via DetailChart');
         this.detailChart = null;
         // delete this.detailChart;
