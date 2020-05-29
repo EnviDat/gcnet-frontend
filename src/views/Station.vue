@@ -24,7 +24,7 @@
       <v-flex xs12 >
         <v-layout column >
 
-          <v-flex v-for="(fileObject, index) in generateFileList"
+          <v-flex v-for="fileObject in generateFileList"
                   :key="fileObject.fileName"
                   :ref="fileObject.fileName"
                   >
@@ -33,7 +33,6 @@
                           :stationName="currentStation.name"
                           :fileObject="fileObject"
                           :chartId="chartId(fileObject.fileName)"
-                          :delay="index * 500"
                           :valueFieldMapping="valueFieldMapping"
                           :preload="fileObject.preload"
                           :showDisclaimer="fileObject.showDisclaimer"

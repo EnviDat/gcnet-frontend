@@ -328,11 +328,6 @@ const createMicroLineChart = function createMicroLineChart(selector, dateValueFi
 
 // eslint-disable-next-line no-unused-vars
 const createSerialChart = function createSerialChart(selector, unit, graphs, chartData, delay, doneCallback, errorCallback, recentData) {
-    // var chart = am4core.create(selector, am4charts.XYChart);
-    // AmCharts.theme = AmCharts.themes.light;
-    // AmCharts.useUTC = true;
-  
-  // console.log('typeof AmCharts.makeChart ' + typeof(AmCharts.makeChart));
 
     var chartConfig = {
         "type": "serial",
@@ -380,7 +375,7 @@ const createSerialChart = function createSerialChart(selector, unit, graphs, cha
           "dashLength": 5,
         },
         "export": {
-            "enabled": true,
+            "enabled": false,
         },
         "listeners": [
           // {

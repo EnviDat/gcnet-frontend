@@ -98,7 +98,7 @@ export default {
     fileObject: Object,
     delay: {
       type: Number,
-      default: 500,
+      default: 0,
     },
     valueFieldMapping: Object,
     preload: Boolean,
@@ -114,8 +114,8 @@ export default {
     //   this.registeryIntersectionObserver();
     // }
 
-            this.intersected = true;
-            this.loadChart();    
+    this.intersected = true;
+    this.loadChart();    
   },
   beforeDestroy() {
     // console.log('DetailChart: beforeDestroy method ' + this.chartId);
