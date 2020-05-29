@@ -31,6 +31,32 @@
         </v-flex>
 
         <v-flex xs12 >
+          <v-layout row wrap align-center>
+            <v-flex xs12 >
+              <h3>The GC-Net Portal is a joint project of WSL and CIRES</h3>
+            </v-flex>
+
+            <v-flex xs6 >
+              <a href="https://www.wsl.ch/en/ueber-die-wsl.html" target="_blank">
+                <img style="height: 100px;" src="@/assets/WSL_logo.png" alt="WSL Logo">
+              </a>
+              <div class="caption">Swiss Federal Institute <br />for Forest, Snow and Landscape Research WSL</div>
+            </v-flex>
+
+            <v-flex xs6 >
+              <a href="https://cires.colorado.edu/about" target="_blank">
+                <img style="height: 100px; background-color: gray;" src="@/assets/cireslogo_footer.png" alt="CIRES Logo" >
+              </a>
+              <div class="caption">Cooperative Institute for Research in Environmental Sciences <br />at the University of Colorado Boulder</div>
+            </v-flex>
+
+          </v-layout>
+
+          <!-- Swiss Federal Institute for Forest, Snow and Landscape Research WSL  -->
+          <!-- Cooperative Institute for Research in Environmental Sciences at the University of Colorado Boulder -->
+        </v-flex>
+
+        <v-flex xs12 >
           <p v-html="homeInfos.additionalInfo"></p>
         </v-flex>
 
