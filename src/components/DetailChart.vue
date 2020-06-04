@@ -108,14 +108,11 @@ export default {
     BaseRectangleButton,
   },
   mounted() {
-    // this.preloading = this.preload;
+    this.preloading = this.preload;
 
-    // if (this.preloading) {
-    //   this.registeryIntersectionObserver();
-    // }
-
-    this.intersected = true;
-    this.loadChart();    
+    if (this.preloading) {
+      this.registeryIntersectionObserver();
+    }
   },
   beforeDestroy() {
     // console.log('DetailChart: beforeDestroy method ' + this.chartId);
