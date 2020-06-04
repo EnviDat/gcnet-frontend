@@ -17,7 +17,6 @@
           <img v-if="img"
                 ref="card_image"
                 style="height: 100%;"
-                v-on:load="setRandomPosition()"
                 :src="img" />                        
         </v-flex>
 
@@ -44,57 +43,13 @@ export default {
     disabled: Boolean,
     img: String,
     href: String,
-    randomImgPosition: Boolean,
   },
-  // mounted() {
-  //   if (!this.$props.randomImgPosition) {
-  //     return;
-  //   }
-
-  //   this.$nextTick(()=> {
-  //     this.setRandomPosition();
-  //   })
-  // },
   methods: {
     clicked() {
       if (!this.href) {
         this.$emit('clicked', this.title.toLowerCase());
       }
     },
-    setRandomPosition() {
-      if (!this.randomImgPosition){
-        return;
-      }
-
-      if (!this.$refs.card_image_parent){
-        return;
-      }
-
-      if (!this.$refs.card_image){
-        return;
-      }
-
-      let styles = 'position: relative; '
-      let rPos = 0;
-      let tPos = 0;
-      const margin = 100;
-      const height = this.$refs.card_image.clientHeight - margin;
-      const width = this.$refs.card_image.clientWidth - margin;
-
-      if (height > 0){
-        // tPos = this.randomIntFromInterval(0, height);
-        tPos = this.randomIntFromSeed(0, height, this.title);
-      }
-
-      if (width > 0){
-        // rPos = this.randomIntFromInterval(0, width);
-        rPos = this.randomIntFromSeed(0, width, this.title);
-      }
-
-      styles += `right: ${rPos}px; bottom: ${tPos}px;`;
-
-      this.$refs.card_image.style = styles;
-    }
   },
 };
 </script>
