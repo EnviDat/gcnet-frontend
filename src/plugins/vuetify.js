@@ -1,6 +1,8 @@
 import Vue from 'vue';
-import Vuetify from 'vuetify/lib';
-import 'vuetify/src/stylus/app.styl';
+// import Vuetify from 'vuetify/lib';
+// import 'vuetify/src/stylus/app.styl';
+// import 'vuetify/dist/vuetify.min.css';
+import Vuetify from 'vuetify/dist/vuetify.min';
 
 // icons are imported in the App.vue via sass/scss
 // Icons list: https://jossef.github.io/material-design-icons-iconfont/
