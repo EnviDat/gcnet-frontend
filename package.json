@@ -1,6 +1,6 @@
 {
   "name": "gc-net",
-  "version": "1.1.33",
+  "version": "1.1.34",
   "private": true,
   "description": "As of the 1999 field season, 18 automatic weather stations (AWS) are collecting climate information on Greenland's ice sheet. Each AWS is equipped with a number of instruments to sample the following:",
   "author": "Dominik Haas-Artho",
@@ -39,7 +39,8 @@
     "stylus-loader": "^3.0.1",
     "vue-cli-plugin-vuetify": "^0.5.0",
     "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.4.3"
+    "vuetify-loader": "^1.4.3",
+    "webpack-bundle-analyzer": "^3.8.0"
   },
   "eslintConfig": {
     "root": true,
