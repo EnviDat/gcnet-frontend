@@ -20,7 +20,6 @@
 
                 <v-flex v-for="(paramObj, index) in paramList"
                         :key="index"
-                        xs12 sm6
                         pa-0>
 
                   <v-btn color="primary"
