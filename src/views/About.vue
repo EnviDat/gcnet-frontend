@@ -45,7 +45,7 @@
 
             <v-flex xs6 >
               <a href="https://cires.colorado.edu/about" target="_blank">
-                <img style="height: 100px; background-color: gray;" src="@/assets/cireslogo_footer.png" alt="CIRES Logo" >
+                <img style="width: 150px;" src="@/assets/cireslogo.jpg" alt="CIRES Logo" >
               </a>
               <div class="caption">Cooperative Institute for Research in Environmental Sciences <br />at the University of Colorado Boulder</div>
             </v-flex>
