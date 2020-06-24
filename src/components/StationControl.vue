@@ -38,7 +38,7 @@
           <v-layout column align-center fill-height>
 
             <v-flex shrink>
-              <img :style="`height: 450px;`"
+              <img style="height: 450px; max-width: 100%; "
                     :src="stationImage" />
             </v-flex>
 

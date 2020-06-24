@@ -279,6 +279,19 @@ export default {
             precision: 1,
         },
       ],
+      'ws': [
+        {   parameter: 'WS1',
+            color: '#046401',
+            titleString: 'Wind-speed 1',
+            precision: 1,
+        },
+        {
+            parameter: 'WS2',
+            color: '#5ED352',
+            titleString: 'Wind-speed 2',
+            precision: 1,
+        }
+      ],
       'wd': [
         {
           parameter: 'WD1',
@@ -291,19 +304,6 @@ export default {
           color: '#2FCE32',
           titleString: 'Wind-direction 2',
           precision: 1,
-        }
-      ],
-      'ws': [
-        {   parameter: 'WS1',
-            color: '#046401',
-            titleString: 'Wind-speed 1',
-            precision: 1,
-        },
-        {
-            parameter: 'WS2',
-            color: '#5ED352',
-            titleString: 'Wind-speed 2',
-            precision: 1,
         }
       ],
       'rh': [

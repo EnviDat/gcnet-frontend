@@ -297,7 +297,7 @@ export default {
       ISObserver: null,
       intersected: false,
       noDataText: 'No data available',
-      disclaimerText: 'Please note: this data is averaged for visulisation purposes.',
+      disclaimerText: 'Please note: this data is a daily average for visualisation purposes.',
       records: [],
       seriesSettings: {...defaultSeriesSettings},
     };
