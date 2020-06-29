@@ -1,77 +1,71 @@
 <template>
-  <v-navigation-drawer
-    class="gc_net_navigation"
-    permanent
-    app
-    :width="open"
-  >
+  <v-navigation-drawer permanent
+                        app
+                        :width="open" >
 
-    <v-toolbar flat class="transparent">
-      <v-list class="pa-0 gc_net_nav" :dense="$vuetify.breakpoint.smAndDown">
-        <v-list-tile avatar :class="$vuetify.breakpoint.mdAndUp ? '' : 'px-0'"
-                      @click.stop="catchHomeClick"
-        >
+    <v-toolbar flat
+                class="transparent">
+      <v-list class="pa-0 gc_net_nav"
+              :dense="$vuetify.breakpoint.smAndDown">
+        <v-list-tile avatar
+                      :class="$vuetify.breakpoint.mdAndUp ? '' : 'px-0'"
+                      @click.stop="catchHomeClick" >
           <v-list-tile-avatar :class="$vuetify.breakpoint.mdAndUp ? '' : 'px-0'" >
             <img :src="gcNetlogo">
           </v-list-tile-avatar>
 
           <v-list-tile-content>
             <v-list-tile-title>{{ gcNetHomeText }}</v-list-tile-title>
-            <p class="mb-0" style="font-size: 9px;" >{{ version }}</p>
+            <p class="mb-0"
+                style="font-size: 9px;" >{{ version }}</p>
           </v-list-tile-content>
 
         </v-list-tile>
       </v-list>
     </v-toolbar>
 
-    <v-list class="pt-0" dense>
+    <v-list class="pt-0"
+            dense >
       <v-divider></v-divider>
 
-      <v-list-group
-        :prepend-icon="navItems[0].icon"
-        v-model="navItems[0].active"
-      >
+      <v-list-group :prepend-icon="navItems[0].icon"
+                    v-model="navItems[0].active" >
 
         <template v-slot:activator>
           <v-list-tile>
             <v-list-tile-title>{{ navItems[0].title }}</v-list-tile-title>
           </v-list-tile>
-
         </template>
+
         <v-list-tile-content>
-          <slot name="map">
-            
-          </slot>
+          <slot name="map" />
         </v-list-tile-content>
 
       </v-list-group>
 
-      <v-list-group
-        :prepend-icon="navItems[1].icon"
-        v-model="navItems[1].active"
-      >
+      <v-list-group :prepend-icon="navItems[1].icon"
+                      v-model="navItems[1].active" >
 
         <template v-slot:activator>
           <v-list-tile>
             <v-list-tile-title>{{ navItems[1].title }}</v-list-tile-title>
           </v-list-tile>
-
         </template>
+
         <v-list-tile-content>
-          <slot name="list">
-            
-          </slot>
+          <slot name="list" />
         </v-list-tile-content>
         
       </v-list-group>
 
       <!-- Domi: StationOverview list tile with click, icon and title -->
-      <v-list-tile avatar :class="$vuetify.breakpoint.mdAndUp ? '' : 'px-0'"
-                    @click.stop="catchStationOverviewClick"
-      >
+      <v-list-tile avatar
+                    :class="$vuetify.breakpoint.mdAndUp ? '' : 'px-0'"
+                    @click.stop="catchStationOverviewClick" >
+
         <v-list-tile-action class="v-list__group__header__prepend-icon">
           <v-icon >{{ navItems[2].icon }}</v-icon>
-        </v-list-tile-action>        
+        </v-list-tile-action>
 
         <v-list-tile-content>
           <v-list-tile-title>{{ navItems[2].title }}</v-list-tile-title>
@@ -153,9 +147,7 @@ export default {
     },
   },
   data: () => ({
-    drawer: true,
     drawerIsMini: true,
-    right: null,
     gcNetlogo,
     gcNetHomeText: 'GC-Net Data Portal'
   }),

@@ -25,6 +25,7 @@
       <v-tabs v-model="activeTab"
               color="primary"
               centered
+              hide-slider
               slider-color="white" >
 
         <v-tab v-for="(navItem, index) in navItems"
