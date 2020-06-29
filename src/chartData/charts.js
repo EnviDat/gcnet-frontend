@@ -16,12 +16,14 @@ const defaultSeriesSettings = {
 };
 
 // eslint-disable-next-line no-unused-vars
-const createSerialChart = function createSerialChart(selector, unit, graphs, chartData, delay, doneCallback, errorCallback, recentData) {
+const createSerialChart = function createSerialChart(selector, unit, graphs, chartData, delay, doneCallback, errorCallback, recentData, localTimeConversion) {
+
+    // when the dataDateFormat is not set the time is converted to local time
+    const dataDateFormat = localTimeConversion ? '' : 'YYYY-MM-DDTHH:NN:SS.QQ';
 
     var chartConfig = {
         "type": "serial",
-        // "theme": lightTheme,
-        // "dataDateFormat": dateFormat,
+        "dataDateFormat": dataDateFormat,
         "legend": {
           "equalWidths": true,
           "useGraphSettings": true,
@@ -57,7 +59,7 @@ const createSerialChart = function createSerialChart(selector, unit, graphs, cha
           "categoryBalloonDateFormat": "MMM DD, YYYY JJ:NN",
           // "dataDateFormat": "MMM DD, YYYY JJ:NN"
         },
-        "categoryField": "timestamp",    
+        "categoryField": "timestamp_iso",    
         "categoryAxis": {
           "parseDates": true,
           // "minPeriod": recentData ? "hh" : "DD",

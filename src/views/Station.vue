@@ -18,7 +18,8 @@
                           :stationImage="stationImg"
                           :stationPreloadImage="stationPreloadImage"
                           :paramList="paramList"
-                          @paramClick="catchParamClick"/>
+                          @paramClick="catchParamClick"
+                          @localTimeClick="catchLocalTimeClick" />
       </v-flex>
 
       <v-flex xs12 >
@@ -36,6 +37,8 @@
                           :valueFieldMapping="valueFieldMapping"
                           :preload="fileObject.preload"
                           :showDisclaimer="fileObject.showDisclaimer"
+                          :convertLocalTime="convertLocalTime"
+                          :key="fileObject.fileName + reRenderKey"
                           />
           </v-flex>
         </v-layout>
@@ -83,6 +86,9 @@ export default {
     StationControl,
     StationsList,
     StationsMap,
+  },
+  created(){
+    this.reRenderKey = new Date().toUTCString();
   },
   mounted() {
     const stationToFind = this.stationRouteId();
@@ -162,6 +168,10 @@ export default {
           window.scrollTo(0, scrollY);
         }
       }
+    },
+    catchLocalTimeClick(convertLocalTime) {
+      this.convertLocalTime = convertLocalTime
+      this.reRenderKey = new Date().toUTCString();
     },
     backToTop(){
       window.scrollTo(0, 0);
@@ -244,6 +254,8 @@ export default {
     stationPreloadImage: null,
     currentStation: null,
     expand: false,
+    convertLocalTime: false,
+    reRenderKey: null,
     fileObjects: [
       { fileName: 'temp_v.json', chartTitle: 'Air Temperatures Recent Days', numberFormat: '##  °C', dateFormatTime: true, preload: true, showDisclaimer: false },
       { fileName: 'temp.json', chartTitle: 'Air Temperatures Historical Data', numberFormat: '##  °C', dateFormatTime: false, preload: true, showDisclaimer: false },

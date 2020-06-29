@@ -103,6 +103,7 @@ export default {
     valueFieldMapping: Object,
     preload: Boolean,
     showDisclaimer: Boolean,
+    convertLocalTime: Boolean,
   },
   components: {
     BaseRectangleButton,
@@ -231,7 +232,7 @@ export default {
           //                             !this.chartId.includes('_v'), undefined, this.seriesSettings, dateFormatingInfos,
           //                              undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
           //                              this.chartDone, this.chartError);
-          this.detailChart = createSerialChart(this.chartId, ' ' + unit, this.graphs, this.records, this.delay, this.chartDone, this.chartError, recentData);
+          this.detailChart = createSerialChart(this.chartId, ' ' + unit, this.graphs, this.records, this.delay, this.chartDone, this.chartError, recentData, this.convertLocalTime);
       } catch (error) {
         this.chartIsLoading = false;
         this.dataError = `Error creating chart: ${error}`;

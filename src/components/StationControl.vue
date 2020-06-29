@@ -31,6 +31,23 @@
 
               </v-layout>
             </v-flex>
+
+            <v-flex pt-4>
+              <v-layout row wrap align-center
+                        @click="convertLocalTime = !convertLocalTime; $emit('localTimeClick', convertLocalTime)"
+                        style="cursor: pointer;" >
+                <v-flex shrink >
+                  <v-icon :color="convertLocalTime ? 'accent' : 'primary'" >{{ convertLocalTime ? 'check_box' : 'check_box_outline_blank' }}</v-icon>
+                </v-flex>                
+                <v-flex shrink >
+                  <v-icon >access_time</v-icon>
+                </v-flex>                
+                <v-flex shrink >
+                  Convert to chart times to your local time
+                </v-flex>                
+              </v-layout>
+            </v-flex>
+
           </v-layout>
         </v-flex>
         
@@ -58,6 +75,7 @@
             
           </v-layout>
         </v-flex>
+
       </v-layout>
     </v-container>
   </v-card>
@@ -83,6 +101,7 @@ export default {
   },
   data: () => ({
     expand: false,
+    convertLocalTime: false,
     smallSize: 140,
   }),
 };
