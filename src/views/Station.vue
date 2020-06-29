@@ -290,7 +290,7 @@ export default {
             color: '#5ED352',
             titleString: 'Wind-speed 2',
             precision: 1,
-        }
+        },
       ],
       'wd': [
         {
@@ -304,7 +304,7 @@ export default {
           color: '#2FCE32',
           titleString: 'Wind-direction 2',
           precision: 1,
-        }
+        },
       ],
       'rh': [
         {   parameter: 'RH1',
@@ -319,12 +319,6 @@ export default {
       ],
       'rad': [
         {
-          parameter: 'NetRad',
-          color: '#1C5197',
-          titleString: 'Net radiation',
-          precision: 1,
-        },
-        {
           parameter: 'SWin',
           color: '#E79F32',
           titleString: 'Short-wave incoming',
@@ -335,7 +329,13 @@ export default {
           color: '#9A6008',
           titleString: 'Short-wave outgoing',
           precision: 1,
-        }
+        },
+        {
+          parameter: 'NetRad',
+          color: '#1C5197',
+          titleString: 'Net radiation',
+          precision: 1,
+        },
       ],
       'sheight': [
         {
@@ -349,7 +349,7 @@ export default {
           color: '#3375CD',
           titleString: 'Snow height 2',
           precision: 2,
-        }
+        },
       ],
       'press': [
         {
@@ -357,7 +357,7 @@ export default {
           color: '#FF01FF',
           titleString: 'Atmospheric pressure',
           precision: 1,
-        }
+        },
       ],
       'battvolt': [
         {
@@ -365,7 +365,7 @@ export default {
           color: '#27AE61',
           titleString: 'Battery voltage',
           precision: 1,
-        }
+        },
       ],
     },
   }),
