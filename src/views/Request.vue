@@ -27,9 +27,9 @@ export default {
   }),
   computed: {
   },
-  mounted(){
+  mounted() {
   },
-  beforeDestroy(){
+  beforeDestroy() {
   },
   methods: {
   },

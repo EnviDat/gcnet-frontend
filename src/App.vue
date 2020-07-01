@@ -49,13 +49,13 @@ export default {
   },
   methods: {
     catchNavigationClick(route) {
-      const routeCompare = route === "/" ? route : `/${route}`;
+      const routeCompare = route === '/' ? route : `/${route}`;
 
       if (this.$route.path !== routeCompare) {
         this.$router.push({ path: routeCompare });
       }
     },
-    catchDetailClick(station){
+    catchDetailClick(station) {
       this.$eventHub.$emit('detailClick', station);
     },
     dynamicBackground() {
@@ -83,21 +83,27 @@ export default {
       return imgs[keys[rnd]];
     },
   },
-  data () {
+  data() {
     return {
       name: 'App',
       appBGImages: {},
       currentStation: null,
       version: process.env.VUE_APP_VERSION,
       navItems: [
-        { title: 'Overview', toolTip: 'Shows the stations overview', icon: 'dashboard', route: '/' },
+        {
+ title: 'Overview', toolTip: 'Shows the stations overview', icon: 'dashboard', route: '/', 
+},
         // { title: 'Stations', toolTip: 'Shows a list of stations overview', icon: 'view_list', route: 'station' },
-        { title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', route: 'request' },
-        { title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info_outline', route: 'about'},
+        {
+ title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', route: 'request', 
+},
+        {
+ title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info_outline', route: 'about', 
+},
       ],
     };
   },
-}
+};
 </script>
 
 <style lang="scss">

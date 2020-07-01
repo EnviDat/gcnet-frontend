@@ -55,7 +55,6 @@
       </v-flex>
     </v-layout>
 
-
     <v-btn
       fab
       color="accent"
@@ -71,9 +70,9 @@
 
 <script>
 import StationsMap from '@/components/StationsMap';
-import DetailChart from "@/components/DetailChart";
-import StationControl from "@/components/StationControl";
-import StationsList from "@/components/Navigation/StationsList";
+import DetailChart from '@/components/DetailChart';
+import StationControl from '@/components/StationControl';
+import StationsList from '@/components/Navigation/StationsList';
 // import * as am4core from "@amcharts/amcharts4/core";
 // am4core.options.queue = true;
 
@@ -87,14 +86,14 @@ export default {
     StationsList,
     StationsMap,
   },
-  created(){
+  created() {
     this.reRenderKey = new Date().toUTCString();
   },
   mounted() {
     const stationToFind = this.stationRouteId();
     this.currentStation = this.getStation(stationToFind);
   },
-  beforeDestroy(){
+  beforeDestroy() {
     // am4core.unuseAllThemes();
     // console.log('disposeAllCharts via DetailPage');
     // am4core.disposeAllCharts();
@@ -105,7 +104,7 @@ export default {
       this.currentStation = this.getStation(stationToFind);
     },    
     currentStation() {
-      if (this.currentStation){
+      if (this.currentStation) {
         let imgs = require.context('@/assets/stations/', false, /\.jpg$/);
         let imgCache = {};
 
@@ -129,7 +128,7 @@ export default {
     },
   },
   methods: {
-    mapStationClick(stationUrl){
+    mapStationClick(stationUrl) {
       const splits = stationUrl.split('/');
 
       if (splits.length > 0) {
@@ -137,32 +136,32 @@ export default {
         this.changeCurrentStation(stationName);
       }
     },
-    changeCurrentStation(newStation){
+    changeCurrentStation(newStation) {
       this.$router.push({ path: `/station/${newStation}` });
       this.$emit('detailClick', newStation);
     },
-    stationRouteId(){
+    stationRouteId() {
       return this.$route.params.id;
     },
-    chartId(fileName){
+    chartId(fileName) {
       return `${this.stationId}_${fileName}`;
     },
-    catchParamClick(fileName){
+    catchParamClick(fileName) {
       let scrollToChart = null;
 
       for (let i = 0; i < this.fileObjects.length; i++) {
         const obj = this.fileObjects[i];
 
-        if (obj.fileName.includes(fileName)){
+        if (obj.fileName.includes(fileName)) {
           scrollToChart = obj.fileName;
           break;
         }        
       }
 
-      if (scrollToChart){
-        const scrollToKey = `${this.currentStation.id}${scrollToChart}`
+      if (scrollToChart) {
+        const scrollToKey = `${this.currentStation.id}${scrollToChart}`;
 
-        if (this.$refs && this.$refs[scrollToKey] && this.$refs[scrollToKey].length >= 1){
+        if (this.$refs && this.$refs[scrollToKey] && this.$refs[scrollToKey].length >= 1) {
           const scrollToDOM = this.$refs[scrollToKey][0];
           const scrollY = scrollToDOM.offsetTop;
           window.scrollTo(0, scrollY);
@@ -170,41 +169,41 @@ export default {
       }
     },
     catchLocalTimeClick(convertLocalTime) {
-      this.convertLocalTime = convertLocalTime
+      this.convertLocalTime = convertLocalTime;
       this.reRenderKey = new Date().toUTCString();
     },
-    backToTop(){
+    backToTop() {
       window.scrollTo(0, 0);
     },
-    catchListClick(stationToFind){
+    catchListClick(stationToFind) {
       const stationClicked = this.getStation(stationToFind);
 
-      if (stationClicked){
+      if (stationClicked) {
         this.$router.push({ path: `/station/${stationClicked.alias}` });
       }
 
     },
-    getStation(stationToFind){
+    getStation(stationToFind) {
       if (stationToFind) {
         const stations = this.$store.getters.stations;
 
         for (let i = 0; i < stations.length; i++) {
           const station = stations[i];
 
-          if (station.id === stationToFind || station.alias === stationToFind || station.name === stationToFind){
+          if (station.id === stationToFind || station.alias === stationToFind || station.name === stationToFind) {
             return station;
           }
         }
       }
 
       return null;
-    }
+    },
   },
   computed: {
     generateFileList() {
-      let fileList = [];
+      const fileList = [];
 
-      if (!this.currentStation){
+      if (!this.currentStation) {
         // handle empty case, just return the empty list
         return fileList;
       }
@@ -220,14 +219,14 @@ export default {
           preload: fileObj.preload,
           showDisclaimer: fileObj.showDisclaimer,
           seriesNumberFormat: fileObj.seriesNumberFormat,
-        }
+        };
         
         fileList.push(fileObjectTemplate);
       }
 
       return fileList;
     },
-    paramList(){
+    paramList() {
       // just pick the first param name of the each list
       const params = [];
       const keys = Object.keys(this.valueFieldMapping);
@@ -239,10 +238,10 @@ export default {
 
       return params;
     },
-    baseUrl(){
+    baseUrl() {
       return process.env.NODE_ENV === 'production' ? this.baseStationURL : this.baseStationURLTestdata;
     },
-    stationId(){
+    stationId() {
       return `${this.currentStation.id}_${this.currentStation.alias ? this.currentStation.alias : this.currentStation.name}`;
     },
   },
@@ -257,25 +256,57 @@ export default {
     convertLocalTime: false,
     reRenderKey: null,
     fileObjects: [
-      { fileName: 'temp_v.json', chartTitle: 'Air Temperatures Recent Days', numberFormat: '##  °C', dateFormatTime: true, preload: true, showDisclaimer: false },
-      { fileName: 'temp.json', chartTitle: 'Air Temperatures Historical Data', numberFormat: '##  °C', dateFormatTime: false, preload: true, showDisclaimer: false },
-      { fileName: 'ws_v.json', chartTitle: 'Wind Speed Recent Days', numberFormat: '###  m/s', dateFormatTime: true, preload: true, showDisclaimer: false },
-      { fileName: 'ws.json', chartTitle: 'Wind Speed Historical Data', numberFormat: '###  m/s', dateFormatTime: false, preload: true, showDisclaimer: false },
-      { fileName: 'wd_v.json', chartTitle: 'Wind Direction Recent Days', numberFormat: '###  °', dateFormatTime: true, preload: true, showDisclaimer: false },
-      { fileName: 'wd.json', chartTitle: 'Wind Direction Historical Data', numberFormat: '###  °', dateFormatTime: false, preload: true, showDisclaimer: false },
-      { fileName: 'rh_v.json', chartTitle: 'Relative Humidity Recent Days', numberFormat: '##  %', dateFormatTime: true, preload: true, showDisclaimer: false, seriesNumberFormat: '#.' },
-      { fileName: 'rh.json', chartTitle: 'Relative Humidity Historical Data', numberFormat: '##  %', dateFormatTime: false, preload: true, showDisclaimer: false, seriesNumberFormat: '#.' },
-      { fileName: 'rad_v.json', chartTitle: 'Radiation Recent Days', numberFormat: '###  W/m²', dateFormatTime: true, preload: true, showDisclaimer: false },
-      { fileName: 'rad.json', chartTitle: 'Radiation Historical Data', numberFormat: '###  W/m²', dateFormatTime: false, preload: true, showDisclaimer: false },
-      { fileName: 'sheight_v.json', chartTitle: 'Snow Heights Recent Days', numberFormat: '#.##  m', dateFormatTime: true, preload: true, showDisclaimer: false, seriesNumberFormat: '#.00' },
-      { fileName: 'sheight.json', chartTitle: 'Snow Heights Historical Data', numberFormat: '#.##  m', dateFormatTime: false, preload: true, showDisclaimer: false },
-      { fileName: 'press_v.json', chartTitle: 'Air Pressure Recent Days', numberFormat: '###  mbar', dateFormatTime: true, preload: true, showDisclaimer: false },
-      { fileName: 'press.json', chartTitle: 'Air Pressure Historical Data', numberFormat: '###  mbar', dateFormatTime: false, preload: true, showDisclaimer: false },
-      { fileName: 'battvolt_v.json', chartTitle: 'Battery Voltage Recent Days', numberFormat: '## V', dateFormatTime: true, preload: true, showDisclaimer: false },
-      { fileName: 'battvolt.json', chartTitle: 'Battery Voltage Historical Data', numberFormat: '## V', dateFormatTime: false, preload: true, showDisclaimer: false },
+      {
+ fileName: 'temp_v.json', chartTitle: 'Air Temperatures Recent Days', numberFormat: '##  °C', dateFormatTime: true, preload: true, showDisclaimer: false, 
+},
+      {
+ fileName: 'temp.json', chartTitle: 'Air Temperatures Historical Data', numberFormat: '##  °C', dateFormatTime: false, preload: true, showDisclaimer: false, 
+},
+      {
+ fileName: 'ws_v.json', chartTitle: 'Wind Speed Recent Days', numberFormat: '###  m/s', dateFormatTime: true, preload: true, showDisclaimer: false, 
+},
+      {
+ fileName: 'ws.json', chartTitle: 'Wind Speed Historical Data', numberFormat: '###  m/s', dateFormatTime: false, preload: true, showDisclaimer: false, 
+},
+      {
+ fileName: 'wd_v.json', chartTitle: 'Wind Direction Recent Days', numberFormat: '###  °', dateFormatTime: true, preload: true, showDisclaimer: false, 
+},
+      {
+ fileName: 'wd.json', chartTitle: 'Wind Direction Historical Data', numberFormat: '###  °', dateFormatTime: false, preload: true, showDisclaimer: false, 
+},
+      {
+ fileName: 'rh_v.json', chartTitle: 'Relative Humidity Recent Days', numberFormat: '##  %', dateFormatTime: true, preload: true, showDisclaimer: false, seriesNumberFormat: '#.', 
+},
+      {
+ fileName: 'rh.json', chartTitle: 'Relative Humidity Historical Data', numberFormat: '##  %', dateFormatTime: false, preload: true, showDisclaimer: false, seriesNumberFormat: '#.', 
+},
+      {
+ fileName: 'rad_v.json', chartTitle: 'Radiation Recent Days', numberFormat: '###  W/m²', dateFormatTime: true, preload: true, showDisclaimer: false, 
+},
+      {
+ fileName: 'rad.json', chartTitle: 'Radiation Historical Data', numberFormat: '###  W/m²', dateFormatTime: false, preload: true, showDisclaimer: false, 
+},
+      {
+ fileName: 'sheight_v.json', chartTitle: 'Snow Heights Recent Days', numberFormat: '#.##  m', dateFormatTime: true, preload: true, showDisclaimer: false, seriesNumberFormat: '#.00', 
+},
+      {
+ fileName: 'sheight.json', chartTitle: 'Snow Heights Historical Data', numberFormat: '#.##  m', dateFormatTime: false, preload: true, showDisclaimer: false, 
+},
+      {
+ fileName: 'press_v.json', chartTitle: 'Air Pressure Recent Days', numberFormat: '###  mbar', dateFormatTime: true, preload: true, showDisclaimer: false, 
+},
+      {
+ fileName: 'press.json', chartTitle: 'Air Pressure Historical Data', numberFormat: '###  mbar', dateFormatTime: false, preload: true, showDisclaimer: false, 
+},
+      {
+ fileName: 'battvolt_v.json', chartTitle: 'Battery Voltage Recent Days', numberFormat: '## V', dateFormatTime: true, preload: true, showDisclaimer: false, 
+},
+      {
+ fileName: 'battvolt.json', chartTitle: 'Battery Voltage Historical Data', numberFormat: '## V', dateFormatTime: false, preload: true, showDisclaimer: false, 
+},
     ],
     valueFieldMapping: {
-      'temp': [
+      temp: [
         {
             parameter: 'AirTC1',
             color: '#D48E00',
@@ -291,8 +322,9 @@ export default {
             precision: 1,
         },
       ],
-      'ws': [
-        {   parameter: 'WS1',
+      ws: [
+        {
+   parameter: 'WS1',
             color: '#046401',
             titleString: 'Wind-speed 1',
             precision: 1,
@@ -304,7 +336,7 @@ export default {
             precision: 1,
         },
       ],
-      'wd': [
+      wd: [
         {
           parameter: 'WD1',
           color: '#046401',
@@ -318,8 +350,9 @@ export default {
           precision: 1,
         },
       ],
-      'rh': [
-        {   parameter: 'RH1',
+      rh: [
+        {
+   parameter: 'RH1',
             color: '#1DAFD7',
             titleString: 'Relative humidity 1',
         },
@@ -329,7 +362,7 @@ export default {
             titleString: 'Relative humidity 2',
         },
       ],
-      'rad': [
+      rad: [
         {
           parameter: 'SWin',
           color: '#E79F32',
@@ -349,7 +382,7 @@ export default {
           precision: 1,
         },
       ],
-      'sheight': [
+      sheight: [
         {
           parameter: 'Sheight1',
           color: '#679DE2',
@@ -363,7 +396,7 @@ export default {
           precision: 2,
         },
       ],
-      'press': [
+      press: [
         {
           parameter: 'press',
           color: '#FF01FF',
@@ -371,7 +404,7 @@ export default {
           precision: 1,
         },
       ],
-      'battvolt': [
+      battvolt: [
         {
           parameter: 'BattVolt',
           color: '#27AE61',

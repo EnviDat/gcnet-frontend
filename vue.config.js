@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
 const fs = require('fs');
 
 const version = require('./package.json').version;
+
 process.env.VUE_APP_VERSION = version;
 
 if (process.env.NODE_ENV === 'production') {
@@ -19,14 +21,12 @@ if (process.env.NODE_ENV === 'production') {
 
 console.log(`starting ${version} with on ${process.env.NODE_ENV}`);
 
-
 module.exports = {
   // publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
   publicPath: './',
   assetsDir: './static',
   runtimeCompiler: true,
   css: {
-    modules: false,
     sourceMap: true,
   },
   transpileDependencies: [
@@ -61,7 +61,7 @@ module.exports = {
   //     }        
   //   },
   // },
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.module
       .rule('html')
       .test(/map_html\.html$/)

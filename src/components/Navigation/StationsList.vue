@@ -52,12 +52,12 @@ export default {
     this.cardImgs = imgCache;
   },
   methods: {
-    backgroundColor(station){
+    backgroundColor(station) {
       let style = 'background-color: ';
 
       if (this.currentStation && this.currentStation.name === station.name) {
         style += `${this.$vuetify.theme.primary};`;
-      } else if (!station.alias){
+      } else if (!station.alias) {
         style += `${this.$vuetify.theme.errorHighlight};`;
       }
 
@@ -69,7 +69,7 @@ export default {
     listClick(cardTitle) {
       this.$emit('listClick', cardTitle);
     },
-    stationImg(alias){
+    stationImg(alias) {
       // Domi: used alias as key for the station file name
       return this.cardImgs[`./${alias}.jpg`];
     },
@@ -85,11 +85,10 @@ export default {
       return this.cardImgs[keys[rnd]];
     },
   },
-}
+};
 
 </script>
 
 <style scoped>
-
 
 </style>

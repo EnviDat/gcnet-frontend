@@ -60,12 +60,10 @@
           </v-layout>
         </v-flex>
 
-
         <v-flex v-if="showDisclaimer && showChart"
                 class="title" style="color: red;">
           {{ disclaimerText }}
         </v-flex>
-
 
         <v-flex v-show="showChart"
                 pt-0 >
@@ -82,12 +80,14 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 // import { createLineChart, defaultSeriesSettings } from "../chartData/charts";
-import { createSerialChart, defaultSeriesSettings } from "../chartData/charts";
-// import * as am4core from "@amcharts/amcharts4/core";
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-//import * as bullets from "@amcharts/amcharts4/plugins/bullets";
+import { createSerialChart, defaultSeriesSettings } from '../chartData/charts';
+// import * as am4core from "@amcharts/amcharts4/core";
+// import * as bullets from "@amcharts/amcharts4/plugins/bullets";
+
+/* eslint-disable no-tabs */
 
 export default {
   name: 'DetailChart',
@@ -123,19 +123,19 @@ export default {
     hasData() {
       return this.dataAvailable;
     },
-    showChart(){
+    showChart() {
       return this.intersected && !this.chartIsLoading && this.hasData;
     },
   },
   watch: {
     records() {
-      if (this.records && this.records.length > 0){
+      if (this.records && this.records.length > 0) {
         this.createChart();
       }
     },
   },
   methods: {
-    buildGraphs(){
+    buildGraphs() {
       const graphs = [];
       const keys = Object.keys(this.valueFieldMapping);
 
@@ -159,28 +159,28 @@ export default {
 
       this.graphs = graphs;
     },
-    buildGraph(infoObj){
+    buildGraph(infoObj) {
       const splits = this.fileObject.numberFormat.split(' ');
       const unit = splits.length > 0 ? splits[splits.length - 1] : '';
 
       return {
-        "lineColor": infoObj.color,
-        "bulletRadius": this.seriesSettings.bulletsRadius,
-        "title": infoObj.titleString,
-        "valueField": infoObj.parameter,
-        "balloonText": `<b><span style='font-size:12px;'>${infoObj.titleString}: [[value]] ${unit}</span></b>`,
-        "hideBulletsCount": 200,
-        "bullet": "round",
-        "bulletBorderAlpha": this.seriesSettings.bulletsStrokeOpacity,
-				"bulletAlpha": this.seriesSettings.bulletsfillOpacity,
-				"bulletSize": this.seriesSettings.bulletsRadius,
-        "bulletBorderThickness": this.seriesSettings.bulletsStrokeWidth,
-				"lineThickness": this.seriesSettings.lineStrokeWidth,        
-        "connect": false,
-        "gridAboveGraphs": true,
-        "negativeLineColor": infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
-				"negativeFillColors": infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
-        "precision": infoObj.precision ? infoObj.precision : 0,
+        lineColor: infoObj.color,
+        bulletRadius: this.seriesSettings.bulletsRadius,
+        title: infoObj.titleString,
+        valueField: infoObj.parameter,
+        balloonText: `<b><span style='font-size:12px;'>${infoObj.titleString}: [[value]] ${unit}</span></b>`,
+        hideBulletsCount: 200,
+        bullet: 'round',
+        bulletBorderAlpha: this.seriesSettings.bulletsStrokeOpacity,
+				bulletAlpha: this.seriesSettings.bulletsfillOpacity,
+				bulletSize: this.seriesSettings.bulletsRadius,
+        bulletBorderThickness: this.seriesSettings.bulletsStrokeWidth,
+				lineThickness: this.seriesSettings.lineStrokeWidth,        
+        connect: false,
+        gridAboveGraphs: true,
+        negativeLineColor: infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
+				negativeFillColors: infoObj.negativeColor ? infoObj.negativeColor : infoObj.color,
+        precision: infoObj.precision ? infoObj.precision : 0,
       };
     },
     loadChart() {
@@ -193,25 +193,25 @@ export default {
       this.buildGraphs();
 
       // clear and then new loading on the next tick is needed for the disposing to finish
-      this.$nextTick( () => {
+      this.$nextTick(() => {
         this.loadJsonFiles();
       });
     },
-    loadJsonFiles(){
+    loadJsonFiles() {
       axios
       .get(this.url)
-      .then(response => {
+      .then((response) => {
         // createChart() gets called due to the watch on the records
         this.records = response.data;
         this.dataAvailable = response.data && response.data.length > 0;
         this.chartIsLoading = this.dataAvailable;
       })
-      .catch(error => {
+      .catch((error) => {
         this.chartIsLoading = false;
         this.dataError = `Error creating chart: ${error}`;
-      })
+      });
     },
-    createChart(){
+    createChart() {
       // const dateFormatingInfos = {
       //   dateFormat: this.dateFormat,
       //   dateFormatNoTime: this.dateFormatNoTime,
@@ -232,7 +232,7 @@ export default {
           //                             !this.chartId.includes('_v'), undefined, this.seriesSettings, dateFormatingInfos,
           //                              undefined, this.fileObject.numberFormat, this.fileObject.dateFormatTime,
           //                              this.chartDone, this.chartError);
-          this.detailChart = createSerialChart(this.chartId, ' ' + unit, this.graphs, this.records, this.delay, this.chartDone, this.chartError, recentData, this.convertLocalTime);
+          this.detailChart = createSerialChart(this.chartId, ` ${unit}`, this.graphs, this.records, this.delay, this.chartDone, this.chartError, recentData, this.convertLocalTime);
       } catch (error) {
         this.chartIsLoading = false;
         this.dataError = `Error creating chart: ${error}`;
@@ -254,15 +254,15 @@ export default {
       this.dataLength = dataLength;
       this.dataError = '';
 
-      if (!this.dataAvailable){
+      if (!this.dataAvailable) {
         this.clearChart();
       }
     },
-    registeryIntersectionObserver(){
-      this.ISObserver = new IntersectionObserver(entries => {
+    registeryIntersectionObserver() {
+      this.ISObserver = new IntersectionObserver((entries) => {
         const entry = entries[0];
         if (entry.isIntersecting) {
-          if (!this.intersected){
+          if (!this.intersected) {
             this.intersected = true;
             this.loadChart();
           }
@@ -271,7 +271,7 @@ export default {
 
       this.ISObserver.observe(this.$el);
     },
-    clearChart(){
+    clearChart() {
       if (this.detailChart) {
         // console.log('dispose via DetailChart');
         // this.detailChart.dispose(); 
@@ -283,7 +283,7 @@ export default {
       this.records = [];
     },
   },
-  data()  {
+  data() {
     return {
       graphs: [],
       dateFormat: 'MMM dd, YYYY HH:mm UTC',
@@ -300,10 +300,10 @@ export default {
       noDataText: 'No data available',
       disclaimerText: 'Please note: this data is a daily average for visualisation purposes.',
       records: [],
-      seriesSettings: {...defaultSeriesSettings},
+      seriesSettings: { ...defaultSeriesSettings },
     };
   },
-}
+};
 </script>
 
 <style scoped>

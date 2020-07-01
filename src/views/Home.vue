@@ -76,14 +76,14 @@ export default {
     initialDelay: 1500,
     fileValueMapping: {
       // only use one single file and parameter for the microCharts
-      'temp': ['AirTC1'],
+      temp: ['AirTC1'],
     },
     cardImgs: {},
   }),
   computed: {
-    stations(){
+    stations() {
       return this.$store.getters.overviewStations;
-    }
+    },
   },
   beforeMount() {
     const imgs = require.context('@/assets/cards', false, /\.jpg$/);
@@ -95,7 +95,7 @@ export default {
 
     this.cardImgs = imgCache;
   },
-  mounted(){
+  mounted() {
     let that = this;
 
     setTimeout(() => {
@@ -103,7 +103,7 @@ export default {
       that = null;
     }, this.initialDelay);
   },
-  beforeDestroy(){
+  beforeDestroy() {
     this.clearCharts();
   },
   methods: {
@@ -112,7 +112,7 @@ export default {
       // console.log('disposeAllCharts via OverviewPage');
       // am4core.disposeAllCharts();
     },
-    mapStationClick(stationUrl){
+    mapStationClick(stationUrl) {
       const splits = stationUrl.split('/');
 
       if (splits.length > 0) {
@@ -120,12 +120,13 @@ export default {
         this.changeCurrentStation(stationName);
       }
     },
-    changeCurrentStation(newStation){
+    changeCurrentStation(newStation) {
       this.$router.push({ path: `/station/${newStation}` });
       this.$emit('detailClick', newStation);
     },
-    getJSONUrls(station){
-      const dataURLs = [], recentDataURLs = [];
+    getJSONUrls(station) {
+      const dataURLs = []; const 
+recentDataURLs = [];
       const keys = Object.keys(this.fileValueMapping);
 
       for (let i = 0; i < keys.length; i++) {
@@ -149,7 +150,7 @@ export default {
         recentDataURLs,
       };
     },
-    stationImg(alias){
+    stationImg(alias) {
       return this.cardImgs[`./${alias}.jpg`];
     },
   },

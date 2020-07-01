@@ -30,7 +30,6 @@
             {{ materialIconName }}
           </v-icon>
 
-
       </v-btn>
       <span>{{ toolTipText }}</span>
 

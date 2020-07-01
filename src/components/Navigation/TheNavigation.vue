@@ -78,7 +78,6 @@
   </v-navigation-drawer>
 </template>
 
-
 <script>
 import gcNetlogo from '@/assets/gc_net_logo.png';
 
@@ -89,15 +88,15 @@ export default {
     version: String,
   },
   watch: {
-    mini: function overwrite(){
+    mini: function overwrite() {
       this.drawerIsMini = this.mini;
       this.$emit('updateDrawer', this.drawerIsMini);
       // this.drawerIsMini = this.mini;
     },
-    navItems: function updateDrawer(){
+    navItems: function updateDrawer() {
       this.drawerIsMini = this.mini;
       this.$emit('updateDrawer', this.drawerIsMini);
-    }
+    },
     // drawerIsMini: function updateParent(){
     //   if (this.drawerIsMini){
     //     this.navItems[0].active = false;
@@ -105,11 +104,11 @@ export default {
     //   }
     // }
   },
-  updated(){
+  updated() {
     this.drawerIsMini = this.mini;
   },
   computed: {
-    open(){
+    open() {
 
       let open = false;
       const wideOpen = 500;
@@ -120,38 +119,38 @@ export default {
       const smallOpen = 150;
       const smallClosed = 50;
 
-      if (this.navItems && this.navItems.length > 0){
+      if (this.navItems && this.navItems.length > 0) {
         open = this.navItems[0].active || this.navItems[1].active;
       }
 
-      if (this.$vuetify.breakpoint.lgAndUp){
-        if (this.navItems[1].active){
+      if (this.$vuetify.breakpoint.lgAndUp) {
+        if (this.navItems[1].active) {
           return open ? wideOpenStation : wideClosed;
         }
 
         return open ? wideOpen : wideClosed;
-      } else {
+      } 
         return open ? smallOpen : smallClosed;
-      }
+      
     },
   },
   methods: {
-    catchDrawerClick(){
+    catchDrawerClick() {
       this.$emit('drawerClick', this.drawerIsMini);
     },
-    catchHomeClick(){
+    catchHomeClick() {
       this.$emit('homeClick');
     },
-    catchStationOverviewClick(){
+    catchStationOverviewClick() {
       this.$emit('stationOverviewClick');
     },
   },
   data: () => ({
     drawerIsMini: true,
     gcNetlogo,
-    gcNetHomeText: 'GC-Net Data Portal'
+    gcNetHomeText: 'GC-Net Data Portal',
   }),
-}
+};
 </script>
 
 <style>

@@ -10,7 +10,6 @@
           {{ `Detailed charts of ${ stationName } station` }}
         </v-flex>
 
-
         <v-flex xs12 sm6 shrink>
           <v-layout column>
             <v-flex class="title">Directly scroll to specific measurement</v-flex>
@@ -86,7 +85,7 @@
 
 export default {
   name: 'StationControl',
-  components:{
+  components: {
   },
   props: {
     stationName: String,
@@ -95,7 +94,7 @@ export default {
     paramList: Array,
   },
   computed: {
-    bigSize(){
+    bigSize() {
       return this.$vuetify.breakpoint.xsOnly ? 450 : 700;
     },
   },

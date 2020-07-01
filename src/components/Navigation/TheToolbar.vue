@@ -62,7 +62,6 @@
     </v-toolbar>
 </template>
 
-
 <script>
 import gcNetlogo from '@/assets/gc_net_logo.png';
 
@@ -73,9 +72,9 @@ export default {
   },
   computed: {
   },
-  mounted(){
+  mounted() {
     this.$eventHub.$on('detailClick', (station) => {
-      if (station){
+      if (station) {
         this.activeTab = null;
         // this.overwriteTab(-1);
       }
@@ -85,8 +84,8 @@ export default {
     this.$eventHub.$off('detailClick');
   },  
   methods: {
-    overwriteTab(newActive){
-      this.activeTab = parseInt(newActive);
+    overwriteTab(newActive) {
+      this.activeTab = parseInt(newActive, 10);
     },
   },
   data: () => ({
@@ -94,7 +93,7 @@ export default {
     gcNetHomeText: 'GC-Net',
     activeTab: 0,
   }),
-}
+};
 </script>
 
 <style>

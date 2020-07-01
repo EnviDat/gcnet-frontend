@@ -42,7 +42,6 @@
                 {{ title }}
               </v-flex>
 
-
             </v-layout>
           </v-flex>
 

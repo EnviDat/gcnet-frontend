@@ -14,9 +14,7 @@
       icon: String,
       size: {
         type: Number,
-        default: () => {
-          return 20;
-        },
+        default: () => 20,
       },
       color: String,
     },

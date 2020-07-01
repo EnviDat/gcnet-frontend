@@ -31,7 +31,6 @@
     
   </v-layout>
 
-
 </template>
 
 <script>
