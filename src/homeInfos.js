@@ -10,7 +10,10 @@ export default {
 
   GC-Net Automated Weather Stations (AWS) are collecting climate information on Greenland's ice sheet. They are equipped with communication satellite transmitters that enable near-real time monitoring of weather conditions on the Greenland ice sheet. Transmission latency is typically 1-2 hours, and occasionally as long as 48 hours. All times displayed are Zulu = UTC.
   
-  Hourly average data are transmitted via a satellite link (GOES or ARGOS) throughout the year. In addition, measurements are stored in solid state memory. The system is powered with two 100 Ah batteries, charged by a 10 or 20 W solar panel. The satellite data-link is powered by two separate 100 Ah batteries connected to a 20 W solar panel. This setup guarantees continuous data recordings and storage, even in the case of satellite transmission failure. For more information on the GC-NET see: <a href="http://cires1.colorado.edu/steffen/gcnet/" target="_blank">GC-Net@CIRES.colorado.edu.</a>`,
+  Hourly average data are transmitted via a satellite link (GOES or ARGOS) throughout the year. In addition, measurements are stored in solid state memory. The system is powered with two 100 Ah batteries, charged by a 10 or 20 W solar panel. The satellite data-link is powered by two separate 100 Ah batteries connected to a 20 W solar panel. This setup guarantees continuous data recordings and storage, even in the case of satellite transmission failure. For more information on the GC-NET see: <a href="http://cires1.colorado.edu/steffen/gcnet/" target="_blank">GC-Net@CIRES.colorado.edu.</a>
+  <br />  
+  <br />
+  <strong><a href="https://www.wsl.ch/en/2020/08/director-konrad-steffen-tragically-killed-in-accident.html">Konrad Steffen died in an accident in Greenland on 8 August 2020.</a></strong>`,
   awsInfo: `<h3>Automatic Weather Stations (AWS)</h3>
 
   <p>As of the 1999 field season, 18 automatic weather stations (AWS) are collecting climate information on Greenland's ice sheet. Each AWS is equipped with a number of instruments to sample the following:</p>
