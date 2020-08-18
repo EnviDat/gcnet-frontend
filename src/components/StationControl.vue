@@ -41,9 +41,7 @@
                 <v-flex shrink >
                   <v-icon >access_time</v-icon>
                 </v-flex>                
-                <v-flex shrink >
-                  Convert to chart times to your local time
-                </v-flex>                
+                <v-flex shrink >{{ convertTimeText }}</v-flex>
               </v-layout>
             </v-flex>
 
@@ -102,6 +100,7 @@ export default {
     expand: false,
     convertLocalTime: false,
     smallSize: 140,
+    convertTimeText: 'Convert chart times to your local time',
   }),
 };
 </script>

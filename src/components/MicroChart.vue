@@ -471,7 +471,7 @@ export default {
     tooltipsPlugin(opts) {
       // eslint-disable-next-line no-shadow
       function init(u, opts, data) {
-        const plot = u.root.querySelector('.over');
+        const plot = u.root.querySelector('.u-over');
 
         // eslint-disable-next-line no-multi-assign
         const ttc = u.cursortt = document.createElement('div');
