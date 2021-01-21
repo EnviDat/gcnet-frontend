@@ -246,7 +246,7 @@ export default {
     },
   },
   data: () => ({
-    baseStationURL: 'https://www.wsl.ch/gcnet/data/',
+    baseStationURL: './data/',
     baseStationURLTestdata: './testdata/',
     loadingStation: false,
     stationImg: null,

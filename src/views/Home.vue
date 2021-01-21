@@ -70,7 +70,7 @@ export default {
   },
   data: () => ({
     homeInfos,
-    baseStationURL: 'https://www.wsl.ch/gcnet/data/',
+    baseStationURL: './data/',
     baseStationURLTestdata: './testdata/',
     visible: false,
     initialDelay: 1500,
