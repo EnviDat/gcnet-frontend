@@ -223,10 +223,10 @@ export default {
     fileValueMapping: {
       type: Object,
       default: () => ({
-        temp: ['AirTC1', 'AirTC2'],
-        press: ['press'],
-        wd: ['WD1', 'WD2'],
-        ws: ['WS1', 'WS2'],
+        temp: ['airtemp1', 'airtemp2'],
+        press: ['pressure'],
+        wd: ['winddir1', 'winddir2'],
+        ws: ['windspeed1', 'windspeed2'],
         battvolt: ['battvolt'],
       }),
     },
@@ -394,6 +394,9 @@ export default {
     makeSparkChart(data) {
       this.chartIsLoading = false;
 
+      const parameter = 'airtemp1';
+      const fallbackParameter = 'airtemp2';
+
       const x = [];
       let y = [];
       const dataLength = data ? data.length : 0;
@@ -404,23 +407,23 @@ export default {
 
         for (let i = 0; i < data.length; i++) {
           const entry = data[i];
-          const airTC1 = entry.AirTC1;
+          const param = entry[parameter];
           
-          if (useFallback && airTC1) {
+          if (useFallback && param) {
             useFallback = false;
           }
           
           x.push(entry.timestamp);
-          y.push(airTC1);
+          y.push(param);
         }
 
         if (useFallback) {
           y = [];
-          this.graphs[0].title = 'AirTC2';
+          this.graphs[0].title = parameter;
 
           for (let i = 0; i < data.length; i++) {
             const entry = data[i];            
-            y.push(entry.AirTC2);
+            y.push(entry[fallbackParameter]);
           }
         }
 

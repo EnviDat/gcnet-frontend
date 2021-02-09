@@ -308,14 +308,14 @@ export default {
     valueFieldMapping: {
       temp: [
         {
-            parameter: 'AirTC1',
+            parameter: 'airtemp1',
             color: '#D48E00',
             negativeColor: '#00CED4',
             titleString: 'Thermocouple 1',
             precision: 1,
         },
         {
-            parameter: 'AirTC2',
+            parameter: 'airtemp2',
             color: '#D26200',
             negativeColor: '#07AACD',
             titleString: 'Thermocouple 2',
@@ -324,13 +324,13 @@ export default {
       ],
       ws: [
         {
-   parameter: 'WS1',
+            parameter: 'windspeed1',
             color: '#046401',
             titleString: 'Wind-speed 1',
             precision: 1,
         },
         {
-            parameter: 'WS2',
+            parameter: 'windspeed2',
             color: '#5ED352',
             titleString: 'Wind-speed 2',
             precision: 1,
@@ -338,13 +338,13 @@ export default {
       ],
       wd: [
         {
-          parameter: 'WD1',
+          parameter: 'winddir1',
           color: '#046401',
           titleString: 'Wind-direction 1',
           precision: 1,
         },
         {
-          parameter: 'WD2',
+          parameter: 'winddir2',
           color: '#2FCE32',
           titleString: 'Wind-direction 2',
           precision: 1,
@@ -352,31 +352,31 @@ export default {
       ],
       rh: [
         {
-   parameter: 'RH1',
+            parameter: 'rh1',
             color: '#1DAFD7',
             titleString: 'Relative humidity 1',
         },
         {
-            parameter: 'RH2',
+            parameter: 'rh2',
             color: '#393DA3',
             titleString: 'Relative humidity 2',
         },
       ],
       rad: [
         {
-          parameter: 'SWin',
+          parameter: 'swin',
           color: '#E79F32',
           titleString: 'Short-wave incoming',
           precision: 1,
         },
         {
-          parameter: 'SWout',
+          parameter: 'swout',
           color: '#9A6008',
           titleString: 'Short-wave outgoing',
           precision: 1,
         },
         {
-          parameter: 'NetRad',
+          parameter: 'netrad',
           color: '#1C5197',
           titleString: 'Net radiation',
           precision: 1,
@@ -384,13 +384,13 @@ export default {
       ],
       sheight: [
         {
-          parameter: 'Sheight1',
+          parameter: 'sh1',
           color: '#679DE2',
           titleString: 'Snow height 1',
           precision: 2,
         },
         {
-          parameter: 'Sheight2',
+          parameter: 'sh2',
           color: '#3375CD',
           titleString: 'Snow height 2',
           precision: 2,
@@ -398,7 +398,7 @@ export default {
       ],
       press: [
         {
-          parameter: 'press',
+          parameter: 'pressure',
           color: '#FF01FF',
           titleString: 'Atmospheric pressure',
           precision: 1,
@@ -406,7 +406,7 @@ export default {
       ],
       battvolt: [
         {
-          parameter: 'BattVolt',
+          parameter: 'battvolt',
           color: '#27AE61',
           titleString: 'Battery voltage',
           precision: 1,
