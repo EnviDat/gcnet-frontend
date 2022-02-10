@@ -16,7 +16,7 @@
     "core-js": "^3.8.2",
     "date-fns": "^2.16.1",
     "material-design-icons-iconfont": "^5.0.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "sass-loader": "^8.0.2",
     "seedrandom": "^3.0.5",
     "skeleton-placeholder": "^1.0.0",
