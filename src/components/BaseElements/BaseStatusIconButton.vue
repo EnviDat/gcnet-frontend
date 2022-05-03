@@ -1,6 +1,8 @@
 <template>
 
   <v-layout row
+            @focusin="hoverBadge = true"
+            @focusout="hoverBadge = false"
             @mouseover="hoverBadge = true"
             @mouseleave="hoverBadge = false">
 

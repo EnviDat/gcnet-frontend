@@ -15,6 +15,7 @@
                 pa-0 >
           <img :style="`${ showInfo ? '' : 'height: 100%;'} cursor: pointer;`"
                 @click="catchDetailClick(station.alias)"
+                :alt="image"
                 :src="image" />
         </v-flex>
 

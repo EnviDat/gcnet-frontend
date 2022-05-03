@@ -14,7 +14,9 @@
               v-bind="{['target'] : '_blank' }"
       >
         <div v-if="customIcon" class="iconCentering">
-          <img class="envidatIcon" :src="customIcon" />
+          <img class="envidatIcon"
+                :src="customIcon"
+                :alt="img" />
         </div>
 
         <v-icon v-if="materialIconName" class="pr-2"

@@ -17,6 +17,7 @@
           <img v-if="img"
                 ref="card_image"
                 style="height: 100%;"
+                :alt="img"
                 :src="img" />                        
         </v-flex>
 

@@ -6,7 +6,12 @@
         dark >
 
       <!-- <v-toolbar-side-icon @click="$emit('navigationClick', '/')" ><img style="width: 35px; height: 35px;" :src="gcNetlogo"></v-toolbar-side-icon> -->
-      <div class="mt-1"><img @click="$emit('navigationClick', '/')" style="width: 35px; height: 35px; cursor: pointer;" :src="gcNetlogo"></div>
+      <div class="mt-1"
+            @click="$emit('navigationClick', '/')" >
+        <img style="width: 35px; height: 35px; cursor: pointer;"
+             :src="gcNetlogo"
+             alt="Greenland Network Logo">
+      </div>
 
       <div v-if="$vuetify.breakpoint.smAndUp"
             class="ml-3 headline"

@@ -53,6 +53,7 @@
 
             <v-flex shrink>
               <img style="height: 450px; max-width: 100%; "
+                    alt="Image of the sensor station in Greenland"
                     :src="stationImage" />
             </v-flex>
 

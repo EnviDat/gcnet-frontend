@@ -52,6 +52,8 @@ module.exports = {
     'no-trailing-spaces': 'off',
     'no-unused-expressions': 1,
     'no-nested-ternary': 'off',
+    'vue/multi-word-component-names': 'off',
+    'vuejs-accessibility/click-events-have-key-events': 'off',
     // enforce CLRF linebreaks = 'linebreak-style' : ["error", "unix"]
     // windows linebreaks when not in production environment
     // "linebreak-style": ["error", process.env.NODE_ENV === 'prod' ? "unix" : "windows"]
