@@ -35,20 +35,20 @@
 
         <v-tab v-for="(navItem, index) in navItems"
               :key="index"
-              :href="navItem.route === 'request' ? 'http://cires1.colorado.edu/steffen/gcnet/order/admin/station.php' : ''"
-              :target="navItem.route === 'request' ? '_blank' : ''"
               @click.stop="navItem.route === 'request' ? null : $emit('navigationClick', navItem.route)" >
           <v-tooltip
             bottom
             :disabled="$vuetify.breakpoint.xsOnly"
             lazy >
             
-            <span>{{ navItem.toolTip }}</span>              
+            <span>{{ navItem.toolTip }}</span>
 
             <template v-slot:activator="{ on }">
               <v-btn v-on="on"
                       icon
-                      @click="navItem.route === 'request' ? '' : $emit('navigationClick', navItem.route)">
+                     :href="navItem.route === 'request' ? 'https://www.envidat.ch/#/metadata/gcnet ' : ''"
+                     :target="navItem.route === 'request' ? '_blank' : ''"
+                     @click="navItem.route === 'request' ? '' : $emit('navigationClick', navItem.route)">
 
                 <v-icon large>{{ navItem.icon }}</v-icon>
 
