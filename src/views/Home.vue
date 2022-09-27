@@ -57,6 +57,7 @@
 import homeInfos from '@/homeInfos';
 import StationsMap from '@/components/StationsMap';
 import MicroChart from '@/components/MicroChart.vue';
+import { addStartEndDateUrl } from '@/chartData/charts';
 // import * as am4core from "@amcharts/amcharts4/core";
 // am4core.options.queue = true;
 
@@ -70,8 +71,8 @@ export default {
   },
   data: () => ({
     homeInfos,
-    baseStationURL: './data/',
-    baseStationURLTestdata: './testdata/',
+    baseStationURL: 'https://www.envidat.ch/data-api/gcnet/json',
+    baseStationURLTestdata: 'https://www.envidat.ch/data-api/gcnet/json',
     visible: false,
     initialDelay: 1500,
     fileValueMapping: {
@@ -126,22 +127,34 @@ export default {
     },
     getJSONUrls(station) {
       const dataURLs = []; const 
-recentDataURLs = [];
+      recentDataURLs = [];
       const keys = Object.keys(this.fileValueMapping);
+
+      // 1.5 months for the recent data, 2 years for historical
+      const recentDayRange = 45;
+      const historicalDayRange = 730;
+      const baseUrl = process.env.NODE_ENV === 'production' ? this.baseStationURL : this.baseStationURLTestdata;
 
       for (let i = 0; i < keys.length; i++) {
         const prefix = keys[i];
-        const fileName = `${station.id}${prefix}.json`;
-        const recentFileName = `${station.id}${prefix}_v.json`;
-        const baseUrl = process.env.NODE_ENV === 'production' ? this.baseStationURL : this.baseStationURLTestdata;
+        const parameter = this.fileValueMapping[prefix];
+        // const fileName = `${station.id}${prefix}.json`;
+        // const recentFileName = `${station.id}${prefix}_v.json`;
 
         // add the timestamp to prevent server side caching
         // const url = `${baseUrl}${fileName}?t=${Date.now()}`;
-        const url = `${baseUrl}${fileName}`;
+        // https://www.envidat.ch/data-api/gcnet/json/swisscamp/windspeed1,windspeed2/2019-08-06T12:00:00/2021-08-05T14:00:00+02:00/
+        let url = `${baseUrl}/${station.aliasApi}/${parameter}/`;
+        url = addStartEndDateUrl(url, historicalDayRange);
+
         dataURLs.push({ fileType: prefix, url });
 
         // const recentUrl = `${baseUrl}${recentFileName}?t=${Date.now()}`;
-        const recentUrl = `${baseUrl}${recentFileName}`;
+        // https://www.envidat.ch/data-api/gcnet/json/swisscamp_10m_tower/airtemp1/2022-09-13T06:15:41/2022-09-27T08:15:41/
+        // const recentUrl = `${baseUrl}${recentFileName}`;
+        let recentUrl = `${baseUrl}/${station.aliasApi}/${parameter}/`;
+        recentUrl = addStartEndDateUrl(recentUrl, recentDayRange);
+
         recentDataURLs.push({ fileType: prefix, url: recentUrl });
       }
 

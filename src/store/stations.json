@@ -8,6 +8,7 @@
 		"startdate" : "1990.4",
 		"active" : true,
 		"alias" : "swisscamp10m",
+		"aliasApi": "swisscamp_10m_tower",
 		"data" : 1
 	},
 	{
@@ -19,6 +20,7 @@
 		"startdate" : "1990.30",
 		"active" : true,
 		"alias" : "swisscamp",
+		"aliasApi": "swisscamp",
 		"data" : 1
 	},
 	{
@@ -30,6 +32,7 @@
 		"startdate" : "1995.39",
 		"active" : true,
 		"alias" : "crawfordpoint",
+		"aliasApi": "crawfordpoint",
 		"data" : 1
 	},
 	{
@@ -41,6 +44,7 @@
 		"startdate" : "1995.41",
 		"active" : true,
 		"alias" : "nasau",
+		"aliasApi": "nasa_u",
 		"data" : 0
 	},
 	{
@@ -52,6 +56,7 @@
 		"startdate" : "1995.43",
 		"active" : true,
 		"alias" : "gits",
+		"aliasApi": "gits",
 		"data" : 0
 	},
 	{
@@ -63,6 +68,7 @@
 		"startdate" : "1995.47",
 		"active" : true,
 		"alias" : "humboldt",
+		"aliasApi": "humboldt",
 		"data" : 1
 	},
 	{
@@ -74,6 +80,7 @@
 		"startdate" : "1996.37 ",
 		"active" : true,
 		"alias" : "summitstation",
+		"aliasApi": "summit",
 		"data" : 1
 	},
 	{
@@ -85,6 +92,7 @@
 		"startdate" : "1996.38",
 		"active" : true,
 		"alias" : "tununorth",
+		"aliasApi": "tunu_n",
 		"data" : 1
 	},
 	{
@@ -96,6 +104,7 @@
 		"startdate" : "1996.40",
 		"active" : true,
 		"alias" : "dyeii",
+		"aliasApi": "dye2",
 		"data" : 1
 	},
 	{
@@ -107,6 +116,7 @@
 		"startdate" : "1996.47",
 		"active" : true,
 		"alias" : "jar1",
+		"aliasApi": "jar1",
 		"data" : 1
 	},
 	{
@@ -118,6 +128,7 @@
 		"startdate" : "1997.30",
 		"active" : true,
 		"alias" : "saddle",
+		"aliasApi": "saddle",
 		"data" : 1
 	},
 	{
@@ -129,6 +140,7 @@
 		"startdate" : "1997.31",
 		"active" : true,
 		"alias" : "southdome",
+		"aliasApi": "southdome",
 		"data" : 0
 	},
 	{
@@ -140,6 +152,7 @@
 		"startdate" : "1997.34",
 		"active" : true,
 		"alias" : "nasaeast",
+		"aliasApi": "nasa_east",
 		"data" : 1
 	},
 	{
@@ -151,6 +164,7 @@
 		"startdate" : "1998.30",
 		"active" : false,
 		"alias" : "nasasoutheast",
+		"aliasApi": "nasa_southeast",
 		"data" : 0
 	},
 	{
@@ -162,6 +176,7 @@
 		"startdate" : "2003.40",
 		"active" : true,
 		"alias" : "petermann",
+		"aliasApi": "petermann",
 		"data" : 1
 	},
 	{
@@ -173,6 +188,7 @@
 		"startdate" : "2006",
 		"active" : true,
 		"alias" : "neem",
+		"aliasApi": "neem",
 		"data" : 1
 	},
 	{
@@ -184,6 +200,7 @@
 		"startdate" : "2014",
 		"active" : true,
 		"alias" : "eastgrip",
+		"aliasApi": "east_grip",
 		"data" : 1
 	}
 ]

@@ -83,7 +83,11 @@
 import axios from 'axios';
 // import { createLineChart, defaultSeriesSettings } from "../chartData/charts";
 import BaseRectangleButton from '@/components/BaseElements/BaseRectangleButton';
-import { createSerialChart, defaultSeriesSettings } from '../chartData/charts';
+import {
+  addStartEndDateUrl,
+  createSerialChart,
+  defaultSeriesSettings,
+} from '@/chartData/charts';
 // import * as am4core from "@amcharts/amcharts4/core";
 // import * as bullets from "@amcharts/amcharts4/plugins/bullets";
 
@@ -104,6 +108,7 @@ export default {
     preload: Boolean,
     showDisclaimer: Boolean,
     convertLocalTime: Boolean,
+    showRecentData: Boolean,
   },
   components: {
     BaseRectangleButton,
@@ -142,10 +147,7 @@ export default {
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
 
-        const splits = this.url.split('/');
-        const fileName = splits[splits.length - 1];
-
-        if (fileName.includes(key)) {
+        if (this.chartId.includes(key)) {
           const graphInfo = this.valueFieldMapping[key];
 
           for (let j = 0; j < graphInfo.length; j++) {
@@ -198,8 +200,23 @@ export default {
       });
     },
     loadJsonFiles() {
+      let params = '';
+
+      for (let i = 0; i < this.graphs.length; i++) {
+        const graph = this.graphs[i];
+        params += `${graph.valueField},`;
+      }
+
+      params = params.substr(0, params.length - 1);
+
+      let url = `${this.url}${params}/`;
+      const dayRange = this.showRecentData ? 45 : 730;
+      url = addStartEndDateUrl(url, dayRange);
+
+      console.log(url);
+
       axios
-      .get(this.url)
+      .get(url)
       .then((response) => {
         // createChart() gets called due to the watch on the records
         this.records = response.data;

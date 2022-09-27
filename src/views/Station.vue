@@ -30,7 +30,7 @@
                   :ref="fileObject.fileName"
                   >
 
-              <DetailChart :url="baseUrl + fileObject.fileName"
+              <DetailChart :url="getDetailChartUrl(currentStation)"
                           :stationName="currentStation.name"
                           :fileObject="fileObject"
                           :chartId="chartId(fileObject.fileName)"
@@ -39,6 +39,7 @@
                           :showDisclaimer="fileObject.showDisclaimer"
                           :convertLocalTime="convertLocalTime"
                           :key="fileObject.fileName + reRenderKey"
+                          :showRecentData="fileObject.showRecentData"
                           />
           </v-flex>
         </v-layout>
@@ -128,6 +129,9 @@ export default {
     },
   },
   methods: {
+    getDetailChartUrl(station) {
+      return `${this.baseUrl}/${station.aliasApi}/`;
+    },
     mapStationClick(stationUrl) {
       const splits = stationUrl.split('/');
 
@@ -213,12 +217,7 @@ export default {
 
         const fileObjectTemplate = {
           fileName: this.currentStation.id + fileObj.fileName,
-          chartTitle: fileObj.chartTitle,
-          numberFormat: fileObj.numberFormat,
-          dateFormatTime: fileObj.dateFormatTime,
-          preload: fileObj.preload,
-          showDisclaimer: fileObj.showDisclaimer,
-          seriesNumberFormat: fileObj.seriesNumberFormat,
+          ...fileObj,
         };
         
         fileList.push(fileObjectTemplate);
@@ -246,8 +245,8 @@ export default {
     },
   },
   data: () => ({
-    baseStationURL: './data/',
-    baseStationURLTestdata: './testdata/',
+    baseStationURL: 'https://www.envidat.ch/data-api/gcnet/json',
+    baseStationURLTestdata: 'https://www.envidat.ch/data-api/gcnet/json',
     loadingStation: false,
     stationImg: null,
     stationPreloadImage: null,
@@ -257,53 +256,53 @@ export default {
     reRenderKey: null,
     fileObjects: [
       {
- fileName: 'temp_v.json', chartTitle: 'Air Temperatures Recent Days', numberFormat: '##  °C', dateFormatTime: true, preload: true, showDisclaimer: false, 
-},
+       fileName: 'temp_v.json', chartTitle: 'Air Temperatures Recent Days', numberFormat: '##  °C', dateFormatTime: true, preload: true, showDisclaimer: false, showRecentData: true,
+      },
       {
- fileName: 'temp.json', chartTitle: 'Air Temperatures Historical Data', numberFormat: '##  °C', dateFormatTime: false, preload: true, showDisclaimer: false, 
-},
+       fileName: 'temp.json', chartTitle: 'Air Temperatures Historical Data', numberFormat: '##  °C', dateFormatTime: false, preload: true, showDisclaimer: false, showRecentData: false,
+      },
       {
- fileName: 'ws_v.json', chartTitle: 'Wind Speed Recent Days', numberFormat: '###  m/s', dateFormatTime: true, preload: true, showDisclaimer: false, 
-},
+       fileName: 'ws_v.json', chartTitle: 'Wind Speed Recent Days', numberFormat: '###  m/s', dateFormatTime: true, preload: true, showDisclaimer: false, showRecentData: true,
+      },
       {
- fileName: 'ws.json', chartTitle: 'Wind Speed Historical Data', numberFormat: '###  m/s', dateFormatTime: false, preload: true, showDisclaimer: false, 
-},
+       fileName: 'ws.json', chartTitle: 'Wind Speed Historical Data', numberFormat: '###  m/s', dateFormatTime: false, preload: true, showDisclaimer: false, showRecentData: false,
+      },
       {
- fileName: 'wd_v.json', chartTitle: 'Wind Direction Recent Days', numberFormat: '###  °', dateFormatTime: true, preload: true, showDisclaimer: false, 
-},
+       fileName: 'wd_v.json', chartTitle: 'Wind Direction Recent Days', numberFormat: '###  °', dateFormatTime: true, preload: true, showDisclaimer: false, showRecentData: true,
+      },
       {
- fileName: 'wd.json', chartTitle: 'Wind Direction Historical Data', numberFormat: '###  °', dateFormatTime: false, preload: true, showDisclaimer: false, 
-},
+       fileName: 'wd.json', chartTitle: 'Wind Direction Historical Data', numberFormat: '###  °', dateFormatTime: false, preload: true, showDisclaimer: false, showRecentData: false,
+      },
       {
- fileName: 'rh_v.json', chartTitle: 'Relative Humidity Recent Days', numberFormat: '##  %', dateFormatTime: true, preload: true, showDisclaimer: false, seriesNumberFormat: '#.', 
-},
+       fileName: 'rh_v.json', chartTitle: 'Relative Humidity Recent Days', numberFormat: '##  %', dateFormatTime: true, preload: true, showDisclaimer: false, seriesNumberFormat: '#.', showRecentData: true,
+      },
       {
- fileName: 'rh.json', chartTitle: 'Relative Humidity Historical Data', numberFormat: '##  %', dateFormatTime: false, preload: true, showDisclaimer: false, seriesNumberFormat: '#.', 
-},
+       fileName: 'rh.json', chartTitle: 'Relative Humidity Historical Data', numberFormat: '##  %', dateFormatTime: false, preload: true, showDisclaimer: false, seriesNumberFormat: '#.', showRecentData: false,
+      },
       {
- fileName: 'rad_v.json', chartTitle: 'Radiation Recent Days', numberFormat: '###  W/m²', dateFormatTime: true, preload: true, showDisclaimer: false, 
-},
+       fileName: 'rad_v.json', chartTitle: 'Radiation Recent Days', numberFormat: '###  W/m²', dateFormatTime: true, preload: true, showDisclaimer: false, showRecentData: true,
+      },
       {
- fileName: 'rad.json', chartTitle: 'Radiation Historical Data', numberFormat: '###  W/m²', dateFormatTime: false, preload: true, showDisclaimer: false, 
-},
+       fileName: 'rad.json', chartTitle: 'Radiation Historical Data', numberFormat: '###  W/m²', dateFormatTime: false, preload: true, showDisclaimer: false, showRecentData: false,
+      },
       {
- fileName: 'sheight_v.json', chartTitle: 'Snow Heights Recent Days', numberFormat: '#.##  m', dateFormatTime: true, preload: true, showDisclaimer: false, seriesNumberFormat: '#.00', 
-},
+       fileName: 'sheight_v.json', chartTitle: 'Snow Heights Recent Days', numberFormat: '#.##  m', dateFormatTime: true, preload: true, showDisclaimer: false, seriesNumberFormat: '#.00', showRecentData: true,
+      },
       {
- fileName: 'sheight.json', chartTitle: 'Snow Heights Historical Data', numberFormat: '#.##  m', dateFormatTime: false, preload: true, showDisclaimer: false, 
-},
+       fileName: 'sheight.json', chartTitle: 'Snow Heights Historical Data', numberFormat: '#.##  m', dateFormatTime: false, preload: true, showDisclaimer: false, showRecentData: false,
+      },
       {
- fileName: 'press_v.json', chartTitle: 'Air Pressure Recent Days', numberFormat: '###  mbar', dateFormatTime: true, preload: true, showDisclaimer: false, 
-},
+       fileName: 'press_v.json', chartTitle: 'Air Pressure Recent Days', numberFormat: '###  mbar', dateFormatTime: true, preload: true, showDisclaimer: false, showRecentData: true,
+      },
       {
- fileName: 'press.json', chartTitle: 'Air Pressure Historical Data', numberFormat: '###  mbar', dateFormatTime: false, preload: true, showDisclaimer: false, 
-},
+       fileName: 'press.json', chartTitle: 'Air Pressure Historical Data', numberFormat: '###  mbar', dateFormatTime: false, preload: true, showDisclaimer: false, showRecentData: false,
+      },
       {
- fileName: 'battvolt_v.json', chartTitle: 'Battery Voltage Recent Days', numberFormat: '## V', dateFormatTime: true, preload: true, showDisclaimer: false, 
-},
+       fileName: 'battvolt_v.json', chartTitle: 'Battery Voltage Recent Days', numberFormat: '## V', dateFormatTime: true, preload: true, showDisclaimer: false,
+      },
       {
- fileName: 'battvolt.json', chartTitle: 'Battery Voltage Historical Data', numberFormat: '## V', dateFormatTime: false, preload: true, showDisclaimer: false, 
-},
+       fileName: 'battvolt.json', chartTitle: 'Battery Voltage Historical Data', numberFormat: '## V', dateFormatTime: false, preload: true, showDisclaimer: false, showRecentData: false,
+      },
     ],
     valueFieldMapping: {
       temp: [

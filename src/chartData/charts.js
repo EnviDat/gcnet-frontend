@@ -103,7 +103,27 @@ const createSerialChart = function createSerialChart(selector, unit, graphs, cha
 //     chart.zoomToIndexes(chart.dataProvider.length - 20, chart.dataProvider.length - 1);
 // }
 
+function addStartEndDateUrl(url, daysBetween = 14, historicalEndDate = undefined) {
+
+    const currentDate = new Date();
+    let endDate = historicalEndDate;
+
+    if (!endDate) {
+        endDate = currentDate.toISOString().substring(0, 19);
+    }
+
+    const endDateDate = new Date(endDate);
+    const baseDate = endDateDate;
+    const diffDays = endDateDate.getDate() - daysBetween;
+    baseDate.setDate(diffDays);
+    const differenceDate = new Date(baseDate);
+    const startDate = differenceDate.toISOString().substring(0, 19);
+
+    return `${url}${startDate}/${endDate}/`;
+}
+
 export {
   createSerialChart,
   defaultSeriesSettings,
+    addStartEndDateUrl,
 };
