@@ -10,11 +10,17 @@ export default {
 
   GC-Net Automated Weather Stations (AWS) are collecting climate information on Greenland's ice sheet. They are equipped with communication satellite transmitters that enable near-real time monitoring of weather conditions on the Greenland ice sheet. Transmission latency is typically 1-2 hours, and occasionally as long as 48 hours. All times displayed are Zulu = UTC.
   
-  Hourly average data are transmitted via a satellite link (GOES or ARGOS) throughout the year. In addition, measurements are stored in solid state memory. The system is powered with two 100 Ah batteries, charged by a 10 or 20 W solar panel. The satellite data-link is powered by two separate 100 Ah batteries connected to a 20 W solar panel. This setup guarantees continuous data recordings and storage, even in the case of satellite transmission failure. For more information on the GC-NET see: <a href="http://cires1.colorado.edu/steffen/gcnet/" target="_blank">GC-Net@CIRES.colorado.edu.</a>
+  Hourly average data are transmitted via a satellite link (GOES or ARGOS) throughout the year. In addition, measurements are stored in solid state memory. The system is powered with two 100 Ah batteries, charged by a 10 or 20 W solar panel. The satellite data-link is powered by two separate 100 Ah batteries connected to a 20 W solar panel. This setup guarantees continuous data recordings and storage, even in the case of satellite transmission failure.
+  
+<!--  For more information on the GC-NET see: <a href="http://cires1.colorado.edu/steffen/gcnet/" target="_blank">GC-Net@CIRES.colorado.edu.</a> -->
+  
   <br />  
   <br />
-  <strong><a href="https://www.wsl.ch/en/2020/08/director-konrad-steffen-tragically-killed-in-accident.html" target="_blank">Konrad Steffen died in an accident in Greenland on 8 August 2020.</a></strong>`,
-  awsInfo: `<h3>Automatic Weather Stations (AWS)</h3>
+  <strong><a href="https://www.wsl.ch/en/2020/08/director-konrad-steffen-tragically-killed-in-accident.html" target="_blank">Konrad Steffen died in an accident in Greenland on 8 August 2020.</a></strong>
+  
+  `,
+  awsInfo: `
+  <h3>Automatic Weather Stations (AWS)</h3>
 
   <p>As of the 1999 field season, 18 automatic weather stations (AWS) are collecting climate information on Greenland's ice sheet. Each AWS is equipped with a number of instruments to sample the following:</p>
   
@@ -34,16 +40,43 @@ export default {
 <p>PARCA GC-Net Automated Weather Stations (AWS) are equipped with communication satellite transmitters that enable
 near-real time monitoring of weather conditions on the Greenland ice sheet. Transmission latency is as short as 4 minutes, typically 1-2 hours, and occasionally as long as 48 hours. See graphs of the most recent transmissions in the links listed on the right side of this page.</p>
 
-<p>For more information on the GC-NET see:</p>
+<p><strong>Download data via:</strong></p>
+
+<ul>
+  <li>
+    <a target="_blank" href="https://www.doi.org/10.16904/envidat.1">https://www.doi.org/10.16904/envidat.1</a> for the archived L1 processed data
+  </li>
+  <li>
+    <a target="_blank" href="https://github.com/GEUS-Glaciology-and-Climate/GC-Net-level-1-data-processing">https://github.com/GEUS-Glaciology-and-Climate/GC-Net-level-1-data-processing</a>  for the latest L1 data
+  </li>
+  <li>
+    <a target="_blank" href="https://www.envidat.ch/data-api/gcnet/">https://www.envidat.ch/data-api/gcnet/</a> for the near-real time transmitted data from remaining stations: NASA-U, Humboldt (beware of shifted timestamp), TUNU-N, DYE-2, NASA-E, Peterman ELA, NEEM, EGRIP
+  </li>
+</ul>
+
+<br/>
+
+<p>For more information on the Greenland Climate Network see:</p>
 
 <p>Steffen, K., J. E. Box, and W. Abdalati, 1996 "Greenland Climate Network: GC-Net", in Colbeck, S. C. Ed.
 <a target="_blank" href="http://www.crrel.usace.army.mil/techinfo/techinfo.htm">CRREL</a> 96-27 Special Report on Glaciers, Ice Sheets and Volcanoes, trib. to M. Meier, pp. 98-103.</p>
 
+<p>Box, J. E., <span style="text-decoration: underline;">Polar Day Effective Cloud Opacity in the Arctic Derived from Measured and Modeled Solar Radiation Fluxes</span>, MA Thesis, Department of Geography, University of Colorado, Boulder, CO, Cooperative Institute for Research in Environmental Sciences, 111 pp, 1997.</p>
+
+<p>Konrad Steffen (†); Derek Houtz; Baptiste Vandecrux; Waleed Abdalati; Nicolas Bayou; Jason Box; William Colgan; Lucia Espona Pernas; Nena Griessinger; Dominik Haas-Artho; Achim Heilig; Alain Hubert; Ionuț Iosifescu Enescu; Nighat Johnson-Amin; Nanna B. Karlsson; Rebecca Kurup; Daniel McGrath; Reza Naderpour; Allan Østerby Pederson; Bianca Perren; Thomas Phillips; Gian-Kasper Plattner; Martin Proksch; Maiken Kristiansen Revheim; Martina Saettele; Martin Schneebeli; Kevin Sampson; Sandy Starkweather; Simon Steffen; Julienne Stroeve; Benjamin Walter; Øyvind Andreas Winton; Jay Zwally (2020). Greenland Climate Network (GC-Net) Data.  EnviDat.  doi: <a target="_blank" href="https://www.doi.org/10.16904/envidat.1">10.16904/envidat.1</a>.</p>
+
+
+<!--
 <p>You can <a target="_blank" href="http://cires1.colorado.edu/steffen/gcnet/order/admin/station.php">request data via the Web</a> or download data from Humboldt and TUNU-N sites from our <a target="_blank" href="ftp://seaice.colorado.edu/pub/parca">FTP
 Server</a>.</p>
+-->
 
-<p>Dr. <a target="_blank" href="http://cires1.colorado.edu/science/groups/steffen/">Konrad Steffen</a> is the principal investigator of this project.</p>`,
-  additionalInfo: `<h3>Notes</strong></h3>
+<p>Dr. <a target="_blank" href="http://cires1.colorado.edu/science/groups/steffen/">Konrad Steffen</a> was the principal investigator of this project.</p>
+`,
+additionalInfo: `
+
+<!--
+<h3>Notes</strong></h3>
   <ul>
   <li>There is no transmission from NASA-SE, Kulu, JAR3, or KAR.</li>
   <li>Kar, Kulu, and Aurora stations have been removed.</li>
@@ -54,10 +87,8 @@ Server</a>.</p>
   <li>On the plots, observations are represented by square crosses.</li>
   <li>The plots are updated at 50 minutes into each hour.</li>
   <li>You may need to clear the memory cache when reloading updated files.</li>
-  </ul>`,
-  links: `<h3>See Also</h3>
-  <ul>
-  <li><a target="_blank" href="http://cires1.colorado.edu/steffen/gcnet/publications.html">publications</a></li>
-  <li><a target="_blank" href="http://cires1.colorado.edu/science/groups/steffen/greenland/weatherlinks.html">Greenland Weather Links</a></li>
-  </ul>`,
+  </ul>
+-->
+
+`,
 };
