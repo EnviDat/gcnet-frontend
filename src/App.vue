@@ -12,6 +12,16 @@
                     :class="$vuetify.breakpoint.mdAndDown ? 'pa-1' : 'pa-2'"  
                     fill-height >
         <v-layout column >
+          <v-flex>
+            <v-sheet color="warning">
+              <v-layout row>
+                <v-flex class="pa-2">
+                  The GC-Net Website is archived for processed, published data please have a look at the <a target="_blank" href="https://www.envidat.ch/#/metadata/gcnet">GC-Net data published on EnviDat</a> and for on going data <a href="./#/about">read more</a> in the about page.
+                </v-flex>
+              </v-layout>
+            </v-sheet>
+          </v-flex>
+
           <v-flex >
 
             <transition name="fade" mode="out-in">
@@ -91,15 +101,15 @@ export default {
       version: process.env.VUE_APP_VERSION,
       navItems: [
         {
- title: 'Overview', toolTip: 'Shows the stations overview', icon: 'dashboard', route: '/', 
-},
+         title: 'Overview', toolTip: 'Shows the stations overview', icon: 'dashboard', route: '/',
+        },
         // { title: 'Stations', toolTip: 'Shows a list of stations overview', icon: 'view_list', route: 'station' },
         {
- title: 'Data', toolTip: 'Request data from different stations', icon: 'save_alt', route: 'request', 
-},
+         title: 'Data', toolTip: 'Download data from different stations', icon: 'save_alt', route: 'request',
+        },
         {
- title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info_outline', route: 'about', 
-},
+         title: 'About', toolTip: 'More information about the GC-Net Data Portal', icon: 'info_outline', route: 'about',
+        },
       ],
     };
   },
