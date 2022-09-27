@@ -138,6 +138,11 @@ export default {
         this.createChart();
       }
     },
+    url() {
+      if (this.intersected) {
+        this.loadChart();
+      }
+    },
   },
   methods: {
     buildGraphs() {
@@ -212,8 +217,6 @@ export default {
       let url = `${this.url}${params}/`;
       const dayRange = this.showRecentData ? 45 : 730;
       url = addStartEndDateUrl(url, dayRange);
-
-      console.log(url);
 
       axios
       .get(url)

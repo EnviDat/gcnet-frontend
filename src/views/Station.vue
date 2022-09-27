@@ -27,7 +27,7 @@
 
           <v-flex v-for="fileObject in generateFileList"
                   :key="fileObject.fileName"
-                  :ref="fileObject.fileName"
+                  :ref="chartId(fileObject.fileName)"
                   >
 
               <DetailChart :url="getDetailChartUrl(currentStation)"
@@ -103,7 +103,7 @@ export default {
     $route(to) {
       const stationToFind = to.params.id;
       this.currentStation = this.getStation(stationToFind);
-    },    
+    },
     currentStation() {
       if (this.currentStation) {
         let imgs = require.context('@/assets/stations/', false, /\.jpg$/);
@@ -151,22 +151,20 @@ export default {
       return `${this.stationId}_${fileName}`;
     },
     catchParamClick(fileName) {
-      let scrollToChart = null;
+      let scrollToChart = '';
 
       for (let i = 0; i < this.fileObjects.length; i++) {
         const obj = this.fileObjects[i];
 
         if (obj.fileName.includes(fileName)) {
-          scrollToChart = obj.fileName;
+          scrollToChart = this.chartId(obj.fileName);
           break;
         }        
       }
 
       if (scrollToChart) {
-        const scrollToKey = `${this.currentStation.id}${scrollToChart}`;
-
-        if (this.$refs && this.$refs[scrollToKey] && this.$refs[scrollToKey].length >= 1) {
-          const scrollToDOM = this.$refs[scrollToKey][0];
+        if (this.$refs && this.$refs[scrollToChart] && this.$refs[scrollToChart].length >= 1) {
+          const scrollToDOM = this.$refs[scrollToChart][0];
           const scrollY = scrollToDOM.offsetTop;
           window.scrollTo(0, scrollY);
         }
